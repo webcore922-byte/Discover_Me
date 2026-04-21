@@ -33,8 +33,8 @@ import PrivacyPolicy from './pages/PrivacyPolicy/PrivacyPolicy.jsx';
 const App = () => {
   return (
     <div>
-    <Header />
-    <Routes>
+      <Header />
+  <Routes>
     <Route path="/" element={<Home />} />
     <Route path="/about-the-platform" element={<AboutThePlatform />} />
     <Route path="/coaches" element={<Coaches />} />
