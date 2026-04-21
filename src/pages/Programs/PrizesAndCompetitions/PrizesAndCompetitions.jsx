@@ -4,6 +4,8 @@ const PrizesAndCompetitions = () => {
   return (
     <div>
       
+      <h1>Prizes And Competitions</h1>
+      
     </div>
   )
 }

@@ -4,6 +4,8 @@ const NewsAndUpdates = () => {
   return (
     <div>
       
+      <h1>News And Updates</h1>
+      
     </div>
   )
 }

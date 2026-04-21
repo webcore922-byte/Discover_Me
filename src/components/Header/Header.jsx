@@ -167,6 +167,8 @@ const Header = () => {
           </Collapse>
         </div>
       </Navbar>
+    <div>
+       
       
       <div className={`h-[72px] md:h-[80px] bg-[var(--color-bg-card)] border-none outline-none transition-all duration-300 ${open ? "blur-sm" : "blur-0"}`}></div>
     </div>
