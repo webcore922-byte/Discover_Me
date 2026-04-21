@@ -10,7 +10,7 @@ const Home = () => {
   return (
     <main className="relative text-white overflow-hidden" dir="rtl">
       <section 
-        className="relative flex items-center justify-start bg-cover bg-center px-6 md:px-24 "
+        className="relative flex items-center justify-start bg-cover bg-center px-6 md:px-24"
         style={{ 
           backgroundImage: "url('/bg_home_Ar.jpeg')",
           height: `calc(100vh - ${layoutOffset})` 
