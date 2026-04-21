@@ -4,6 +4,8 @@ const DecisionMakingSkills = () => {
   return (
     <div>
       
+      <h1>Decision Making Skills</h1>
+
     </div>
   )
 }

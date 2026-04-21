@@ -4,6 +4,8 @@ const TrainingCamps = () => {
   return (
     <div>
       
+      <h1>TrainingCamps</h1>
+      
     </div>
   )
 }
