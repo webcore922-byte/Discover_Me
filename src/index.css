@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+:root {
+  --color-bg-main: #1A1D1E;        
+  --color-bg-card: #242829;        
+  --color-gold-main: #D4AF37;     
+  --color-btn-start: #C5A059;      
+  --color-btn-end: #8E7037;        
+  --color-border: #A68946;         
+  --color-text-white: #FFFFFF;     
+  --color-text-gray: #B0B0B0;
+   --gold-gradient: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+}
+.text-gradient-gold {
+  background: var(--gold-gradient);
+}
