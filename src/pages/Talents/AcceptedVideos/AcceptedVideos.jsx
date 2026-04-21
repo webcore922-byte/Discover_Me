@@ -4,6 +4,8 @@ const AcceptedVideos = () => {
   return (
     <div>
       
+      <h1>AcceptedVideos</h1>
+      
     </div>
   )
 }
