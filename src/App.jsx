@@ -6,11 +6,13 @@ import SuccessStoriesMo from "./pages/SuccessStoriesMo/SuccessStoriesMo.jsx";
 import SuccessStoriesCr from "./pages/SuccessStoriesCr/SuccessStoriesCr.jsx";
 import SuccessStoriesLeo from "./pages/SuccessStoriesLeo/SuccessStoriesLeo.jsx";
 import Blog from "./pages/Blog/Blog.jsx";
+import Header from "./components/Header/Header.jsx";
 
 
 const App = () => {
   return (
     <div>
+      <Header />
   <Routes>
     <Route path="/" element={<Home />} />
     <Route path="/AcceptableTalent" element={<AcceptableTalent />} />
