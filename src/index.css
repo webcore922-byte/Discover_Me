@@ -12,8 +12,10 @@
   --color-border: #A68946;         
   --color-text-white: #FFFFFF;     
   --color-text-gray: #B0B0B0;
-   --gold-gradient: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+   --gold-gradient: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c); 
 }
 .text-gradient-gold {
   background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
