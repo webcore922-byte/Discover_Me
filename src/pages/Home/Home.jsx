@@ -1,5 +1,5 @@
 const Home = () => {
-  const layoutOffset = "137.6px";
+  
 
   
   const goldGradient = "from-[#fcf6ba] via-[#d4af37] to-[#aa8b2c]";
@@ -10,11 +10,8 @@ const Home = () => {
   return (
     <main className="relative text-white overflow-hidden" dir="rtl">
       <section 
-        className="relative flex items-center justify-start bg-cover bg-center px-6 md:px-24"
-        style={{ 
-          backgroundImage: "url('/bg_home_Ar.jpeg')",
-          height: `calc(100vh - ${layoutOffset})` 
-        }} 
+        className="relative flex items-center justify-start bg-cover bg-center px-6 md:px-24 bg-[url('../bg_home_Ar.jpeg')] h-[calc(100vh-140px)] "
+        
       >
         <div className="absolute inset-y-0 right-0 w-full md:w-2/3 bg-gradient-to-l from-black/70 via-black/20 to-transparent"></div>
 
