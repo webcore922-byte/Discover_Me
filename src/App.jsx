@@ -1,5 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/Home.jsx";
+
+
 import Header from "./components/Header/Header.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 import AboutThePlatform from "./pages/About/AboutThePlatform/AboutThePlatform.jsx";
@@ -33,6 +35,7 @@ import PrivacyPolicy from './pages/PrivacyPolicy/PrivacyPolicy.jsx';
 const App = () => {
   return (
     <div>
+
       <Header />
   <Routes>
     <Route path="/" element={<Home />} />
