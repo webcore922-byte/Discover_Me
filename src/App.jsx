@@ -6,11 +6,14 @@ import SuccessStoriesMo from "./pages/SuccessStoriesMo/SuccessStoriesMo.jsx";
 import SuccessStoriesCr from "./pages/SuccessStoriesCr/SuccessStoriesCr.jsx";
 import SuccessStoriesLeo from "./pages/SuccessStoriesLeo/SuccessStoriesLeo.jsx";
 import Blog from "./pages/Blog/Blog.jsx";
+import Footer from "./components/Footer/Footer.jsx";
+
 
 
 const App = () => {
   return (
     <div>
+   
   <Routes>
     <Route path="/" element={<Home />} />
     <Route path="/AcceptableTalent" element={<AcceptableTalent />} />
@@ -19,6 +22,7 @@ const App = () => {
     <Route path="/SuccessStoriesLeo" element={<SuccessStoriesLeo />} />
     <Route path="/Blog" element={<Blog />} />
   </Routes>
+  <Footer />
   </div>
   )
 }
