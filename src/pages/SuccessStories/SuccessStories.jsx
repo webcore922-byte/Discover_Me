@@ -69,7 +69,7 @@ const SuccessStories = () => {
           {stories.map((story) => (
             <Card
               key={story.id}
-              className="relative bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 overflow-hidden group"
+              className="relative bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl shadow-2xl  overflow-hidden group"
             >
               <CardHeader
                 shadow={false}
