@@ -53,14 +53,14 @@ const DropdownItem = ({ title, items }) => {
   return (
     <Menu>
       <MenuHandler>
-        <li className="flex items-center gap-1 cursor-pointer text-xl text-[var(--color-text-gray)] hover:text-[var(--color-gold-main)] transition-colors">
+        <li className="flex items-center gap-1 cursor-pointer text-xl text-[var(--color-text-gray)]  hover:text-[var(--color-gold-main)] transition-colors">
           {title} <ChevronDownIcon className="h-4 w-4" />
         </li>
       </MenuHandler>
       <MenuList className="w-52 bg-[var(--color-bg-card)] border border-[var(--color-border)] text-[var(--color-text-gray)] z-[200]">
         {items.map((item, i) => (
           <Link key={i} to={item.path}>
-            <MenuItem className="hover:text-[var(--color-gold-main)] text-right">
+            <MenuItem className="hover:text-[var(--color-gold-main)] hover:bg-[var(--color-bg-main)]">
               {item.name}
             </MenuItem>
           </Link>
