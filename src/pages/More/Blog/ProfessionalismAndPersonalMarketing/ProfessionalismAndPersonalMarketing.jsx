@@ -83,7 +83,7 @@ const ProfessionalismAndPersonalMarketing = () => {
           </div>
           <div className="relative group overflow-hidden rounded-2xl">
              <img 
-              src="/ProfessionalismAndPersonalMarketing.jpg" 
+              src="/professionalism.jpeg" 
               alt="Professional Player Portrait" 
               className="w-full h-80 object-cover grayscale group-hover:grayscale-0 transition-all duration-1000"
              />

@@ -2,20 +2,18 @@ import React from 'react';
 
 const DecisionMakingSkills = () => {
   return (
-    <div className="min-h-screen bg-[var(--color-bg-main)] text-[var(--color-text-white)] font-sans" dir="rtl">
+    <div className="min-h-screen bg-[var(--color-bg-main)] text-[var(--color-text-white)] font-sans" >
       
       
       <div className="relative h-[450px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-black/60 z-10"></div>
         <img 
-          src="/DecisionMakingSkills.jpg" 
+          src="/decision-making.jpeg" 
           alt="Football Strategy" 
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full lg:h-fit  object-cover"
         />
         <div className="relative z-20 text-center px-4">
-          <span className="border border-[var(--color-border)] text-[var(--color-gold-main)] px-4 py-1 rounded-md text-sm font-bold mb-4 inline-block bg-[var(--color-bg-main)]/80">
-            تطوير الأداء الذهني
-          </span>
+         
           <h1 className="text-4xl md:text-6xl font-extrabold text-[var(--color-gold-main)] mb-4 drop-shadow-2xl">
             مهارة اتخاذ القرار
           </h1>
