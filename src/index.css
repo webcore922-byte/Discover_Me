@@ -19,9 +19,91 @@
     #fbf5b7,
     #aa771c
   );
+  
+  /* إضافات جديدة للعمق والتوهج */
+  --gold-glow: 0 0 15px rgba(212, 175, 55, 0.3);
+  --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
 }
+
+/* الكلاس الأصلي بتاعك */
 .text-gradient-gold {
   background: var(--gold-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+/* إضافات لتحسين المظهر العام */
+
+/* تأثير الزجاج للكروت */
+.glass-card {
+  background: rgba(36, 40, 41, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(166, 137, 70, 0.2);
+  box-shadow: var(--card-shadow);
+}
+
+/* توهج ذهبي خفيف للعناصر المميزة */
+.gold-glow-border {
+  border: 1px solid var(--color-border);
+  box-shadow: var(--gold-glow);
+}
+
+/* تأثير عند تمرير الماوس على كروت المدربين */
+.hover-gold-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-gold-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-gold-main);
+  background: rgba(45, 50, 52, 0.9);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
+}
+
+/* تنسيق السكرول بار ليناسب الألوان الغامقة */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg-main);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 10px;
+}
+
+/* حركة بسيطة للأيقونات الذهبية */
+.icon-pulse {
+  animation: pulse-gold 2s infinite;
+}
+
+@keyframes pulse-gold {
+  0% { shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
+  70% { shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
+  100% { shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+}
+/* أضف هذه الخصائص لملف الـ CSS الخاص بك */
+.card-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-shine::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(212,175,55,0.05) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.card-shine:hover::after {
+  opacity: 1;
+}
+
+.timeline-line {
+  background: linear-gradient(90deg, transparent, var(--color-border), transparent);
 }
