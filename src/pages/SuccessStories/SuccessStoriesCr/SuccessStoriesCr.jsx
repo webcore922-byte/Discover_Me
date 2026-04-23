@@ -25,7 +25,7 @@ const SuccessStoriesRonaldo = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_2.2fr_1fr] gap-4 md:gap-6 items-center mb-16 md:mb-24">
           
-          {/* الكارت الأول: ماكينة الأهداف */}
+          
           <Card className="min-w-0 relative border border-[var(--color-border)] bg-[var(--color-bg-card)] rounded-2xl backdrop-blur-[2px] p-4 shadow-none flex flex-col items-center h-[550px] overflow-hidden">
             <Typography variant="h4" className="text-gradient-gold font-bold text-center text-lg md:text-xl mb-10 flex-shrink-0">
               سيد الأرقام القياسية
