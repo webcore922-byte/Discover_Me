@@ -16,8 +16,8 @@ const ProperNutrition = () => {
           التغذية السليمة <br /> للاعبي كرة القدم
         </h1>
         <p className="max-w-3xl mx-auto text-xl md:text-2xl text-[var(--color-text-gray)] font-light leading-relaxed">
-          دليلك الشامل لتحقيق أقصى أداء بدني داخل الملعب من خلال نظام غذائي
-          احترافي متكامل
+          دليلك الشامل لتحقيق أقصى أداء داخل الملعب من خلال نظام غذائي احترافي
+          متكامل
         </p>
       </section>
 
