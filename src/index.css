@@ -1,3 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+:root {
+  --color-bg-main: #1a1d1e;
+  --color-bg-card: #242829;
+  --color-gold-main: #d4af37;
+  --color-btn-start: #c5a059;
+  --color-btn-end: #8e7037;
+  --color-border: #a68946;
+  --color-text-white: #ffffff;
+  --color-text-gray: #b0b0b0;
+  --gold-gradient: linear-gradient(
+    to right,
+    #bf953f,
+    #fcf6ba,
+    #b38728,
+    #fbf5b7,
+    #aa771c
+  );
+}
+.text-gradient-gold {
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
