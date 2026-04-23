@@ -110,7 +110,6 @@ const Header = () => {
         />
       )}
 
-      {/* Sidebar for Tablets/Laptops */}
       <div className={`fixed top-[72px] md:top-[80px] right-0 h-[calc(100vh-80px)] w-72 bg-[var(--color-bg-card)] text-[var(--color-text-gray)] shadow-2xl transition-transform duration-300 z-[120] hidden md:block border-t border-[var(--color-border)] ${open ? "translate-x-0" : "translate-x-full"}`}>
         <div className="p-4 overflow-y-auto h-full flex flex-col justify-between">
           <ul className="flex flex-col gap-1">
@@ -150,7 +149,6 @@ const Header = () => {
           </Link>
         </div>
 
-        {/* Mobile Menu (Collapse) */}
         <div className="md:hidden">
           <Collapse open={open}>
             <div className="mt-4 bg-[var(--color-bg-card)] border-t border-[var(--color-border)] pt-4 max-h-[70vh] overflow-y-auto">
