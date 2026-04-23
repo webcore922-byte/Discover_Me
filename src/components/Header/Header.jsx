@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -50,7 +49,7 @@ const extraSidebarItems = [
   { name: "اتصل بنا", path: "/contact-us" },
 ];
 
-const DropdownItem = ({ title, items }) => {
+const DropdownItem = ({ title, items, onClose }) => {
   return (
     <Menu>
       <MenuHandler>
@@ -60,7 +59,7 @@ const DropdownItem = ({ title, items }) => {
       </MenuHandler>
       <MenuList className="w-52 bg-[var(--color-bg-card)] border border-[var(--color-border)] text-[var(--color-text-gray)] z-[200]">
         {items.map((item, i) => (
-          <Link key={i} to={item.path}>
+          <Link key={i} to={item.path} onClick={onClose}>
             <MenuItem className="hover:text-[var(--color-gold-main)] hover:bg-[var(--color-bg-main)]">
               {item.name}
             </MenuItem>
@@ -71,7 +70,7 @@ const DropdownItem = ({ title, items }) => {
   );
 };
 
-const MobileDropdown = ({ title, items }) => {
+const MobileDropdown = ({ title, items, onClose }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <li className="flex flex-col">
@@ -85,7 +84,7 @@ const MobileDropdown = ({ title, items }) => {
       {isOpen && (
         <ul className="mr-6 flex flex-col gap-1 border-r border-[var(--color-border)] mt-1 mb-2">
           {items.map((item, i) => (
-            <Link key={i} to={item.path}>
+            <Link key={i} to={item.path} onClick={onClose}>
               <li className="text-md py-2 px-4 rounded-md text-[var(--color-text-gray)] opacity-80 hover:text-[var(--color-gold-main)] hover:bg-[#1A1D1E] cursor-pointer">
                 {item.name}
               </li>
@@ -99,6 +98,7 @@ const MobileDropdown = ({ title, items }) => {
 
 const Header = () => {
   const [open, setOpen] = useState(false);
+  const handleClose = () => setOpen(false);
 
   return (
     <div className="w-full relative">
@@ -106,23 +106,24 @@ const Header = () => {
       {open && (
         <div 
           className="fixed inset-0 top-[72px] md:top-[80px] bg-black/40 backdrop-blur-md z-[80]"
-          onClick={() => setOpen(false)}
+          onClick={handleClose}
         />
       )}
 
+      {/* Sidebar for Tablets/Laptops */}
       <div className={`fixed top-[72px] md:top-[80px] right-0 h-[calc(100vh-80px)] w-72 bg-[var(--color-bg-card)] text-[var(--color-text-gray)] shadow-2xl transition-transform duration-300 z-[120] hidden md:block border-t border-[var(--color-border)] ${open ? "translate-x-0" : "translate-x-full"}`}>
         <div className="p-4 overflow-y-auto h-full flex flex-col justify-between">
           <ul className="flex flex-col gap-1">
             {[...menuStructure, ...extraSidebarItems].map((item, i) => (
               item.subItems ? 
-              <MobileDropdown key={i} title={item.name} items={item.subItems} /> :
-              <Link key={i} to={item.path} onClick={() => setOpen(false)}>
+              <MobileDropdown key={i} title={item.name} items={item.subItems} onClose={handleClose} /> :
+              <Link key={i} to={item.path} onClick={handleClose}>
                 <li className="text-lg py-3 px-3 rounded-lg hover:bg-[#1A1D1E] hover:text-[var(--color-gold-main)] transition-all cursor-pointer">{item.name}</li>
               </Link>
             ))}
           </ul>
           <div className="mt-auto pt-6 border-t border-[var(--color-border)] mb-4">
-             <Link to="/login"><Button fullWidth variant="outlined" className="border-[var(--color-border)] text-[var(--color-text-gray)]">تسجيل الدخول / إنشاء حساب</Button></Link>
+             <Link to="/login" onClick={handleClose}><Button fullWidth variant="outlined" className="border-[var(--color-border)] text-[var(--color-text-gray)]">تسجيل الدخول / إنشاء حساب</Button></Link>
           </div>
         </div>
       </div>
@@ -139,7 +140,7 @@ const Header = () => {
           <ul className="hidden xl:flex items-center gap-10">
             {menuStructure.map((item, i) => (
               item.subItems ? 
-              <DropdownItem key={i} title={item.name} items={item.subItems} /> :
+              <DropdownItem key={i} title={item.name} items={item.subItems} onClose={handleClose} /> :
               <Link key={i} to={item.path} className="text-xl text-[var(--color-text-gray)] hover:text-[var(--color-gold-main)] transition-all whitespace-nowrap">{item.name}</Link>
             ))}
           </ul>
@@ -149,19 +150,20 @@ const Header = () => {
           </Link>
         </div>
 
+        {/* Mobile Menu (Collapse) */}
         <div className="md:hidden">
           <Collapse open={open}>
             <div className="mt-4 bg-[var(--color-bg-card)] border-t border-[var(--color-border)] pt-4 max-h-[70vh] overflow-y-auto">
               <ul className="flex flex-col gap-1">
                 {[...menuStructure, ...extraSidebarItems].map((item, i) => (
                   item.subItems ? 
-                  <MobileDropdown key={i} title={item.name} items={item.subItems} /> :
-                  <Link key={i} to={item.path} onClick={() => setOpen(false)}>
+                  <MobileDropdown key={i} title={item.name} items={item.subItems} onClose={handleClose} /> :
+                  <Link key={i} to={item.path} onClick={handleClose}>
                     <li className="text-lg py-3 px-3 rounded-lg hover:bg-[#1A1D1E] hover:text-[var(--color-gold-main)] transition-all">{item.name}</li>
                   </Link>
                 ))}
                 <li className="mt-4 pb-4">
-                  <Link to="/login"><Button fullWidth variant="outlined" className="border-[var(--color-border)] text-[var(--color-text-gray)]">تسجيل الدخول / إنشاء حساب</Button></Link>
+                  <Link to="/login" onClick={handleClose}><Button fullWidth variant="outlined" className="border-[var(--color-border)] text-[var(--color-text-gray)]">تسجيل الدخول / إنشاء حساب</Button></Link>
                 </li>
               </ul>
             </div>
@@ -175,4 +177,3 @@ const Header = () => {
 };
 
 export default Header;
-
