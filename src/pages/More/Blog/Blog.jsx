@@ -1,53 +1,50 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-const BlogSection = () => {
+const Blog = () => {
   const navigate = useNavigate();
   const articles = [
     {
       id: 1,
       title: "أسس التغذية السليمة للاعب",
-      image: "/api/placeholder/400/250",
+      image: "/proper-nutrition.jpeg",
       path: "/proper-nutrition",
     },
     {
       id: 2,
       title: "طرق الوقاية من الإصابات الرياضية",
-      image: "/api/placeholder/400/250",
+      image: "/injury-prevention.jpeg",
       path: "/injury-prevention",
     },
     {
       id: 3,
       title: "تمارين اللياقة البدنية والتحمل",
-      image: "/api/placeholder/400/250",
+      image: "/fitness.jpeg",
       path: "/fitness",
     },
     {
       id: 4,
       title: "أهمية الإعداد النفسي والذهني",
-      image: "/api/placeholder/400/250",
+      image: "/mental-preparation.jpeg",
       path: "/sports-psychology",
     },
     {
       id: 5,
       title: "مهارات اتخاذ القرار السريع",
-      image: "/api/placeholder/400/250",
+      image: "/decision-making.jpeg",
       path: "/decision-making-skills",
     },
     {
       id: 6,
       title: "الاحترافية والتسويق الشخصي",
-      image: "/api/placeholder/400/250",
+      image: "/professionalism.jpeg",
       path: "/professionalism-and-personal-marketing",
     },
   ];
 
   return (
-    <div
-      className="bg-[var(--color-bg-main)] min-h-screen p-8 font-sans"
-      dir="rtl"
-    >
+    <div className="bg-[var(--color-bg-main)] min-h-screen p-8 font-sans">
       <div className="text-center mb-12">
-        <h1 className="text-[var(--color-gold-main)] text-4xl font-bold mb-4">
+        <h1 className="text-[var(--color-gold-main)] text-5xl font-bold mb-4">
           المدونة
         </h1>
         <p className="text-[var(--color-text-white)] max-w-2xl mx-auto">
@@ -63,14 +60,12 @@ const BlogSection = () => {
             key={article.id}
             className="bg-[var(--color-bg-main)] border border-[var(--color-gold-main)] rounded-xl overflow-hidden  group"
           >
-            <div className="relative h-48 overflow-hidden">
+            <div className="relative h-56 overflow-hidden">
               <img
                 src={article.image}
                 alt={article.title}
-                className="w-full h-full object-cover "
+                className="w-full h-60 object-cover "
               />
-
-              <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
             </div>
 
             <div className="p-5">
@@ -95,4 +90,4 @@ const BlogSection = () => {
   );
 };
 
-export default BlogSection;
+export default Blog;

@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 :root {
   --color-bg-main: #1a1d1e;
   --color-bg-card: #242829;
