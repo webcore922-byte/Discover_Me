@@ -49,7 +49,7 @@ const extraSidebarItems = [
   { name: "اتصل بنا", path: "/contact-us" },
 ];
 
-const DropdownItem = ({ title, items }) => {
+const DropdownItem = ({ title, items, onClose }) => {
   return (
     <Menu>
       <MenuHandler>
@@ -70,7 +70,7 @@ const DropdownItem = ({ title, items }) => {
   );
 };
 
-const MobileDropdown = ({ title, items }) => {
+const MobileDropdown = ({ title, items, onClose }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <li className="flex flex-col">
@@ -149,6 +149,7 @@ const Header = () => {
           </Link>
         </div>
 
+      
         <div className="md:hidden">
           <Collapse open={open}>
             <div className="mt-4 bg-[var(--color-bg-card)] border-t border-[var(--color-border)] pt-4 max-h-[70vh] overflow-y-auto">

@@ -29,7 +29,7 @@ const SuccessStories = () => {
       path: "/success-stories-leo",
       description:
         "ليونيل ميسي - أسطورة الإرادة منذ الصغر. رغم التحديات الصحية التي واجهها، لم يستسلم أبداً وأثبت أن الإرادة القوية تصنع المستحيل. قصته تلهم الملايين حول العالم.",
-      image: "/success-stories-leo.jpg",
+      image: "/success-stories-leo.jpeg",
     },
      {
       id: 3,
