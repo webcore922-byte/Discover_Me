@@ -149,7 +149,6 @@ const Header = () => {
           </Link>
         </div>
 
-      
         <div className="md:hidden">
           <Collapse open={open}>
             <div className="mt-4 bg-[var(--color-bg-card)] border-t border-[var(--color-border)] pt-4 max-h-[70vh] overflow-y-auto">

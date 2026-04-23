@@ -79,7 +79,7 @@ const SuccessStories = () => {
                 <img
                   src={story.image}
                   alt={story.name}
-                  className="w-full object-cover  "
+                  className="w-full  object-cover "
                 />
               </CardHeader>
 

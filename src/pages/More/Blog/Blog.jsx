@@ -76,7 +76,7 @@ const Blog = () => {
               <div className="flex items-center justify-between mt-4">
                 <div className="flex items-center gap-2"></div>
                 <button
-                  className="text-[var(--color-text-white)] bg-[var(--color-gold-main)] px-4 py-1 rounded-full text-sm"
+                  className="text-[var(--color-text-white)] bg-[var(--color-gold-main)] px-4 py-1 rounded-full text-sm "
                   onClick={() => {
                     navigate(article.path);
                     window.scrollTo(0, 0);
