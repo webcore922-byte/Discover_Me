@@ -38,7 +38,7 @@ const SuccessStories = () => {
       path: "/success-stories-cr",
       description:
         "كريستيانو رونالدو - قمة التحدي والنجاح المستدام. بدأ رحلته من الصفر ووصل إلى القمة بإصراره . إن قصته ليست فقط للإعجاب، بل لتكون مصدر إلهام لكل من يسعى لتحقيق حلمه.",
-      image: "/success-stories-cr.jpeg",
+      image: "/success-stories-cr.webp",
     },
    
   ];
@@ -74,12 +74,12 @@ const SuccessStories = () => {
               <CardHeader
                 shadow={false}
                 floated={false}
-                className="relative h-56 overflow-hidden rounded-none"
+                className="relative h-48 overflow-hidden rounded-none"
               >
                 <img
                   src={story.image}
                   alt={story.name}
-                  className="w-full object-cover "
+                  className="w-full object-cover  "
                 />
               </CardHeader>
 
@@ -96,7 +96,10 @@ const SuccessStories = () => {
                 
                 <Button
                   variant="outlined"
-                  onClick={() => navigate(story.path)}
+                  onClick={() => {
+                    navigate(story.path);
+                    window.scrollTo(0, 0);
+                  }}
                   className="border-[var(--color-gold-main)] w-52 flex items-center justify-center mx-auto 
                    text-[var(--color-bg-main)] bg-[var(--color-gold-main)] transition-all text-lg  duration-300 rounded-full"
                   
