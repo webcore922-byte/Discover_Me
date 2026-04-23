@@ -1,104 +1,98 @@
 import React from "react";
-import { Card, CardBody, Button, Typography } from "@material-tailwind/react";
-import { HiOutlineDocumentText } from "react-icons/hi";
-
-import img1 from "./picture/photo-1517836357463-d25dfeac3438.jfif";
-import img2 from "./picture/photo-1542838132-92c53300491e.jfif";
-import img3 from "./picture/photo-1456324504439-367cee3b3c32.jfif";
-import img4 from "./picture/photo-1574629810360-7efbbe195018.jfif";
-import img5 from "./picture/photo-1431324155629-1a6deb1dec8d.jfif";
-import img6 from "./picture/photo-1542291026-7eec264c27ff.jfif";
-
-const Blog = () => {
-  const goldGradient = "var(--gold-gradient)";
-  const bgCard = "var(--color-bg-card)";
-  const borderColor = "var(--color-border)";
-
-  const posts = [
+import { useNavigate } from "react-router-dom";
+const BlogSection = () => {
+  const navigate = useNavigate();
+  const articles = [
     {
-      title: "مقالة:الوقايه من الاصابات",
-
-      img: img1,
+      id: 1,
+      title: "أسس التغذية السليمة للاعب",
+      image: "/api/placeholder/400/250",
+      path: "/proper-nutrition",
     },
     {
-      title: "مقالة: التغذيه السليمة",
-
-      img: img2,
+      id: 2,
+      title: "طرق الوقاية من الإصابات الرياضية",
+      image: "/api/placeholder/400/250",
+      path: "/injury-prevention",
     },
     {
-      title: "مقالة: علم النفس الرياضي",
-
-      img: img3,
+      id: 3,
+      title: "تمارين اللياقة البدنية والتحمل",
+      image: "/api/placeholder/400/250",
+      path: "/fitness",
     },
     {
-      title: "مقالة:اللياقه البدنية",
-
-      img: img4,
+      id: 4,
+      title: "أهمية الإعداد النفسي والذهني",
+      image: "/api/placeholder/400/250",
+      path: "/sports-psychology",
     },
     {
-      title: "مقالة: مهارات اتخاذ القرار",
-
-      img: img5,
+      id: 5,
+      title: "مهارات اتخاذ القرار السريع",
+      image: "/api/placeholder/400/250",
+      path: "/decision-making-skills",
     },
     {
-      title: "مقالة: الاحترافية والتسويق الشخصي",
-
-      img: img6,
+      id: 6,
+      title: "الاحترافية والتسويق الشخصي",
+      image: "/api/placeholder/400/250",
+      path: "/professionalism-and-personal-marketing",
     },
   ];
 
   return (
     <div
-      className="min-h-screen p-4 sm:p-8"
+      className="bg-[var(--color-bg-main)] min-h-screen p-8 font-sans"
       dir="rtl"
-      style={{ backgroundColor: "var(--color-bg-main)" }}
     >
       <div className="text-center mb-12">
-        <h1
-          className="text-5xl md:text-7xl font-extrabold mb-6 bg-clip-text text-transparent"
-          style={{
-            backgroundImage: goldGradient,
-            display: "inline-block",
-          }}
-        >
+        <h1 className="text-[var(--color-gold-main)] text-4xl font-bold mb-4">
           المدونة
         </h1>
-        <p className="text-white text-xl md:text-2xl font-bold opacity-90 max-w-3xl mx-auto color-text-gray: #b0b0b0;">
+        <p className="text-[var(--color-text-white)] max-w-2xl mx-auto">
           نقدم محتوى غني يشمل مقالات تعليمية، نصائح عملية، وأفكار تساعدك على
-          تطوير مهاراتك. يتم اعداد المحتوى بواسطة متخصصين لضمان الجودة والفاىدة.
+          تطوير مهاراتك وتحقيق أهدافك. يتم إعداد المحتوى بواسطة متخصصين لضمان
+          الجودة والفائدة.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-        {posts.map((post, i) => (
-          <Card
-            key={i}
-            className="overflow-hidden border shadow-none rounded-2xl "
-            style={{ background: bgCard, borderColor: borderColor }}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        {articles.map((article) => (
+          <div
+            key={article.id}
+            className="bg-[var(--color-bg-main)] border border-[var(--color-gold-main)] rounded-xl overflow-hidden  group"
           >
-            <img
-              src={post.img}
-              className="h-48 w-full object-cover"
-              alt={post.title}
-            />
-            <CardBody className="p-5">
-              <Typography className="text-white text-xl md:text-2xl font-bold mb-6 leading-snug h-14 overflow-hidden">
-                {post.title}
-              </Typography>
+            <div className="relative h-48 overflow-hidden">
+              <img
+                src={article.image}
+                alt={article.title}
+                className="w-full h-full object-cover "
+              />
 
-              <Button
-                size="sm"
-                className="w-full font-bold py-1.5 text-xl shadow-none hover:shadow-lg transition-all"
-                style={{ background: goldGradient, color: "#1A1D1E" }}
-              >
-                اقرأ المزيد
-              </Button>
-            </CardBody>
-          </Card>
+              <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
+            </div>
+
+            <div className="p-5">
+              <h3 className="text-[var(--color-gold-main)] text-xl font-semibold mb-8 h-14">
+                {article.title}
+              </h3>
+
+              <div className="flex items-center justify-between mt-4">
+                <div className="flex items-center gap-2"></div>
+                <button
+                  className="text-[var(--color-text-white)] bg-[var(--color-gold-main)] px-4 py-1 rounded-full text-sm"
+                  onClick={() => navigate(article.path)}
+                >
+                  اقرأ المزيد
+                </button>
+              </div>
+            </div>
+          </div>
         ))}
       </div>
     </div>
   );
 };
 
-export default Blog;
+export default BlogSection;
