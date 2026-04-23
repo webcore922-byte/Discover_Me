@@ -58,9 +58,9 @@ const Blog = () => {
         {articles.map((article) => (
           <div
             key={article.id}
-            className="bg-[var(--color-bg-main)] border border-[var(--color-gold-main)] rounded-xl overflow-hidden  group"
+            className="bg-[var(--color-bg-main)] border border-[var(--color-gold-main)] rounded-xl overflow-hidden p-4 group"
           >
-            <div className="relative h-56 overflow-hidden">
+            <div className="relative h-56 overflow-hidden rounded-lg">
               <img
                 src={article.image}
                 alt={article.title}
@@ -77,7 +77,10 @@ const Blog = () => {
                 <div className="flex items-center gap-2"></div>
                 <button
                   className="text-[var(--color-text-white)] bg-[var(--color-gold-main)] px-4 py-1 rounded-full text-sm"
-                  onClick={() => navigate(article.path)}
+                  onClick={() => {
+                    navigate(article.path);
+                    window.scrollTo(0, 0);
+                  }}
                 >
                   اقرأ المزيد
                 </button>
