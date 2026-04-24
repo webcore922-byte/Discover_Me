@@ -10,14 +10,13 @@ const App = () => {
   return (
     <div>
       <Routes>
-        {/* <Route path="/" element={<Home />} /> */}
+        <Route path="/" element={<Home />} />
         <Route path="/AcceptableTalent" element={<AcceptableTalent />} />
         <Route path="/SuccessStoriesMo" element={<SuccessStoriesMo />} />
         <Route path="/SuccessStoriesCr" element={<SuccessStoriesCr />} />
         <Route path="/SuccessStoriesLeo" element={<SuccessStoriesLeo />} />
         <Route path="/ProperNutrition" element={<ProperNutrition />} />
       </Routes>
-      <ProperNutrition />
     </div>
   );
 };
