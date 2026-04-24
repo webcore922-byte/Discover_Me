@@ -1,6 +1,5 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/Home.jsx";
-
 import Header from "./components/Header/Header.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 import AboutThePlatform from "./pages/About/AboutThePlatform/AboutThePlatform.jsx";
@@ -18,8 +17,7 @@ import SuccessStories from "./pages/SuccessStories/SuccessStories.jsx";
 import SuccessStoriesCr from "./pages/SuccessStories/SuccessStoriesCr/SuccessStoriesCr.jsx";
 import SuccessStoriesMo from "./pages/SuccessStories/SuccessStoriesMo/SuccessStoriesMo.jsx";
 import SuccessStoriesLeo from "./pages/SuccessStories/SuccessStoriesLeo/SuccessStoriesLeo.jsx";
-import AcceptableTalent from "./pages/Talents/AcceptableTalent/AcceptableTalent";
-import AcceptedVideos from "./pages/Talents/AcceptedVideos/AcceptedVideos.jsx";
+import AcceptableTalent from "./pages/AcceptableTalent/AcceptableTalent";
 import DecisionMakingSkills from "./pages/More/Blog/DecisionMakingSkills/DecisionMakingSkills.jsx";
 import Fitness from "./pages/More/Blog/Fitness/Fitness.jsx";
 import InjuryPrevention from "./pages/More/Blog/InjuryPrevention/InjuryPrevention.jsx";
@@ -55,7 +53,6 @@ const App = () => {
         <Route path="/success-stories-mo" element={<SuccessStoriesMo />} />
         <Route path="/success-stories-leo" element={<SuccessStoriesLeo />} />
         <Route path="/acceptable-talent" element={<AcceptableTalent />} />
-        <Route path="/accepted-videos" element={<AcceptedVideos />} />
         <Route
           path="/decision-making-skills"
           element={<DecisionMakingSkills />}
@@ -72,7 +69,7 @@ const App = () => {
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-
+      
       <Footer />
     </div>
   );
