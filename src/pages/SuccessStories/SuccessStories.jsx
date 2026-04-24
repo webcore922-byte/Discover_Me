@@ -16,8 +16,10 @@ const SuccessStoriesContent = () => {
       name: "محمد صلاح",
       title: "رحلة الفخر",
       path: "/success-stories-mo",
+      description:
+        "محمد صالح - رحلة الفخر والعطاء. إنه نموذج للاعب الذي جمع بين الموهبة والأخلاق العالية، وأصبح مصدر فخر للأمة العربية كلها.",
+      image: "/success-stories-mo.webp",
     
-        
     },
     {
       id: 2,
