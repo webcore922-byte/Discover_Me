@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { scoutData } from './CoachesData';
 
-const Coaches = () => {
+const CoachesContent = () => {
   return (
     <div className="min-h-screen w-full bg-[var(--color-bg-main)] text-[var(--color-text-white)] p-6 md:p-10 font-sans flex flex-col" dir="rtl">
       
@@ -26,7 +26,12 @@ const Coaches = () => {
                          <p className="font-bold text-sm text-[var(--color-text-white)] group-hover:text-[var(--color-gold-main)] transition-colors">{item.name}</p>
                          <p className="text-[var(--color-gold-main)] text-[10px] opacity-70">{item.specialty}</p>
                       </div>
-                      <img src={item.image} alt="" className="w-10 h-10 rounded-full border-2 border-[var(--color-gold-main)]/30 object-cover" />
+                      <img 
+                        src={item.image} 
+                        alt="" 
+                        loading="lazy"
+                        className="w-10 h-10 rounded-full border-2 border-[var(--color-gold-main)]/30 object-cover" 
+                      />
                    </div>
                 ))}
              </div>
@@ -47,7 +52,12 @@ const Coaches = () => {
               {scoutData.coaches.map(coach => (
                 <div key={coach.id} className="flex items-center justify-between p-3 rounded-xl bg-[var(--color-bg-card)] border border-white/5 hover:border-[var(--color-gold-main)]/40 transition-all group">
                   <div className="flex items-center gap-3">
-                    <img src={coach.image} alt="" className="w-9 h-9 rounded-lg object-cover border border-white/10 group-hover:border-[var(--color-gold-main)]/50 transition-all" />
+                    <img 
+                      src={coach.image} 
+                      alt="" 
+                      loading="lazy"
+                      className="w-9 h-9 rounded-lg object-cover border border-white/10 group-hover:border-[var(--color-gold-main)]/50 transition-all" 
+                    />
                     <div>
                       <p className="font-bold text-[13px] leading-tight">{coach.name}</p>
                       <p className="text-[var(--color-text-gray)] text-[10px] leading-tight">{coach.info}</p>
@@ -66,7 +76,12 @@ const Coaches = () => {
                 <div key={member.id} className="relative p-5 rounded-2xl bg-gradient-to-br from-[#2c281e] to-[var(--color-bg-card)] border border-[var(--color-border)]/30 group overflow-hidden transition-all hover:scale-[1.01]">
                   <div className="flex justify-between items-center mb-3">
                     <div className="flex items-center gap-4">
-                      <img src={member.image} alt="" className="w-16 h-16 rounded-xl border-2 border-[var(--color-gold-main)] object-cover shadow-lg rotate-2 group-hover:rotate-0 transition-transform" />
+                      <img 
+                        src={member.image} 
+                        alt="" 
+                        loading="lazy"
+                        className="w-16 h-16 rounded-xl border-2 border-[var(--color-gold-main)] object-cover shadow-lg rotate-2 group-hover:rotate-0 transition-transform" 
+                      />
                       <div className="text-right">
                         <h3 className="font-bold text-lg leading-tight group-hover:text-[var(--color-gold-main)] transition-colors">{member.name}</h3>
                         <p className="text-[var(--color-gold-main)] text-xs font-medium uppercase tracking-widest">{member.role}</p>
@@ -90,10 +105,7 @@ const Coaches = () => {
 
       <footer className="mt-10 bg-[var(--color-bg-card)] p-10 rounded-[2rem] border border-white/5 relative overflow-hidden">
         <div className="max-w-4xl mx-auto relative h-32 flex items-center">
-          
-          {/* الخط الذهبي الحقيقي المربوط بين الأيقونات */}
           <div className="absolute top-1/2 left-[10%] right-[10%] h-[2px] bg-gradient-to-r from-transparent via-[var(--color-gold-main)]/60 to-transparent -translate-y-6 z-0"></div>
-
           <div className="flex w-full justify-between items-center z-10">
             <TimelinePoint label="تحليل الفيديو" icon="📹" active />
             <TimelinePoint label="مراجعة الخبراء" icon="⚖️" active />
@@ -135,5 +147,13 @@ const TimelinePoint = ({ label, icon, active, isGold }) => (
     <p className={`text-[11px] font-black tracking-widest ${isGold ? 'text-[var(--color-gold-main)]' : 'text-white'}`}>{label}</p>
   </div>
 );
+
+const Coaches = () => {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[var(--color-bg-main)] flex items-center justify-center text-[var(--color-gold-main)]">جاري تحميل المدربين...</div>}>
+      <CoachesContent />
+    </Suspense>
+  );
+};
 
 export default Coaches;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Suspense, lazy } from "react";
 import { Link } from "react-router-dom";
 import {
   Navbar,
@@ -96,7 +96,7 @@ const MobileDropdown = ({ title, items, onClose }) => {
   );
 };
 
-const Header = () => {
+const HeaderContent = () => {
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
 
@@ -171,6 +171,14 @@ const Header = () => {
       
       <div className={`h-[72px] md:h-[80px] bg-[var(--color-bg-card)] border-none outline-none transition-all duration-300 ${open ? "blur-sm" : "blur-0"}`}></div>
     </div>
+  );
+};
+
+const Header = () => {
+  return (
+    <Suspense fallback={<div className="h-[72px] md:h-[80px] bg-[var(--color-bg-card)] w-full"></div>}>
+      <HeaderContent />
+    </Suspense>
   );
 };
 

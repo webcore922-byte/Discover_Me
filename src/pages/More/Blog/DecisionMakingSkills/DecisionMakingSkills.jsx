@@ -1,19 +1,18 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 
-const DecisionMakingSkills = () => {
+const DecisionMakingContent = () => {
   return (
-    <div className="min-h-screen bg-[var(--color-bg-main)] text-[var(--color-text-white)] font-sans" >
-      
+    <div className="min-h-screen bg-[var(--color-bg-main)] text-[var(--color-text-white)] font-sans" dir="rtl">
       
       <div className="relative h-[450px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-black/60 z-10"></div>
         <img 
           src="/decision-making.jpeg" 
           alt="Football Strategy" 
-          className="absolute inset-0 w-full h-full lg:h-fit  object-cover"
+          loading="lazy"
+          className="absolute inset-0 w-full h-full lg:h-fit object-cover"
         />
         <div className="relative z-20 text-center px-4">
-         
           <h1 className="text-4xl md:text-6xl font-extrabold text-[var(--color-gold-main)] mb-4 drop-shadow-2xl">
             مهارة اتخاذ القرار
           </h1>
@@ -23,10 +22,8 @@ const DecisionMakingSkills = () => {
         </div>
       </div>
 
-     
       <div className="max-w-4xl mx-auto px-6 py-16">
         
-      
         <section className="mb-16">
           <p className="text-xl leading-relaxed text-[var(--color-text-gray)] border-r-4 border-[var(--color-border)] pr-6">
             هل سألت نفسك يوماً لماذا يبدو العباقرة وكأنهم يلعبون في زمن أبطأ من الباقين؟ 
@@ -35,7 +32,6 @@ const DecisionMakingSkills = () => {
           </p>
         </section>
 
-       
         <div className="bg-[var(--color-bg-card)] p-10 rounded-2xl border border-[var(--color-border)]/30 mb-16 relative overflow-hidden shadow-2xl">
           <div className="absolute top-0 left-0 w-1 h-full bg-[var(--color-gold-main)]"></div>
           <h2 className="text-2xl font-bold text-[var(--color-gold-main)] mb-6 flex items-center gap-3">
@@ -47,13 +43,12 @@ const DecisionMakingSkills = () => {
           </p>
         </div>
 
-        
         <h2 className="text-3xl font-bold mb-10 text-center text-[var(--color-gold-main)]">مثلث اتخاذ القرار الناجح</h2>
         <div className="grid md:grid-cols-3 gap-8 mb-20">
           {[
             { title: "المسح (Scanning)", desc: "قبل أن تصلك الكرة، يجب أن تكون قد نظرت حولك 3 مرات لمعرفة أماكن الزملاء والخصم." },
             { title: "الإدراك (Perception)", desc: "فهم المساحات الخالية. أين هي الثغرة؟ ومن هو الزميل الذي في وضعية تسمح له بالتقدم؟" },
-            { title: "التنفيذ (Execution)", desc: "هنا يأتي دور المهارة الفنية، فما فائدة القرار العبقري إذا كنت لا تملك دقة التنفيذ؟" }
+            { title: "التنفيذ (Execution)", desc: "هنا يأتي دور المهارة الفنية، فما فائدة القرار العبقري إذا كنت لا تملك دقة التنفيذ?" }
           ].map((item, index) => (
             <div key={index} className="bg-[var(--color-bg-card)] p-8 rounded-xl border border-[var(--color-border)]/20 text-center transition-all hover:border-[var(--color-gold-main)] group">
               <div className="text-[var(--color-border)] group-hover:text-[var(--color-gold-main)] text-4xl mb-4 font-black transition-colors">0{index + 1}</div>
@@ -63,7 +58,6 @@ const DecisionMakingSkills = () => {
           ))}
         </div>
 
-        
         <div className="space-y-12 mb-20">
           <h2 className="text-3xl font-bold text-[var(--color-gold-main)] border-b border-[var(--color-border)] pb-4 inline-block">خطوات عملية لتطوير مهاراتك</h2>
           
@@ -86,24 +80,35 @@ const DecisionMakingSkills = () => {
           </div>
         </div>
 
-        
         <div className="bg-gradient-to-r from-[var(--color-bg-card)] to-[var(--color-bg-main)] p-12 rounded-3xl border border-[var(--color-border)]/40 text-center mb-20 shadow-inner">
           <p className="text-2xl md:text-3xl italic font-serif text-[var(--color-gold-main)] leading-snug">
             "كرة القدم تُلعب بالعقل أولاً.. القدم مجرد أداة لتنفيذ أوامر العقل."
           </p>
         </div>
 
-        
         <div className="bg-[var(--color-bg-card)] p-10 rounded-2xl border-2 border-[var(--color-gold-main)] text-center shadow-[0_10px_40px_rgba(212,175,55,0.1)]">
           <h3 className="text-[var(--color-text-white)] text-3xl font-bold mb-4">هل أنت مستعد لتكون "عقل" فريقك؟</h3>
           <p className="text-[var(--color-text-gray)] mb-8 max-w-md mx-auto text-lg">
             ابدأ اليوم بتطبيق تمارين المسح البصري في تدريباتك وراقب كيف سيتغير مستوى رؤيتك للملعب.
           </p>
-          
         </div>
 
       </div>
     </div>
+  );
+};
+
+const DecisionMakingSkills = () => {
+  return (
+    <Suspense 
+      fallback={
+        <div className="min-h-screen bg-[var(--color-bg-main)] flex items-center justify-center">
+          <div className="w-12 h-12 border-4 border-[var(--color-gold-main)] border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      }
+    >
+      <DecisionMakingContent />
+    </Suspense>
   );
 };
 
