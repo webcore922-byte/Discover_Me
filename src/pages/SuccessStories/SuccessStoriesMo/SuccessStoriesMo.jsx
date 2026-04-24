@@ -1,7 +1,8 @@
+import React, { Suspense, lazy } from "react";
 import { Card, Typography } from "@material-tailwind/react";
 import { FaTrophy, FaFutbol, FaStar, FaAward } from "react-icons/fa";
 
-const SuccessStoriesMo = () => {
+const SuccessStoriesMoContent = () => {
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden font-sans bg-[var(--color-bg-main)]">
    
@@ -107,6 +108,7 @@ const SuccessStoriesMo = () => {
     <img 
       src="./hero 1.jpeg" 
       alt="Mohamed Salah" 
+      loading="lazy"
       className="w-full h-full object-cover" 
     />
   </div>
@@ -164,6 +166,20 @@ const SuccessStoriesMo = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const SuccessStoriesMo = () => {
+  return (
+    <Suspense 
+      fallback={
+        <div className="min-h-screen bg-[var(--color-bg-main)] flex items-center justify-center">
+          <div className="w-12 h-12 border-4 border-[var(--color-gold-main)] border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      }
+    >
+      <SuccessStoriesMoContent />
+    </Suspense>
   );
 };
 

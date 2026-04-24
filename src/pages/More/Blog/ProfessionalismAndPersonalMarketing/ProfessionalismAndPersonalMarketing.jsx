@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 
-const ProfessionalismAndPersonalMarketing = () => {
+const ProfessionalismContent = () => {
   return (
     <div className="min-h-screen bg-[var(--color-bg-main)] text-[var(--color-text-white)] font-sans" dir="rtl">
-      
       
       <div className="relative py-24 px-6 border-b border-[var(--color-border)]/20 overflow-hidden">
         <div className="max-w-6xl mx-auto relative z-10">
@@ -22,16 +21,13 @@ const ProfessionalismAndPersonalMarketing = () => {
 
       <main className="max-w-6xl mx-auto px-6 py-20">
         
-       
         <div className="mb-24 text-center">
           <p className="text-3xl font-medium leading-relaxed italic">
             "الأندية لا تبحث فقط عن <span className="text-[var(--color-gold-main)]">موهبة</span>، بل تبحث عن <span className="text-[var(--color-gold-main)]">استثمار</span> ناجح."
           </p>
         </div>
 
-        
         <div className="grid lg:grid-cols-3 gap-8 mb-32">
-          
           
           <div className="bg-[var(--color-bg-card)] p-10 rounded-3xl border border-[var(--color-border)]/20 hover:border-[var(--color-gold-main)] transition-all duration-500 group">
             <div className="w-14 h-14 bg-[var(--color-gold-main)] rounded-2xl flex items-center justify-center mb-8 rotate-3 group-hover:rotate-12 transition-transform">
@@ -45,7 +41,6 @@ const ProfessionalismAndPersonalMarketing = () => {
             </p>
           </div>
 
-          
           <div className="bg-[var(--color-bg-card)] p-10 rounded-3xl border border-[var(--color-border)]/20 hover:border-[var(--color-gold-main)] transition-all duration-500 group">
             <div className="w-14 h-14 bg-[var(--color-gold-main)] rounded-2xl flex items-center justify-center mb-8 -rotate-3 group-hover:-rotate-12 transition-transform">
               <svg className="w-8 h-8 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -58,7 +53,6 @@ const ProfessionalismAndPersonalMarketing = () => {
             </p>
           </div>
 
-          
           <div className="bg-[var(--color-bg-card)] p-10 rounded-3xl border border-[var(--color-border)]/20 hover:border-[var(--color-gold-main)] transition-all duration-500 group">
             <div className="w-14 h-14 bg-[var(--color-gold-main)] rounded-2xl flex items-center justify-center mb-8 rotate-6 group-hover:rotate-0 transition-transform">
               <svg className="w-8 h-8 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -73,7 +67,6 @@ const ProfessionalismAndPersonalMarketing = () => {
 
         </div>
 
-        
         <div className="grid lg:grid-cols-2 gap-12 items-center bg-[var(--color-bg-card)] rounded-[3rem] p-8 lg:p-16 border border-[var(--color-border)]/10 shadow-3xl">
           <div>
             <h2 className="text-4xl font-bold mb-6">جاهز لجذب <span className="text-[var(--color-gold-main)]">الوكلاء؟</span></h2>
@@ -85,6 +78,7 @@ const ProfessionalismAndPersonalMarketing = () => {
              <img 
               src="/professionalism.jpeg" 
               alt="Professional Player Portrait" 
+              loading="lazy"
               className="w-full h-80 object-cover grayscale group-hover:grayscale-0 transition-all duration-1000"
              />
              <div className="absolute inset-0 bg-[var(--color-gold-main)]/10"></div>
@@ -93,6 +87,24 @@ const ProfessionalismAndPersonalMarketing = () => {
 
       </main>
     </div>
+  );
+};
+
+const ProfessionalismAndPersonalMarketing = () => {
+  return (
+    <Suspense 
+      fallback={
+        <div className="min-h-screen bg-[var(--color-bg-main)] flex items-center justify-center">
+          <div className="flex gap-2">
+            <div className="w-3 h-3 bg-[var(--color-gold-main)] rounded-full animate-bounce"></div>
+            <div className="w-3 h-3 bg-[var(--color-gold-main)] rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+            <div className="w-3 h-3 bg-[var(--color-gold-main)] rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+          </div>
+        </div>
+      }
+    >
+      <ProfessionalismContent />
+    </Suspense>
   );
 };
 

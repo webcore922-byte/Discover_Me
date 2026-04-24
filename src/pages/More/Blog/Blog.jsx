@@ -1,6 +1,7 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { useNavigate } from "react-router-dom";
-const Blog = () => {
+
+const BlogContent = () => {
   const navigate = useNavigate();
   const articles = [
     {
@@ -64,7 +65,8 @@ const Blog = () => {
               <img
                 src={article.image}
                 alt={article.title}
-                className="w-full h-60 object-cover "
+                loading="lazy"
+                className="w-full h-60 object-cover"
               />
             </div>
 
@@ -90,6 +92,22 @@ const Blog = () => {
         ))}
       </div>
     </div>
+  );
+};
+
+const Blog = () => {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[var(--color-bg-main)] flex items-center justify-center">
+          <div className="text-[var(--color-gold-main)] text-2xl font-bold animate-pulse">
+            جاري تحميل المدونة...
+          </div>
+        </div>
+      }
+    >
+      <BlogContent />
+    </Suspense>
   );
 };
 

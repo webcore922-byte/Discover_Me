@@ -1,7 +1,8 @@
+import React, { Suspense, lazy } from "react";
 import { Card, Typography } from "@material-tailwind/react";
 import { FaTrophy, FaFutbol, FaStar, FaAward } from "react-icons/fa";
 
-const SuccessStoriesMessi = () => {
+const SuccessStoriesMessiContent = () => {
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden font-sans bg-[var(--color-bg-main)]">
    
@@ -102,6 +103,7 @@ const SuccessStoriesMessi = () => {
   <div className="rounded-xl border border-[var(--color-border)] overflow-hidden flex min-w-0">
     <img 
       src="./camp.webp" alt="Messi Barcelona"
+      loading="lazy"
       className="w-full h-full object-cover" 
     />
   </div>
@@ -156,4 +158,18 @@ const SuccessStoriesMessi = () => {
   );
 };
 
-export default SuccessStoriesMessi;
+const SuccessStoriesLeo = () => {
+  return (
+    <Suspense 
+      fallback={
+        <div className="min-h-screen bg-[var(--color-bg-main)] flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--color-gold-main)]"></div>
+        </div>
+      }
+    >
+      <SuccessStoriesMessiContent />
+    </Suspense>
+  );
+};
+
+export default SuccessStoriesLeo;
