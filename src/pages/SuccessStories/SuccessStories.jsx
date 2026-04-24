@@ -20,7 +20,7 @@ const SuccessStories = () => {
       path: "/success-stories-mo",
       description:
         "محمد صالح - رحلة الفخر والعطاء. إنه نموذج للاعب الذي جمع بين الموهبة والأخلاق العالية، وأصبح مصدر فخر للأمة العربية كلها.",
-      image: "/success-stories-mo.jpeg",
+      image: "/success-stories-mo.webp",
     },
     {
       id: 2,
@@ -74,12 +74,12 @@ const SuccessStories = () => {
               <CardHeader
                 shadow={false}
                 floated={false}
-                className="relative h-48 overflow-hidden rounded-none"
+                className="relative sm:h-full  h-72 overflow-hidden rounded-none"
               >
                 <img
                   src={story.image}
                   alt={story.name}
-                  className="w-full  object-cover "
+                  className="w-full  h-full object-cover "
                 />
               </CardHeader>
 
