@@ -16,9 +16,8 @@ const SuccessStoriesContent = () => {
       name: "محمد صلاح",
       title: "رحلة الفخر",
       path: "/success-stories-mo",
-      description:
-        "محمد صلاح - رحلة الفخر والعطاء. إنه نموذج للاعب الذي جمع بين الموهبة والأخلاق العالية، وأصبح مصدر فخر للأمة العربية كلها.",
-      image: "/success-stories-mo.webp",
+    
+        
     },
     {
       id: 2,
@@ -69,13 +68,12 @@ const SuccessStoriesContent = () => {
               <CardHeader
                 shadow={false}
                 floated={false}
-                className="relative sm:h-full h-72 overflow-hidden rounded-none"
+                className="relative h-48 overflow-hidden rounded-none"
               >
                 <img
                   src={story.image}
                   alt={story.name}
-                  loading="lazy"
-                  className="w-full h-full object-cover "
+                  className="w-full object-cover  "
                 />
               </CardHeader>
 
