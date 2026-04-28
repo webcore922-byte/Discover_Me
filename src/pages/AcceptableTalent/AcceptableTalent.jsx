@@ -6,7 +6,7 @@ const AcceptableTalent = () => {
   return (
     
     <div 
-      className="min-h-screen bg-[url('./bg_Acceptable_talent.jpeg')] bg-fixed bg-cover bg-center relative" 
+      className="min-h-screen bg-[url('../bg_Acceptable_talent.jpeg')] bg-fixed bg-cover bg-center relative" 
       dir="rtl"
     >
 
