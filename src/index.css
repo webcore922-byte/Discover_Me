@@ -20,21 +20,30 @@
     #aa771c
   );
   
-  /* إضافات جديدة للعمق والتوهج */
   --gold-glow: 0 0 15px rgba(212, 175, 55, 0.3);
   --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
 }
 
-/* الكلاس الأصلي بتاعك */
+[data-theme="light"] {
+  --color-bg-main: #f9f9f7;
+  --color-bg-card: #ffffff;
+  --color-gold-main: #b8860b;
+  --color-btn-start: #d4af37;
+  --color-btn-end: #a68946;
+  --color-border: #e5d5b0;
+  --color-text-main: #2d2d2d;
+  --color-text-gray: #757575;
+  --gold-gradient: linear-gradient(to right, #a67c00, #bf953f, #d4af37, #bf953f, #a67c00);
+  --gold-glow: 0 4px 15px rgba(184, 134, 11, 0.15);
+  --card-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08);
+}
+
 .text-gradient-gold {
   background: var(--gold-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-/* إضافات لتحسين المظهر العام */
-
-/* تأثير الزجاج للكروت */
 .glass-card {
   background: rgba(36, 40, 41, 0.8);
   backdrop-filter: blur(12px);
@@ -42,13 +51,11 @@
   box-shadow: var(--card-shadow);
 }
 
-/* توهج ذهبي خفيف للعناصر المميزة */
 .gold-glow-border {
   border: 1px solid var(--color-border);
   box-shadow: var(--gold-glow);
 }
 
-/* تأثير عند تمرير الماوس على كروت المدربين */
 .hover-gold-card {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -60,7 +67,6 @@
   box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
 }
 
-/* تنسيق السكرول بار ليناسب الألوان الغامقة */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -72,7 +78,6 @@
   border-radius: 10px;
 }
 
-/* حركة بسيطة للأيقونات الذهبية */
 .icon-pulse {
   animation: pulse-gold 2s infinite;
 }
@@ -82,7 +87,6 @@
   70% { shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
   100% { shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
 }
-/* أضف هذه الخصائص لملف الـ CSS الخاص بك */
 .card-shine {
   position: relative;
   overflow: hidden;
