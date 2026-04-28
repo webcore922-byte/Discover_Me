@@ -3,7 +3,7 @@ import { scoutData } from './CoachesData';
 
 const CoachesContent = () => {
   return (
-    <div className="min-h-screen w-full bg-[var(--color-bg-main)] text-[var(--color-text-white)] p-6 md:p-10 font-sans flex flex-col" dir="rtl">
+    <div className="min-h-screen w-full bg-[var(--color-bg-main)] text-[var(--color-text-white)] p-6 md:p-10 font-sans flex flex-col">
       
       <header className="flex justify-between items-center mb-10 border-b border-white/5 pb-6">
         <div className="text-2xl font-black italic tracking-tighter">
@@ -11,7 +11,7 @@ const CoachesContent = () => {
         </div>
         <div className="text-left md:text-right">
           <h1 className="text-3xl font-black text-gradient-gold">منظومة التقييم الفني</h1>
-          <p className="text-[var(--color-text-gray)] text-sm mt-1">نخبة من المدربين والخبراء لتطوير واكتشاف المواهب.</p>
+          <p className="text-[var(--color-text-gray)] text-sm mt-1">نخبة من المدربين والخبراء لتطوير واكتشاف المواهب</p>
         </div>
       </header>
 
@@ -19,12 +19,12 @@ const CoachesContent = () => {
         
         <div className="lg:col-span-3 flex flex-col gap-6">
           <Section title="المستشارون" className="flex-1">
-             <div className="space-y-3">
+            <div className="space-y-3">
                 {scoutData.consultants.map(item => (
-                   <div key={item.id} className="bg-[var(--color-bg-card)] p-4 rounded-xl border border-white/5 flex items-center justify-between group">
+                  <div key={item.id} className="bg-[var(--color-bg-card)] p-4 rounded-xl border border-white/5 flex items-center justify-between group">
                       <div>
-                         <p className="font-bold text-sm text-[var(--color-text-white)] group-hover:text-[var(--color-gold-main)] transition-colors">{item.name}</p>
-                         <p className="text-[var(--color-gold-main)] text-[10px] opacity-70">{item.specialty}</p>
+                        <p className="font-bold text-sm text-[var(--color-text-white)] group-hover:text-[var(--color-gold-main)] transition-colors">{item.name}</p>
+                        <p className="text-[var(--color-gold-main)] text-[10px] opacity-70">{item.specialty}</p>
                       </div>
                       <img 
                         src={item.image} 
@@ -32,17 +32,17 @@ const CoachesContent = () => {
                         loading="lazy"
                         className="w-10 h-10 rounded-full border-2 border-[var(--color-gold-main)]/30 object-cover" 
                       />
-                   </div>
+                  </div>
                 ))}
-             </div>
+            </div>
           </Section>
 
           <Section title="آلية العمل" className="flex-1">
-             <div className="relative border-r-2 border-[var(--color-border)]/30 pr-6 space-y-8 py-2">
+            <div className="relative border-r-2 border-[var(--color-border)]/30 pr-6 space-y-8 py-2">
                 <WorkStep title="الفحص الفني" desc="تحليل أداء الموهبة المسجل" />
                 <WorkStep title="مراجعة الخبراء" desc="إبداء الملاحظات الفنية دقيقة" />
                 <WorkStep title="الاعتماد" desc="قرار اللجنة النهائي" />
-             </div>
+            </div>
           </Section>
         </div>
 
@@ -142,7 +142,7 @@ const TimelinePoint = ({ label, icon, active, isGold }) => (
       active ? 'bg-[var(--color-bg-main)] border-[var(--color-gold-main)] text-[var(--color-gold-main)]' : 
       'bg-[var(--color-bg-main)] border-white/10 text-gray-700'
     }`}>
-       {icon}
+      {icon}
     </div>
     <p className={`text-[11px] font-black tracking-widest ${isGold ? 'text-[var(--color-gold-main)]' : 'text-white'}`}>{label}</p>
   </div>
