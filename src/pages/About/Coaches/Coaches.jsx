@@ -73,9 +73,10 @@ const CoachesContent = () => {
           <Section title="اللجنة العليا" className="h-full">
             <div className="space-y-4">
               {scoutData.technical_committee.map(member => (
-                <div key={member.id} className="relative p-5 rounded-2xl bg-gradient-to-br from-[#2c281e] to-[var(--color-bg-card)] border border-[var(--color-border)]/30 group overflow-hidden transition-all hover:scale-[1.01]">
+                <div key={member.id} className="relative p-5 rounded-2xl bg-gradient-to-br from-[#2c281e] to-[var(--color-bg-card)] border border-[var(--color-border)]/30 group overflow-hidden ">
                   <div className="flex justify-between items-center mb-3">
                     <div className="flex items-center gap-4">
+
                       <img 
                         src={member.image} 
                         alt="" 
@@ -83,7 +84,7 @@ const CoachesContent = () => {
                         className="w-16 h-16 rounded-xl border-2 border-[var(--color-gold-main)] object-cover shadow-lg rotate-2 group-hover:rotate-0 transition-transform" 
                       />
                       <div className="text-right">
-                        <h3 className="font-bold text-lg leading-tight group-hover:text-[var(--color-gold-main)] transition-colors">{member.name}</h3>
+                        <h3 className="font-bold text-lg leading-tight  ">{member.name}</h3>
                         <p className="text-[var(--color-gold-main)] text-xs font-medium uppercase tracking-widest">{member.role}</p>
                       </div>
                     </div>

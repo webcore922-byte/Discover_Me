@@ -20,19 +20,29 @@
     #aa771c
   );
   
-  
   --gold-glow: 0 0 15px rgba(212, 175, 55, 0.3);
   --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
 }
 
+[data-theme="light"] {
+  --color-bg-main: #f9f9f7;
+  --color-bg-card: #ffffff;
+  --color-gold-main: #b8860b;
+  --color-btn-start: #d4af37;
+  --color-btn-end: #a68946;
+  --color-border: #e5d5b0;
+  --color-text-main: #2d2d2d;
+  --color-text-gray: #757575;
+  --gold-gradient: linear-gradient(to right, #a67c00, #bf953f, #d4af37, #bf953f, #a67c00);
+  --gold-glow: 0 4px 15px rgba(184, 134, 11, 0.15);
+  --card-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08);
+}
 
 .text-gradient-gold {
   background: var(--gold-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-
-
 
 
 .glass-card {
@@ -48,7 +58,6 @@
   box-shadow: var(--gold-glow);
 }
 
-
 .hover-gold-card {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -59,7 +68,6 @@
   background: rgba(45, 50, 52, 0.9);
   box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
 }
-
 
 ::-webkit-scrollbar {
   width: 6px;
