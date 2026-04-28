@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Suspense, lazy } from "react";
 import { Link } from "react-router-dom";
 import {
   Navbar,
@@ -23,13 +23,6 @@ const menuStructure = [
     ] 
   },
   { 
-    name: "المواهب", 
-    subItems: [
-      { name: "المواهب المقبولة", path: "/acceptable-talent" },
-      { name: "الفيديوهات المقبولة", path: "/accepted-videos" },
-    ] 
-  },
-  { 
     name: "البرامج", 
     subItems: [
       { name: "المعسكرات التدريبية", path: "/training-camps" },
@@ -37,6 +30,8 @@ const menuStructure = [
       { name: "الجوائز والمسابقات", path: "/prizes-and-competitions" },
     ] 
   },
+  // تم نقل "المواهب المقبولة" لتصبح بعد "البرامج"
+  { name: "المواهب المقبولة", path: "/acceptable-talent" },
   { name: "المتجر", path: "/store" },
 ];
 
@@ -96,7 +91,7 @@ const MobileDropdown = ({ title, items, onClose }) => {
   );
 };
 
-const Header = () => {
+const HeaderContent = () => {
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
 
@@ -110,6 +105,7 @@ const Header = () => {
         />
       )}
 
+      {/* Sidebar for Medium Devices */}
       <div className={`fixed top-[72px] md:top-[80px] right-0 h-[calc(100vh-80px)] w-72 bg-[var(--color-bg-card)] text-[var(--color-text-gray)] shadow-2xl transition-transform duration-300 z-[120] hidden md:block border-t border-[var(--color-border)] ${open ? "translate-x-0" : "translate-x-full"}`}>
         <div className="p-4 overflow-y-auto h-full flex flex-col justify-between">
           <ul className="flex flex-col gap-1">
@@ -136,6 +132,7 @@ const Header = () => {
             <Link to="/"><img src="../logo.png" className="h-10" alt="logo" /></Link>
           </div>
 
+          {/* Desktop Navigation */}
           <ul className="hidden xl:flex items-center gap-10">
             {menuStructure.map((item, i) => (
               item.subItems ? 
@@ -149,6 +146,7 @@ const Header = () => {
           </Link>
         </div>
 
+        {/* Mobile Collapse Menu */}
         <div className="md:hidden">
           <Collapse open={open}>
             <div className="mt-4 bg-[var(--color-bg-card)] border-t border-[var(--color-border)] pt-4 max-h-[70vh] overflow-y-auto">
@@ -171,6 +169,14 @@ const Header = () => {
       
       <div className={`h-[72px] md:h-[80px] bg-[var(--color-bg-card)] border-none outline-none transition-all duration-300 ${open ? "blur-sm" : "blur-0"}`}></div>
     </div>
+  );
+};
+
+const Header = () => {
+  return (
+    <Suspense fallback={<div className="h-[72px] md:h-[80px] bg-[var(--color-bg-card)] w-full"></div>}>
+      <HeaderContent />
+    </Suspense>
   );
 };
 

@@ -1,13 +1,10 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 
-const InjuryPrevention = () => {
+const InjuryPreventionContent = () => {
   return (
     <div className="min-h-screen bg-[var(--color-bg-main)] text-[var(--color-text-white)] font-sans selection:bg-[var(--color-gold-main)] selection:text-black">
       
-      
-
       <main className="max-w-6xl mx-auto px-6 py-12 lg:py-20">
-        
         
         <div className="grid lg:grid-cols-12 gap-12 items-center mb-32">
           <div className="lg:col-span-7 order-2 lg:order-1">
@@ -36,13 +33,13 @@ const InjuryPrevention = () => {
               <img 
                 src="/injury-prevention.jpeg" 
                 alt="Injury Prevention" 
+                loading="lazy"
                 className="w-full h-[500px] object-cover scale-110"
               />
             </div>
           </div>
         </div>
 
-        
         <div className="grid md:grid-cols-2 gap-10 mb-32">
           <div className="group relative bg-[var(--color-bg-card)] p-12 rounded-[2rem] border-t-4 border-[var(--color-gold-main)] shadow-2xl text-right">
             <div className="absolute top-8 right-8 text-6xl font-black text-white/5 group-hover:text-[var(--color-gold-main)]/10 transition-colors">01</div>
@@ -61,12 +58,9 @@ const InjuryPrevention = () => {
           </div>
         </div>
 
-
         <div className="relative bg-[var(--color-gold-main)] text-black p-12 lg:p-20 rounded-br-[100px] overflow-hidden mb-32 text-right">
             <div className="relative z-10 grid lg:grid-cols-2 gap-12 items-center">
-                <div className="order-2 lg:order-1">
-                    
-                </div>
+                <div className="order-2 lg:order-1"></div>
                 <div className="order-1 lg:order-2">
                     <h2 className="text-4xl font-black mb-6 uppercase italic">نصيحة الخبراء</h2>
                     <p className="text-xl font-medium leading-relaxed">
@@ -79,7 +73,6 @@ const InjuryPrevention = () => {
             </div>
         </div>
 
-        
         <div className="grid lg:grid-cols-3 gap-12 border-t border-[var(--color-border)]/30 pt-16 text-right">
             <div>
                 <h4 className="text-[var(--color-gold-main)] font-black text-lg mb-4 uppercase">التغذية الوقائية</h4>
@@ -97,6 +90,20 @@ const InjuryPrevention = () => {
 
       </main>
     </div>
+  );
+};
+
+const InjuryPrevention = () => {
+  return (
+    <Suspense 
+      fallback={
+        <div className="min-h-screen bg-[var(--color-bg-main)] flex items-center justify-center">
+          <div className="w-16 h-1 bg-[var(--color-gold-main)] animate-pulse rounded"></div>
+        </div>
+      }
+    >
+      <InjuryPreventionContent />
+    </Suspense>
   );
 };
 
