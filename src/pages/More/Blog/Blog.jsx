@@ -1,8 +1,9 @@
 import React, { Suspense, lazy } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { useTheme } from "../../Context/ThemeContext";
 const BlogContent = () => {
   const navigate = useNavigate();
+  const { theme } = useTheme();
   const articles = [
     {
       id: 1,
@@ -48,7 +49,7 @@ const BlogContent = () => {
         <h1 className="text-[var(--color-gold-main)] text-5xl font-bold mb-4">
           المدونة
         </h1>
-        <p className="text-[var(--color-text-white)] max-w-2xl mx-auto">
+        <p className="dark:text-[var(--color-text-white)] text-[var(--color-text-main)] max-w-2xl mx-auto">
           نقدم محتوى غني يشمل مقالات تعليمية، نصائح عملية، وأفكار تساعدك على
           تطوير مهاراتك وتحقيق أهدافك. يتم إعداد المحتوى بواسطة متخصصين لضمان
           الجودة والفائدة.

@@ -11,8 +11,14 @@ import {
   MenuItem,
   Collapse,
 } from "@material-tailwind/react";
-import { ChevronDownIcon, XMarkIcon, Bars3Icon } from "@heroicons/react/24/outline";
-
+import { 
+  ChevronDownIcon, 
+  XMarkIcon, 
+  Bars3Icon, 
+  SunIcon, 
+  MoonIcon 
+} from "@heroicons/react/24/outline";
+import { useTheme } from "../../pages/Context/ThemeContext";
 const menuStructure = [
   { name: "الرئيسية", path: "/" },
   { 
@@ -30,7 +36,6 @@ const menuStructure = [
       { name: "الجوائز والمسابقات", path: "/prizes-and-competitions" },
     ] 
   },
-  // تم نقل "المواهب المقبولة" لتصبح بعد "البرامج"
   { name: "المواهب المقبولة", path: "/acceptable-talent" },
   { name: "المتجر", path: "/store" },
 ];
@@ -94,6 +99,7 @@ const MobileDropdown = ({ title, items, onClose }) => {
 const HeaderContent = () => {
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <div className="w-full relative">
@@ -105,7 +111,6 @@ const HeaderContent = () => {
         />
       )}
 
-      {/* Sidebar for Medium Devices */}
       <div className={`fixed top-[72px] md:top-[80px] right-0 h-[calc(100vh-80px)] w-72 bg-[var(--color-bg-card)] text-[var(--color-text-gray)] shadow-2xl transition-transform duration-300 z-[120] hidden md:block border-t border-[var(--color-border)] ${open ? "translate-x-0" : "translate-x-full"}`}>
         <div className="p-4 overflow-y-auto h-full flex flex-col justify-between">
           <ul className="flex flex-col gap-1">
@@ -126,13 +131,13 @@ const HeaderContent = () => {
       <Navbar variant="filled" shadow={false} blurred={false} fullWidth className="fixed top-0 left-0 z-[150] border-none outline-none rounded-none p-4 bg-[var(--color-bg-card)]">
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center gap-3">
-            <IconButton variant="text" className="text-3xl text-white outline-none" onClick={() => setOpen(!open)}>
+            <IconButton variant="text" className="text-3xl text-[var(--color-gold-main)] outline-none" onClick={() => setOpen(!open)}>
               {open ? <XMarkIcon className="h-8 w-8" /> : <Bars3Icon className="h-8 w-8" />}
             </IconButton>
+            
             <Link to="/"><img src="../logo.png" className="h-10" alt="logo" /></Link>
           </div>
 
-          {/* Desktop Navigation */}
           <ul className="hidden xl:flex items-center gap-10">
             {menuStructure.map((item, i) => (
               item.subItems ? 
@@ -140,13 +145,23 @@ const HeaderContent = () => {
               <Link key={i} to={item.path} className="text-xl text-[var(--color-text-gray)] hover:text-[var(--color-gold-main)] transition-all whitespace-nowrap">{item.name}</Link>
             ))}
           </ul>
+          <IconButton 
+              variant="text" 
+              onClick={toggleTheme}
+              className="rounded-full icon-pulse text-[var(--color-gold-main)] shadow-none hover:bg-[var(--color-bg-main)] transition-all duration-300" 
+            >
+              {theme === "dark" ? (
+                <SunIcon className="h-7 w-7" />
+              ) : (
+                <MoonIcon className="h-7 w-7" />
+              )}
+            </IconButton>
 
           <Link to="/login" className="hidden xl:block">
             <Button variant="outlined" className="text-lg p-2 border-[var(--color-border)] text-[var(--color-text-gray)]">تسجيل الدخول / إنشاء حساب</Button>
           </Link>
         </div>
 
-        {/* Mobile Collapse Menu */}
         <div className="md:hidden">
           <Collapse open={open}>
             <div className="mt-4 bg-[var(--color-bg-card)] border-t border-[var(--color-border)] pt-4 max-h-[70vh] overflow-y-auto">

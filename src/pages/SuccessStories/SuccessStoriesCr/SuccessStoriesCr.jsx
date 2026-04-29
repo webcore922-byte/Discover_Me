@@ -1,12 +1,15 @@
 import React, { Suspense, lazy } from "react";
 import { Card, Typography } from "@material-tailwind/react";
 import { FaTrophy, FaFutbol, FaStar, FaAward } from "react-icons/fa";
-
+import { useTheme } from "../../Context/ThemeContext";
 const SuccessStoriesRonaldoContent = () => {
+  const { theme } = useTheme();
+  const lightimage = "bg-[url('./bg_success_stories_light_3.jpeg')]";
+  const darkimage = "bg-[url('./bg_success_stories_3.jpeg')]";
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden font-sans bg-[var(--color-bg-main)]">
       <img
-        src="./bg_success_stories_3.jpeg"
+        src={theme === "light" ? "./bg_success_stories_light_3.jpeg" : "./bg_success_stories_3.jpeg"}
         className="w-full h-full object-cover object-bottom fixed inset-0 z-0 max-w-full"
         alt="Ronaldo Success Stories Background"
         loading="lazy"
@@ -128,7 +131,7 @@ const SuccessStoriesRonaldoContent = () => {
                   <Typography className="text-gradient-gold font-bold mb-1 text-right text-sm md:text-base">
                     من ماديرا إلى مسرح الأحلام
                   </Typography>
-                  <Typography className="text-[var(--color-text-gray)] text-xs md:text-base leading-relaxed text-right">
+                  <Typography className="dark:text-[var(--color-text-gray)] text-[var(--color-text-main)] text-xs md:text-base leading-relaxed text-right">
                     بدأ كريستيانو من ظروف قاسية في جزيرة ماديرا، وبفضل انضباطه
                     الحديدي انتقل إلى مانشستر يونايتد ليصبح تحت قيادة فيرجسون
                     أفضل لاعب في العالم. هناك صقل مهاراته وحقق أول كرة ذهبية وأول
@@ -160,7 +163,7 @@ const SuccessStoriesRonaldoContent = () => {
                   <Typography className="text-gradient-gold font-bold mb-1 text-right text-sm md:text-base">
                     ملك مدريد والهيمنة الأوروبية
                   </Typography>
-                  <Typography className="text-[var(--color-text-gray)] text-xs md:text-base leading-relaxed text-right">
+                  <Typography className="dark:text-[var(--color-text-gray)] text-[var(--color-text-main)] text-xs md:text-base leading-relaxed text-right">
                     في ريال مدريد، تحول رونالدو إلى هداف تاريخي للنادي بمتوسط
                     أكثر من هدف في كل مباراة. قاد "الميرينغي" لتحقيق 4 ألقاب دوري
                     أبطال، منها ثلاثة متتالية، محطماً كافة الأرقام القياسية في
@@ -188,7 +191,7 @@ const SuccessStoriesRonaldoContent = () => {
                   CR7 - الإصرار والمثابرة
                 </Typography>
                 <Card className="w-full border border-[var(--color-border)] bg-[var(--color-bg-card)] rounded-xl p-5 md:p-6 shadow-inner ">
-                  <Typography className="text-[var(--color-text-gray)] sm:text-xs md:text-sm leading-relaxed text-right ">
+                  <Typography className="dark:text-[var(--color-text-gray)] text-[var(--color-text-main)]  sm:text-xs md:text-sm leading-relaxed text-right ">
                     يُعد رونالدو التجسيد الحي لمعنى "العمل الشاق يتفوق على
                     الموهبة". من خلال نظام غذائي صارم وتدريبات مكثفة، حافظ على
                     قمته الفنية حتى سن الأربعين. رحلته هي رسالة لكل شاب بأن سقف

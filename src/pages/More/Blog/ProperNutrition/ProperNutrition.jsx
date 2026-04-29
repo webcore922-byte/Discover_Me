@@ -15,7 +15,7 @@ const ProperNutrition = () => {
         <h1 className="text-5xl md:text-8xl font-black mb-8 text-[var(--color-gold-main)] tracking-tight leading-tight">
           التغذية السليمة <br /> للاعبي كرة القدم
         </h1>
-        <p className="max-w-3xl mx-auto text-xl md:text-2xl text-[var(--color-text-gray)] font-light leading-relaxed">
+        <p className="max-w-3xl mx-auto text-xl md:text-2xl dark:text-[var(--color-text-gray)] text-[var(--color-text-main)] font-light leading-relaxed">
           دليلك الشامل لتحقيق أقصى أداء داخل الملعب من خلال نظام غذائي احترافي
           متكامل
         </p>
@@ -86,15 +86,15 @@ const ProperNutrition = () => {
         ].map((item, index) => (
           <div
             key={index}
-            className="group p-10 rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-bg-card)] transition-all duration-500 hover:-translate-y-3 flex flex-col items-center text-center shadow-xl hover:bg-[#2a2e2f]"
+            className="group p-10 rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-bg-card)]  flex flex-col items-center text-center shadow-xl "
           >
-            <div className="text-6xl mb-8 transition-all duration-500 group-hover:rotate-12 group-hover:scale-110 text-[var(--color-gold-main)]">
+            <div className="text-6xl mb-8  text-[var(--color-gold-main)]">
               {item.icon}
             </div>
-            <h3 className="text-2xl font-black mb-4 text-[var(--color-text-white)]">
+            <h3 className="text-2xl font-black mb-4 dark:text-[var(--color-text-white)] text-[var(--color-text-main)]">
               {item.title}
             </h3>
-            <p className="text-lg leading-relaxed text-[var(--color-text-gray)]">
+            <p className="text-lg leading-relaxed text-[var(--color-text-gray)]  ">
               {item.text}
             </p>
           </div>
