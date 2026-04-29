@@ -1,15 +1,14 @@
 import { GiDiamondTrophy } from "react-icons/gi";
-
-
+import {useTheme} from "../Context/ThemeContext";
 const AcceptableTalent = () => {
- 
+  const { theme } = useTheme();
+  const lightBg = "bg-[url('../bg_Acceptable_talent_light.jpeg')]";
+  const darkBg = "bg-[url('../bg_Acceptable_talent.jpeg')]";
   return (
     
     <div 
-      className="min-h-screen bg-[url('../bg_Acceptable_talent.jpeg')] bg-fixed bg-cover bg-center relative" 
-      dir="rtl"
+      className={`min-h-screen ${theme === 'light' ? lightBg : darkBg} bg-fixed bg-cover bg-center relative`} 
     >
-
 
       <div className="relative z-10 py-8 px-6 lg:px-20 text-right">
         
@@ -20,7 +19,7 @@ const AcceptableTalent = () => {
     <span>المواهب المقبولة</span>
   </h1>
 
-  <p className="text-gray-400 text-sm md:text-base max-w-2xl mx-auto leading-relaxed px-4">
+  <p className="dark:text-[var(--color-text-gray)] text-[var(--color-text-main)] text-sm md:text-base max-w-2xl mx-auto leading-relaxed px-4">
     هنا يمكنك استكشاف قائمة بأفضل المواهب التي تم قبولها بعد اجتياز مراحل التقييم المختلفة.<br />
     يتم اختبار هذه المواهب بناءً على معايير دقيقة تشمل الأداء، الإبداع، والقدرة على التطور. هذه<br />
     الصفحة تعكس مستوى الجودة الذي نسعى إليه داخل المنصة.
