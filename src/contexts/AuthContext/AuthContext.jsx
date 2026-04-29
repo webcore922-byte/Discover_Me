@@ -32,19 +32,16 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      // 1. فحص الأدمن أولاً
       const adminRes = await fetch(`${API_URL}/admins?email=${email}&password=${password}`);
       const admins = await adminRes.json();
       
       if (admins.length > 0) {
-        // بنحط role: 'admin' عشان الحماية في الـ App تعرفه
         const adminData = { ...admins[0], role: 'admin' };
         saveUser(adminData);
-        navigate('/dashboard'); // توجيه تلقائي للأدمن
+        navigate('/dashboard');
         return { success: true, role: 'admin' };
       }
 
-      // 2. فحص اليوزر العادي واللاعب
       const userRes = await fetch(`${API_URL}/users?email=${email}&password=${password}`);
       const users = await userRes.json();
       
@@ -52,16 +49,18 @@ export const AuthProvider = ({ children }) => {
         const userData = users[0];
         const playerRes = await fetch(`${API_URL}/players?userEmail=${userData.email}`);
         const players = await playerRes.json();
+        const playerInfo = players[0] || null;
+
+        const isApproved = playerInfo && playerInfo.status === 'approved';
         
         const fullUser = { 
           ...userData, 
-          role: players.length > 0 ? 'player' : 'user', 
-          player: players[0] || null 
+          role: isApproved ? 'player' : 'user', 
+          player: playerInfo 
         };
         
         saveUser(fullUser);
-        // توجيه حسب النوع
-        navigate(fullUser.role === 'player' ? '/profile' : '/');
+        navigate(isApproved ? '/profile' : '/');
         return { success: true, role: fullUser.role };
       }
       
@@ -112,7 +111,8 @@ export const AuthProvider = ({ children }) => {
             currentClub: "لاعب حر",
             videoUrl: userData.videoUrl || "",
             rating: "0.0",
-            tags: [], // إضافة مصفوفة المهارات كـ default
+            status: "pending",
+            tags: [],
             image: `https://api.dicebear.com/7.x/avataaars/svg?seed=${userData.username}`
           })
         });
@@ -132,7 +132,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    // وفرنا currentUser كـ alias لـ user لضمان اشتغال الـ App Protected Route
     <AuthContext.Provider value={{ 
       user, 
       currentUser: user, 

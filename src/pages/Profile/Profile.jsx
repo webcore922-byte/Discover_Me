@@ -4,8 +4,8 @@ import Swal from 'sweetalert2';
 
 const Profile = () => {
   const { user, logout, updatePlayerState } = useAuth();
+  const [showCongrats, setShowCongrats] = useState(false);
   
-  // State يشمل كل الحقول الحديثة
   const [editData, setEditData] = useState({
     currentClub: '',
     location: '',
@@ -16,7 +16,6 @@ const Profile = () => {
     preferredFoot: ''
   });
 
-  // تحديث البيانات فور تحميل اليوزر أو تغيره
   useEffect(() => {
     if (user?.player) {
       setEditData({
@@ -28,13 +27,21 @@ const Profile = () => {
         weight: user.player.weight || '',
         preferredFoot: user.player.preferredFoot || ''
       });
+
+      if (user.player.status === 'approved') {
+        const hasSeenCongrats = localStorage.getItem(`congrats_seen_${user.player.id}`);
+        if (!hasSeenCongrats) {
+          setShowCongrats(true);
+          localStorage.setItem(`congrats_seen_${user.player.id}`, 'true');
+        }
+      }
     }
   }, [user]);
 
   if (!user) return null;
-  const isPlayer = user.role === 'player' && user.player;
+  const isPlayer = user.player; 
+  const status = isPlayer ? user.player.status : null;
 
-  // --- 1. تغيير الصورة مع الضغط ---
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -44,13 +51,13 @@ const Profile = () => {
         img.src = reader.result;
         img.onload = () => {
           const canvas = document.createElement('canvas');
-          const MAX_WIDTH = 400;
+          const MAX_WIDTH = 300;
           const scaleSize = MAX_WIDTH / img.width;
           canvas.width = MAX_WIDTH;
           canvas.height = img.height * scaleSize;
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+          const compressedBase64 = canvas.toDataURL('image/jpeg', 0.5);
           confirmAndSaveImage(compressedBase64);
         };
       };
@@ -60,20 +67,19 @@ const Profile = () => {
 
   const confirmAndSaveImage = (base64String) => {
     Swal.fire({
-      title: 'تغيير الصورة؟',
+      title: 'تغيير الصورة الشخصية؟',
       imageUrl: base64String,
-      imageWidth: 200,
-      imageHeight: 200,
+      imageWidth: 150,
+      imageHeight: 150,
       showCancelButton: true,
-      confirmButtonText: 'حفظ',
-      cancelButtonText: 'إلغاء',
+      confirmButtonText: 'حفظ التعديل',
       background: '#121212',
       color: '#fff',
       confirmButtonColor: '#D4AF37'
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+          const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
           const response = await fetch(`${API_URL}/players/${user.player.id}`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
@@ -84,95 +90,117 @@ const Profile = () => {
           updatePlayerState(updatedPlayer);
           Swal.fire({ title: 'تم التحديث!', icon: 'success', background: '#121212', color: '#fff' });
         } catch (err) {
-          Swal.fire({ title: 'خطأ', text: 'فشل في تحديث الصورة', icon: 'error', background: '#121212' });
+          Swal.fire({ title: 'خطأ', text: 'فشل في رفع الصورة', icon: 'error', background: '#121212' });
         }
       }
     });
   };
 
-  // --- 2. حفظ جميع البيانات النصية ---
   const handleSave = async () => {
-    Swal.fire({
-      title: 'جاري حفظ التعديلات...',
-      allowOutsideClick: false,
-      background: '#121212',
-      color: '#fff',
-      didOpen: () => { Swal.showLoading(); }
-    });
-
+    Swal.fire({ title: 'جاري الحفظ...', allowOutsideClick: false, background: '#121212', color: '#fff', didOpen: () => { Swal.showLoading(); } });
     try {
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
       const response = await fetch(`${API_URL}/players/${user.player.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(editData),
       });
-
       if (!response.ok) throw new Error();
       const updatedPlayer = await response.json();
       updatePlayerState(updatedPlayer);
-
-      Swal.fire({
-        title: 'تم حفظ بياناتك!',
-        icon: 'success',
-        background: '#121212',
-        color: '#fff',
-        confirmButtonColor: '#D4AF37'
-      });
+      Swal.fire({ title: 'تم الحفظ!', icon: 'success', background: '#121212', color: '#fff' });
     } catch (err) {
-      Swal.fire({ title: 'عفواً!', text: 'حدث خطأ في الاتصال بالسيرفر', icon: 'error', background: '#121212' });
+      Swal.fire({ title: 'خطأ', text: 'فشل الاتصال بالسيرفر', icon: 'error', background: '#121212' });
     }
   };
 
   const handleLogout = () => {
-    Swal.fire({
-      title: 'تسجيل الخروج؟',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'خروج',
-      background: '#121212',
-      color: '#fff',
-      confirmButtonColor: '#ff4444'
-    }).then((result) => {
-      if (result.isConfirmed) logout();
-    });
+    Swal.fire({ title: 'خروج؟', icon: 'warning', showCancelButton: true, confirmButtonText: 'نعم', background: '#121212', color: '#fff' }).then((r) => { if (r.isConfirmed) logout(); });
   };
 
   return (
     <div className="min-h-screen bg-[var(--color-bg-main)] py-10 md:py-16 px-4 md:px-8 text-right font-sans" dir="rtl">
       <div className="max-w-6xl mx-auto space-y-10">
         
-        {/* Header Section */}
-        <div className="glass-card rounded-[2.5rem] md:rounded-[3.5rem] p-8 md:p-12 border border-white/10 flex flex-col md:flex-row items-center gap-8 md:gap-12 relative overflow-hidden shadow-2xl">
+        {isPlayer && (
+          <div className="space-y-4">
+            {showCongrats && (
+              <div className="bg-green-500/20 border-2 border-green-500/40 p-8 rounded-[2.5rem] text-center shadow-[0_0_30px_rgba(34,197,94,0.2)] animate-pulse">
+                <h2 className="text-2xl font-black text-green-500 uppercase tracking-tighter italic">
+                  ✅ ألف مبروك يا كابتن! تم قبولك رسمياً كلاعب معتمد
+                </h2>
+              </div>
+            )}
+
+            {(status === 'pending' || status === 'rejected') && (
+              <div className={`p-6 rounded-[2rem] border text-center shadow-xl transition-all ${
+                status === 'pending' ? 'bg-yellow-500/10 border-yellow-500/20 text-yellow-500' :
+                'bg-red-500/10 border-red-500/20 text-red-500'
+              }`}>
+                <p className="font-black italic text-lg uppercase tracking-tighter">
+                  {status === 'pending' && "⚠️ ملفك الشخصي قيد المراجعة الفنية.. سيتم تفعيلك فور انتهاء التقييم."}
+                  {status === 'rejected' && `❌ تم رفض طلبك: ${user.player.rejectionReason || 'برجاء مراجعة بياناتك مهارياً.'}`}
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+
+        <div className="glass-card rounded-[2.5rem] md:rounded-[3.5rem] p-8 md:p-12 border border-white/10 flex flex-col md:flex-row items-center gap-8 md:gap-12 relative overflow-visible shadow-2xl">
           <div className="relative group cursor-pointer" onClick={() => document.getElementById('imageInput').click()}>
             <div className="absolute inset-0 bg-[var(--gold-gradient)] rounded-full blur opacity-0 group-hover:opacity-40 transition-all duration-500"></div>
             <img 
               src={isPlayer ? user.player.image : `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.username}`} 
-              className="w-40 h-40 md:w-52 md:h-52 rounded-full border-4 border-[var(--color-gold-main)] p-1.5 z-10 bg-black/40 shadow-[var(--gold-glow)] object-cover relative transition-transform group-hover:scale-105" 
+              className="w-40 h-40 md:w-52 md:h-52 rounded-full border-4 border-[var(--color-gold-main)] p-1.5 z-10 bg-black shadow-[var(--gold-glow)] object-cover relative transition-transform group-hover:scale-105" 
               alt="Profile" 
             />
             <input type="file" id="imageInput" className="hidden" accept="image/*" onChange={handleImageChange} />
           </div>
 
-          <div className="flex-1 text-center md:text-right z-10">
-            <h1 className="text-4xl md:text-6xl font-black text-gradient-gold italic uppercase mb-3 tracking-tighter">
-                {isPlayer ? user.player.name : user.username}
+          <div className="flex-1 text-center md:text-right z-10 overflow-visible">
+            
+            <h1 className="text-5xl md:text-7xl font-black italic uppercase mb-10 tracking-tight leading-[1.2] inline-block"
+                style={{
+                  background: 'linear-gradient(to bottom, #D4AF37 10%, #FFF2AD 50%, #B8860B 90%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  paddingLeft: '0.5em',
+                  paddingRight: '0.5em',
+                  marginLeft: '-0.5em',
+                  marginRight: '-0.5em',
+                  filter: 'drop-shadow(0px 6px 12px rgba(0, 0, 0, 0.6))',
+                  WebkitBoxDecorationBreak: 'clone'
+                }}>
+              {isPlayer ? user.player.name : user.username}
             </h1>
-            <span className="px-5 py-1.5 bg-white/5 border border-white/10 rounded-full text-[var(--color-gold-main)] text-xs font-black uppercase tracking-widest">
-                {isPlayer ? user.player.position : 'Member'}
-            </span>
+            
+            <div className="flex items-center gap-4 justify-center md:justify-start mt-2">
+              <span className="px-6 py-2 bg-white/5 border border-white/10 rounded-full text-[var(--color-gold-main)] text-sm font-black uppercase tracking-widest italic shadow-inner">
+                  {isPlayer ? user.player.position : 'Member'}
+              </span>
+              {isPlayer && (
+                <span className={`px-5 py-2 rounded-full text-xs font-black uppercase border shadow-lg italic ${
+                  status === 'pending' ? 'bg-yellow-500/20 text-yellow-500 border-yellow-500/30' :
+                  status === 'approved' ? 'bg-green-500/20 text-green-500 border-green-500/30' :
+                  'bg-red-500/20 text-red-500 border-red-500/30'
+                }`}>
+                  {status === 'pending' && 'Pending'}
+                  {status === 'approved' && 'Approved'}
+                  {status === 'rejected' && 'Rejected'}
+                </span>
+              )}
+            </div>
           </div>
 
-          <button onClick={handleLogout} className="px-10 py-4 bg-red-500/10 border-2 border-red-500/20 text-red-500 text-xs font-black rounded-2xl hover:bg-red-500 hover:text-white transition-all uppercase z-10">
+          <button onClick={handleLogout} className="px-10 py-4 bg-red-500/10 border-2 border-red-500/20 text-red-500 text-xs font-black rounded-2xl hover:bg-red-500 hover:text-white transition-all z-10 italic">
             تسجيل الخروج
           </button>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Account Data */}
           <div className="lg:col-span-4 space-y-8">
             <div className="glass-card rounded-[2.5rem] p-10 border border-white/10 shadow-xl space-y-8">
-               <h3 className="text-[var(--color-gold-main)] font-black text-base uppercase tracking-widest border-b border-white/5 pb-5">بيانات الحساب</h3>
+               <h3 className="text-[var(--color-gold-main)] font-black text-base uppercase tracking-widest border-b border-white/5 pb-5 italic">بيانات الحساب</h3>
                <div className="space-y-6">
                  <InfoBox label="اسم المستخدم" value={user.username} />
                  <InfoBox label="البريد الإلكتروني" value={user.email} />
@@ -181,47 +209,29 @@ const Profile = () => {
             </div>
           </div>
 
-          {/* Player Stats & Editor */}
-          <div className="lg:col-span-8 space-y-8">
+          <div className="lg:col-span-8">
             {isPlayer ? (
               <div className="space-y-8">
-                {/* Row 1: Club & Location */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <EditableStatCard label="النادي الحالي" value={editData.currentClub} onChange={(v) => setEditData({...editData, currentClub: v})} />
                   <EditableStatCard label="المحافظة / المدينة" value={editData.location} onChange={(v) => setEditData({...editData, location: v})} />
                 </div>
-
-                {/* Row 2: Age, Height, Weight */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <EditableStatCard label="السن" value={editData.age} onChange={(v) => setEditData({...editData, age: v})} />
                   <EditableStatCard label="الطول (سم)" value={editData.height} onChange={(v) => setEditData({...editData, height: v})} />
                   <EditableStatCard label="الوزن (كجم)" value={editData.weight} onChange={(v) => setEditData({...editData, weight: v})} />
                 </div>
-
-                {/* Row 3: Foot & Rating */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <EditableStatCard label="القدم المفضلة" value={editData.preferredFoot} onChange={(v) => setEditData({...editData, preferredFoot: v})} />
                   <div className="glass-card p-8 rounded-[2.5rem] border border-white/5 bg-white/[0.02] flex flex-col justify-center">
-                    <p className="text-[var(--color-text-gray)] text-[11px] font-black uppercase mb-2 tracking-widest">تقييم الكشافين</p>
-                    <p className="text-3xl font-black text-[var(--color-gold-main)] italic tracking-tighter">{user.player.rating} / 10</p>
+                    <p className="text-[var(--color-text-gray)] text-[11px] font-black uppercase mb-2 tracking-widest italic">تقييم اللجنة الفنية</p>
+                    <p className="text-3xl font-black text-[var(--color-gold-main)] italic tracking-tighter">
+                      {status === 'pending' ? '--' : user.player.rating} / 10
+                    </p>
                   </div>
                 </div>
-
-                {/* Video URL */}
-                <div className="glass-card rounded-[2.5rem] p-10 border border-white/10 space-y-6">
-                  <h4 className="text-white text-lg font-black italic uppercase tracking-widest">فيديو المهارات (YouTube / Drive)</h4>
-                  <input 
-                    type="url" dir="ltr"
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 text-white focus:border-[var(--color-gold-main)] outline-none transition-all"
-                    placeholder="https://..."
-                    value={editData.videoUrl}
-                    onChange={(e) => setEditData({...editData, videoUrl: e.target.value})}
-                  />
-                </div>
-
-                {/* Save Button */}
-                <button onClick={handleSave} className="w-full bg-[var(--gold-gradient)] text-black font-black py-7 rounded-[2.5rem] shadow-[var(--gold-glow)] hover:scale-[1.01] active:scale-95 transition-all text-2xl uppercase border-b-8 border-black/20">
-                  تحديث ملف اللاعب
+                <button onClick={handleSave} className="w-full bg-[var(--gold-gradient)] text-black font-black py-7 rounded-[2.5rem] shadow-[var(--gold-glow)] hover:scale-[1.01] active:scale-95 transition-all text-2xl uppercase border-b-8 border-black/20 italic">
+                  تحديث بيانات اللاعب
                 </button>
               </div>
             ) : (
@@ -237,21 +247,23 @@ const Profile = () => {
   );
 };
 
-// Components مساعدة
+
 const InfoBox = ({ label, value }) => (
-  <div className="flex flex-col gap-1 border-r-4 border-[var(--color-gold-main)]/30 pr-5">
-    <span className="text-[var(--color-text-gray)] font-black text-[10px] uppercase tracking-widest">{label}</span>
-    <span className="text-white font-bold text-lg">{value || '---'}</span>
+  <div className="flex flex-col gap-1 border-r-4 border-[var(--color-gold-main)]/30 pr-5 overflow-visible">
+    <span className="text-[var(--color-text-gray)] font-black text-[10px] uppercase tracking-widest italic block" style={{ paddingRight: '2px' }}>{label}</span>
+    <span className="text-white font-bold text-lg block italic" style={{ paddingRight: '2px' }}>{value || '---'}</span>
   </div>
 );
 
+
 const EditableStatCard = ({ label, value, onChange }) => (
-  <div className="glass-card p-8 rounded-[2.5rem] border border-white/5 hover:border-[var(--color-gold-main)]/30 transition-all duration-500 bg-white/[0.01]">
-    <p className="text-[var(--color-text-gray)] text-[11px] font-black uppercase mb-3 italic tracking-widest">{label}</p>
+  <div className="glass-card p-8 rounded-[2.5rem] border border-white/5 hover:border-[var(--color-gold-main)]/30 transition-all bg-white/[0.01] overflow-visible">
+    <p className="text-[var(--color-text-gray)] text-[11px] font-black uppercase mb-3 italic tracking-widest px-2 block" style={{ paddingRight: '10px' }}>{label}</p>
     <input 
       type="text" value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="bg-transparent border-b-2 border-white/10 w-full text-2xl font-black text-white italic focus:border-[var(--color-gold-main)] outline-none pb-2 transition-all"
+      className="bg-transparent border-b-2 border-white/10 w-full text-2xl font-black text-white italic focus:border-[var(--color-gold-main)] outline-none pb-2 transition-all px-2"
+      style={{ paddingRight: '10px' }}
     />
   </div>
 );
