@@ -1,7 +1,8 @@
 
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaFeatherAlt } from "react-icons/fa";
-
+import { useTheme } from "../../pages/Context/ThemeContext";
 const Footer = () => {
+  const { theme } = useTheme();
   const currentYear = new Date().getFullYear();
 
   return (
@@ -15,19 +16,19 @@ const Footer = () => {
           <div className="flex items-center gap-4">
             <h2 className="text-[var(--color-gold-main)] text-xl font-bold">اكتشفني</h2>
             <div className="hidden md:block h-4 w-[1px] bg-[var(--color-border)]/30"></div>
-            <p className="text-[var(--color-text-gray)] text-xs font-bold">
+            <p className="dark:text-[var(--color-text-gray)] text-[var(--color-text-main)] text-xs font-bold">
               &copy; {currentYear} جميع الحقوق محفوظة
             </p>
           </div>
 
-          <ul className="flex flex-wrap justify-center gap-6 text-[var(--color-text-gray)] text-xs">
+          <ul className="flex flex-wrap justify-center gap-6 dark:text-[var(--color-text-gray)] text-[var(--color-text-main)] text-xs">
             <li className="hover:text-[var(--color-gold-main)] cursor-pointer transition">الرئيسية</li>
             <li className="hover:text-[var(--color-gold-main)] cursor-pointer transition">قصص النجاح</li>
             <li className="hover:text-[var(--color-gold-main)] cursor-pointer transition">اتصل بنا</li>
             <li className="hover:text-[var(--color-gold-main)] cursor-pointer transition">سياسة الخصوصية</li>
           </ul>
 
-          <div className="flex items-center gap-5 text-[var(--color-gold-main)]/80">
+          <div className="flex items-center gap-5 dark:text-[var(--color-gold-main)]/80 text-[var(--color-text-main)]">
             <FaFacebook className="hover:text-[var(--color-gold-main)] cursor-pointer transition text-lg" />
             <FaInstagram className="hover:text-[var(--color-gold-main)] cursor-pointer transition text-lg" />
             <FaTwitter className="hover:text-[var(--color-gold-main)] cursor-pointer transition text-lg" />

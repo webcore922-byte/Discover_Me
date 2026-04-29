@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from 'react';
-
+import { useTheme } from "../../../Context/ThemeContext";
 const InjuryPreventionContent = () => {
+  const { theme } = useTheme();
   return (
     <div className="min-h-screen bg-[var(--color-bg-main)] text-[var(--color-text-white)] font-sans selection:bg-[var(--color-gold-main)] selection:text-black">
       
@@ -8,21 +9,21 @@ const InjuryPreventionContent = () => {
         
         <div className="grid lg:grid-cols-12 gap-12 items-center mb-32">
           <div className="lg:col-span-7 order-2 lg:order-1">
-            <h1 className="text-5xl lg:text-7xl font-black mb-8 leading-tight tracking-tighter uppercase text-right">
+            <h1 className="text-5xl lg:text-7xl font-black mb-8 leading-tight tracking-tighter uppercase dark:text-[var(--color-text-white)] text-[var(--color-text-main)]">
               حصن <span className="text-[var(--color-gold-main)]">جسدك</span> <br /> 
               لبقاء أطول في الملعب
             </h1>
-            <p className="text-xl text-[var(--color-text-gray)] leading-relaxed max-w-xl mb-10 border-r-4 border-[var(--color-gold-main)] pr-6 text-right">
+            <p className="text-xl dark:text-[var(--color-text-gray)] text-[var(--color-text-main)] leading-relaxed max-w-xl mb-10 border-r-4 border-[var(--color-gold-main)] pr-6 text-right">
               الموهبة وحدها لا تكفي إذا كنت ستقضي نصف الموسم في العيادة. الإصابة ليست حظاً سيئاً، بل هي نتيجة لإهمال تفاصيل احترافية.
             </p>
             <div className="flex gap-4 justify-end">
               <div className="bg-[var(--color-bg-card)] border border-[var(--color-border)] px-6 py-3 rounded-tr-3xl">
                 <span className="block text-[var(--color-gold-main)] font-bold text-2xl">90%</span>
-                <span className="text-xs text-[var(--color-text-gray)] uppercase">نسبة الحماية بالوقاية</span>
+                <span className="text-xs dark:text-[var(--color-text-gray)] text-[var(--color-text-main)] uppercase">نسبة الحماية بالوقاية</span>
               </div>
               <div className="bg-[var(--color-bg-card)] border border-[var(--color-border)] px-6 py-3 rounded-bl-3xl">
                 <span className="block text-[var(--color-gold-main)] font-bold text-2xl">24/7</span>
-                <span className="text-xs text-[var(--color-text-gray)] uppercase">استشفاء عضلي</span>
+                <span className="text-xs dark:text-[var(--color-text-gray)] text-[var(--color-text-main)] uppercase">استشفاء عضلي</span>
               </div>
             </div>
           </div>
@@ -42,17 +43,17 @@ const InjuryPreventionContent = () => {
 
         <div className="grid md:grid-cols-2 gap-10 mb-32">
           <div className="group relative bg-[var(--color-bg-card)] p-12 rounded-[2rem] border-t-4 border-[var(--color-gold-main)] shadow-2xl text-right">
-            <div className="absolute top-8 right-8 text-6xl font-black text-white/5 group-hover:text-[var(--color-gold-main)]/10 transition-colors">01</div>
+            <div className="absolute top-8 right-8 text-6xl font-black dark:text-white/5 text-[var(--color-text-main)] opacity-10 dark:opacity-100 group-hover:text-[var(--color-gold-main)]/10 transition-colors">01</div>
             <h3 className="text-2xl font-bold text-[var(--color-gold-main)] mb-6">الإحماء الديناميكي</h3>
-            <p className="text-[var(--color-text-gray)] text-lg leading-loose">
+            <p className="dark:text-[var(--color-text-gray)] text-[var(--color-text-main)] text-lg leading-loose">
               توقف عن الإطالات الثابتة وأنت "بارد". الإحماء الصحيح هو الذي يرفع حرارة العضلات ويحاكي حركات المباراة الحقيقية لتجهيز الجهاز العصبي.
             </p>
           </div>
 
           <div className="group relative bg-[var(--color-bg-card)] p-12 rounded-[2rem] border-b-4 border-[var(--color-gold-main)] shadow-2xl md:mt-12 text-right">
-            <div className="absolute top-8 right-8 text-6xl font-black text-white/5 group-hover:text-[var(--color-gold-main)]/10 transition-colors">02</div>
+            <div className="absolute top-8 right-8 text-6xl font-black dark:text-white/5 text-[var(--color-text-main)] opacity-10 dark:opacity-100 group-hover:text-[var(--color-gold-main)]/10 transition-colors">02</div>
             <h3 className="text-2xl font-bold text-[var(--color-gold-main)] mb-6">قوة الـ Core والمفاصل</h3>
-            <p className="text-[var(--color-text-gray)] text-lg leading-loose">
+            <p className="dark:text-[var(--color-text-gray)] text-[var(--color-text-main)] text-lg leading-loose">
               عضلات بطن وظهر قوية تعني ثباتاً أكبر عند تغيير الاتجاه. التقوية العضلية هي "الدرع" الذي يحمي أربطة الركبة والكاحل من التمزق.
             </p>
           </div>
@@ -73,18 +74,24 @@ const InjuryPreventionContent = () => {
             </div>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-12 border-t border-[var(--color-border)]/30 pt-16 text-right">
+        <div className="grid lg:grid-cols-3 gap-12 border-t border-[var(--color-border)]/30 pt-16 ">
             <div>
                 <h4 className="text-[var(--color-gold-main)] font-black text-lg mb-4 uppercase">التغذية الوقائية</h4>
-                <p className="text-[var(--color-text-gray)]">المعادن والفيتامينات ليست كماليات، نقص المغنسيوم قد يؤدي لشد عضلي يتحول لتمزق في ثانية.</p>
+                <p className="dark:text-[var(--color-text-gray)] text-[var(--color-text-main)]">
+                    المعادن والفيتامينات ليست كماليات، نقص المغنسيوم قد يؤدي لشد عضلي يتحول لتمزق في ثانية.
+                </p>
             </div>
             <div>
                 <h4 className="text-[var(--color-gold-main)] font-black text-lg mb-4 uppercase">جودة المعدات</h4>
-                <p className="text-[var(--color-text-gray)]">حذائك هو وسيلة الاتصال بالأرض؛ الحذاء المستهلك يفقد امتصاص الصدمات ويؤذي العمود الفقري.</p>
+                <p className="dark:text-[var(--color-text-gray)] text-[var(--color-text-main)]">
+                    حذائك هو وسيلة الاتصال بالأرض؛ الحذاء المستهلك يفقد امتصاص الصدمات ويؤذي العمود الفقري.
+                </p>
             </div>
             <div>
                 <h4 className="text-[var(--color-gold-main)] font-black text-lg mb-4 uppercase">الوعي بالجسد</h4>
-                <p className="text-[var(--color-text-gray)]">تعلم التمييز بين "ألم التطور العضلي" وبين "ألم الإصابة الوشيكة". توقف فوراً إذا شعرت بنغزة حادة.</p>
+                <p className="dark:text-[var(--color-text-gray)] text-[var(--color-text-main)]">
+                    تعلم التمييز بين "ألم التطور العضلي" وبين "ألم الإصابة الوشيكة". توقف فوراً إذا شعرت بنغزة حادة.
+                </p>
             </div>
         </div>
 

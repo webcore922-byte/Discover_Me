@@ -27,14 +27,18 @@ import SportsPsychology from "./pages/More/Blog/SportsPsychology/SportsPsycholog
 import NotFound from "./pages/NotFound/NotFound.jsx";
 import ContactUs from "./pages/ContactUs/ContactUs.jsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy.jsx";
+import { useTheme } from "./pages/Context/ThemeContext.jsx";
+import { ThemeProvider } from "./pages/Context/ThemeContext.jsx";
 
 const App = () => {
   return (
-    <div>
-      <Header />
-      <Routes>
-        <Route path="/" element={ <Home /> } />
-        <Route path="/about-the-platform" element={<AboutThePlatform />} />
+    <ThemeProvider
+    >
+        <div>
+          <Header />
+          <Routes>
+            <Route path="/" element={ <Home /> } />
+            <Route path="/about-the-platform" element={<AboutThePlatform />} />
         <Route path="/coaches" element={<Coaches />} />
         <Route path="/login" element={<Login />} />
         <Route path="/blog" element={<Blog />} />
@@ -71,8 +75,10 @@ const App = () => {
       </Routes>
       
       <Footer />
-    </div>
+    </div>  
+    </ThemeProvider>
   );
 };
-
+ 
+ 
 export default App;
