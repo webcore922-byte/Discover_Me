@@ -115,3 +115,21 @@
 .timeline-line {
   background: linear-gradient(90deg, transparent, var(--color-border), transparent);
 }
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-spin-slow {
+  animation: spin-slow 3s linear infinite;
+}
+/* تنسيق أزرار سويت أليرت لتمشي مع البراند */
+.swal2-styled.swal2-confirm {
+  background-image: linear-gradient(to right, #D4AF37, #F2D472) !important;
+  color: black !important;
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3) !important;
+  border: none !important;
+}
+
+.swal2-popup {
+  font-family: 'Tajawal', sans-serif; /* أو أي خط عربي بتستخدمه */
+}
