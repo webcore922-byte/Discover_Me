@@ -48,7 +48,6 @@ const extraSidebarItems = [
   { name: "الملف الشخصي", path: "/profile" },
   { name: "اتصل بنا", path: "/contact-us" },
 ];
-
 const DropdownItem = ({ title, items, onClose }) => {
   return (
     <Menu>
@@ -60,7 +59,7 @@ const DropdownItem = ({ title, items, onClose }) => {
       <MenuList className="w-52 bg-[var(--color-bg-card)] border border-[var(--color-border)] text-[var(--color-text-gray)] z-[200]">
         {items.map((item, i) => (
           <Link key={i} to={item.path} onClick={onClose}>
-            <MenuItem className="hover:text-[var(--color-gold-main)] hover:bg-[var(--color-bg-main)]">
+            <MenuItem className="hover:text-[var(--color-gold-main)] hover:bg-[var(--color-bg-main)] ">
               {item.name}
             </MenuItem>
           </Link>
