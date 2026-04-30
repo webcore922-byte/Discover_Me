@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import { lazy,Suspense } from "react";
 import Home from "./pages/Home/Home.jsx";
 import Header from "./components/Header/Header.jsx";
 import Footer from "./components/Footer/Footer.jsx";
@@ -17,7 +18,7 @@ import SuccessStories from "./pages/SuccessStories/SuccessStories.jsx";
 import SuccessStoriesCr from "./pages/SuccessStories/SuccessStoriesCr/SuccessStoriesCr.jsx";
 import SuccessStoriesMo from "./pages/SuccessStories/SuccessStoriesMo/SuccessStoriesMo.jsx";
 import SuccessStoriesLeo from "./pages/SuccessStories/SuccessStoriesLeo/SuccessStoriesLeo.jsx";
-import AcceptableTalent from "./pages/AcceptableTalent/AcceptableTalent.jsx";
+const AcceptableTalent = lazy(() => import("./pages/AcceptableTalent/AcceptableTalent.jsx"));
 import DecisionMakingSkills from "./pages/More/Blog/DecisionMakingSkills/DecisionMakingSkills.jsx";
 import Fitness from "./pages/More/Blog/Fitness/Fitness.jsx";
 import InjuryPrevention from "./pages/More/Blog/InjuryPrevention/InjuryPrevention.jsx";
@@ -57,7 +58,14 @@ const App = () => {
         <Route path="/success-stories-cr" element={<SuccessStoriesCr />} />
         <Route path="/success-stories-mo" element={<SuccessStoriesMo />} />
         <Route path="/success-stories-leo" element={<SuccessStoriesLeo />} />
-        <Route path="/acceptable-talent" element={<AcceptableTalent/>} />
+       <Route 
+  path="/acceptable-talent" 
+  element={
+    <Suspense fallback={<div className="text-gradient-gold text-center mt-10">جاري التحميل...</div>}>
+      <AcceptableTalent />
+    </Suspense>
+  } 
+/>
         <Route
           path="/decision-making-skills"
           element={<DecisionMakingSkills />}
