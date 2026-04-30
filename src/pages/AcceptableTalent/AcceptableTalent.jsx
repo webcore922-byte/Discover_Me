@@ -1,13 +1,18 @@
 import { GiDiamondTrophy } from "react-icons/gi";
+
 import React, { useEffect, useState } from "react";
 import { HiOutlineRefresh } from "react-icons/hi"; 
 import { MdOutlineErrorOutline } from "react-icons/md"; 
+import {useTheme} from "../Context/ThemeContext";
 
 const AcceptableTalent = () => {
   const [players, setPlayers] = useState([]);
   const [loadplayers, setLoadPlayers] = useState(true);
   const [errorplayers, setErrorPlayers] = useState(null);
   const [VideoError, setVideoError] = useState(false);
+  const { theme } = useTheme();
+  const lightBg = "bg-[url('../bg_Acceptable_talent_light.jpeg')]";
+  const darkBg = "bg-[url('../bg_Acceptable_talent.jpeg')]";
   const getData = async () => {
     try {
       const url = import.meta.env.VITE_API_URL;
@@ -30,10 +35,12 @@ const AcceptableTalent = () => {
 
 
 return (
-    <div
-      className="min-h-screen bg-[url('../bg_Acceptable_talent.jpeg')] bg-fixed bg-cover bg-center relative"
-      dir="rtl"
+    
+    <div 
+      className={`min-h-screen ${theme === 'light' ? lightBg : darkBg} bg-fixed bg-cover bg-center relative`} 
     >
+
+
       <div className="relative z-10 py-8 px-6 lg:px-20 text-right">
         <div className="max-w-4xl mx-auto mb-4 -mt-6 text-center flex flex-col items-center">
           <h1 className="text-gradient-gold text-xl md:text-4xl font-bold mb-4 tracking-tight drop-shadow-md flex items-center justify-center gap-3">
@@ -41,13 +48,13 @@ return (
             <span>المواهب المقبولة</span>
           </h1>
 
-          <p className="text-gray-400 text-sm md:text-base max-w-2xl mx-auto leading-relaxed px-4">
-            هنا يمكنك استكشاف قائمة بأفضل المواهب التي تم قبولها بعد اجتياز مراحل التقييم المختلفة.
-            <br />
-            يتم اختبار هذه المواهب بناءً على معايير دقيقة تشمل الأداء، الإبداع، والقدرة على التطور.
-            <br />
-            هذه الصفحة تعكس مستوى الجودة الذي نسعى إليه داخل المنصة.
-          </p>
+
+  <p className="dark:text-[var(--color-text-gray)] text-[var(--color-text-main)] text-sm md:text-base max-w-2xl mx-auto leading-relaxed px-4">
+    هنا يمكنك استكشاف قائمة بأفضل المواهب التي تم قبولها بعد اجتياز مراحل التقييم المختلفة.<br />
+    يتم اختبار هذه المواهب بناءً على معايير دقيقة تشمل الأداء، الإبداع، والقدرة على التطور. هذه<br />
+    الصفحة تعكس مستوى الجودة الذي نسعى إليه داخل المنصة.
+  </p>
+
 
           <div className="flex items-center justify-center mt-6 w-full max-w-[300px]">
             <div className="h-[3px] flex-grow bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent opacity-50"></div>
