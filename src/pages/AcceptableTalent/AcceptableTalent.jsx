@@ -43,7 +43,7 @@ return (
 
       <div className="relative z-10 py-8 px-6 lg:px-20 text-right">
         <div className="max-w-4xl mx-auto mb-4 -mt-6 text-center flex flex-col items-center">
-          <h1 className="text-gradient-gold text-xl md:text-4xl font-bold mb-4 tracking-tight drop-shadow-md flex items-center justify-center gap-3">
+          <h1 className="text-gradient-gold text-xl md:text-4xl font-bold mb-4 tracking-tight drop-shadow-md flex items-center justify-center gap-3 py-2cl">
             <GiDiamondTrophy className="text-xl md:text-3xl icon-gold" />
             <span>المواهب المقبولة</span>
           </h1>
