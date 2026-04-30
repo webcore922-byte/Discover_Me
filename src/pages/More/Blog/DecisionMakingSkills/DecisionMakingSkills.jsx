@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { useTheme } from "../../../Context/ThemeContext";
+import { useTheme } from '../../../../context/ThemeContext';
 const DecisionMakingContent = () => {
   const { theme } = useTheme();
   return (

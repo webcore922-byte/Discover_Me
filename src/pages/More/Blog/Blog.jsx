@@ -1,6 +1,6 @@
 import React, { Suspense, lazy } from "react";
 import { useNavigate } from "react-router-dom";
-import { useTheme } from "../../Context/ThemeContext";
+import { useTheme } from "../../../context/ThemeContext";
 const BlogContent = () => {
   const navigate = useNavigate();
   const { theme } = useTheme();

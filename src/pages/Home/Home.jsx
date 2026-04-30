@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { useTheme } from '../Context/ThemeContext';
+import { useTheme } from '../../context/ThemeContext';
 const HomeContent = () => {
   const goldGradient = "from-[#fcf6ba] via-[#d4af37] to-[#aa8b2c]";
   const hoverGoldGradient = "hover:from-[#d4af37] hover:via-[#aa8b2c] hover:to-[#8a6216]";

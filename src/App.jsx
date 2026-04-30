@@ -28,8 +28,7 @@ import SportsPsychology from "./pages/More/Blog/SportsPsychology/SportsPsycholog
 import NotFound from "./pages/NotFound/NotFound.jsx";
 import ContactUs from "./pages/ContactUs/ContactUs.jsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy.jsx";
-import { useTheme } from "./pages/Context/ThemeContext.jsx";
-import { ThemeProvider } from "./pages/Context/ThemeContext.jsx";
+import { ThemeProvider } from "./context/ThemeContext.jsx";
 
 
 const App = () => {
