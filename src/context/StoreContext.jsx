@@ -7,43 +7,42 @@ export const StoreProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // مصفوفة البيانات (تحاكي الـ API)
   const sportsData = [
     {
       id: 1,
       title: "حذاء كرة قدم مرلين للرجال من بلو بيرد",
       price: 349,
-      image: "./public/download (1).webp",
+      image: "/download (1).webp",
     },
     {
       id: 2,
       title: "Adidas Al Nassr FC",
       price: 689,
-      image: "./public/Adidas-Al-Nassr-FC-2526-Home-Yellow-Jersey-768x768.jpg",
+      image: "/Adidas-Al-Nassr-FC-2526-Home-Yellow-Jersey-768x768.jpg",
     },
     {
       id: 3,
       title: "Al Hilal Kit - الهلال",
       price: 299,
-      image: "./public/download.webp",
+      image: "/download.webp",
     },
     {
       id: 4,
       title: "World Ball",
       price: 149,
-      image: "./public/World Ball.avif",
+      image: "/World Ball.avif",
     },
     {
       id: 5,
       title: "Real Madrid World Ball",
       price: 349,
-      image: "./public/M World Ball.avif",
+      image: "/M World Ball.avif",
     },
     {
       id: 6,
       title: "Nike Mercurial Boots",
       price: 749,
-      image: "./public/download (2).webp",
+      image: "/download (2).webp",
     },
   ];
 
