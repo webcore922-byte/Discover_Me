@@ -7,7 +7,7 @@ import {
   CardBody,
   CardHeader,
 } from "@material-tailwind/react";
-import { useTheme } from "../Context/ThemeContext";
+import { useTheme } from "../../context/ThemeContext";
 
 const SuccessStoriesContent = () => {
   const { theme } = useTheme();

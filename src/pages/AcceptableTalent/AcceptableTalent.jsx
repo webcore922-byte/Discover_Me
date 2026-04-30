@@ -1,5 +1,5 @@
 import { GiDiamondTrophy } from "react-icons/gi";
-import {useTheme} from "../Context/ThemeContext";
+import { useTheme } from "../../context/ThemeContext";
 const AcceptableTalent = () => {
   const { theme } = useTheme();
   const lightBg = "bg-[url('../bg_Acceptable_talent_light.jpeg')]";

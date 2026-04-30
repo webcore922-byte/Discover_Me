@@ -18,7 +18,7 @@ import {
   SunIcon, 
   MoonIcon 
 } from "@heroicons/react/24/outline";
-import { useTheme } from "../../pages/Context/ThemeContext";
+import { useTheme } from "../../context/ThemeContext";
 const menuStructure = [
   { name: "الرئيسية", path: "/" },
   { 

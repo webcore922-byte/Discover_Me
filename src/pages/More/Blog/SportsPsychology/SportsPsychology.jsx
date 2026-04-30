@@ -7,7 +7,7 @@ import {
   ListItem,
   ListItemPrefix,
 } from "@material-tailwind/react";
-import { useTheme } from "../../../Context/ThemeContext";
+import { useTheme } from "../../../../context/ThemeContext";
 const SportsPsychology = () => {
   const { theme } = useTheme();
   return (
