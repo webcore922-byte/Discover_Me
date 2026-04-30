@@ -42,8 +42,15 @@
   background: var(--gold-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+
 }
 
+.icon-gold {
+  color: var(--color-gold-main);
+  filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.5))
+          drop-shadow(0 0 10px rgba(212, 175, 55, 0.3));
+  transition: 0.3s ease;
+}
 
 .glass-card {
   background: rgba(36, 40, 41, 0.8);
