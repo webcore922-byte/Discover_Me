@@ -21,13 +21,12 @@ const store = () => {
 
   return (
     <div className="min-h-screen bg-[#0f0f0f] text-white font-sans" dir="rtl">
-      {/* Navbar مع عرض محتويات السلة عند الـ Hover */}
       <nav className="bg-[#1a1a1a] p-4 sticky top-0 z-50 border-b border-gray-800">
         <div className="container mx-auto flex items-center justify-between">
           <Typography className="text-[#c5a059] font-black text-2xl">
             GOALSTORE
           </Typography>
-          {/* شريط البحث (JS Dynamic Search placeholder) */}
+
           <div className="flex-1 max-w-md relative hidden md:block">
             <Input
               type="text"
@@ -52,7 +51,7 @@ const store = () => {
                   {cart.length}
                 </span>
               )}
-              {/* قائمة السلة السريعة */}
+
               <div className="absolute left-0 mt-2 w-64 bg-[#1a1a1a] border border-gray-800 rounded-xl p-4 hidden group-hover:block z-50">
                 <Typography className="text-[#c5a059] font-bold mb-2 text-sm">
                   السلة ({cart.length})
@@ -84,7 +83,6 @@ const store = () => {
       </nav>
 
       <main className="container mx-auto px-4 py-8">
-        {/* Hero Section */}
         <div className="relative rounded-[2rem] bg-gradient-to-l from-[#111] to-black h-[350px] mb-12 border border-gray-800 flex items-center px-10 overflow-hidden">
           <div className="z-10 max-w-lg">
             <Typography
@@ -107,7 +105,6 @@ const store = () => {
           />
         </div>
 
-        {/* قسم المنتجات */}
         <div ref={productsRef} className="mb-10">
           <Typography
             variant="h3"
