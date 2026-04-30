@@ -99,7 +99,7 @@ const store = () => {
             </Button>
           </div>
           <img
-            src="./public/pngtree-soccer-player-in-motion-3d-rendering-of-kicking-a-soccer-ball-image_3772157.jpg"
+            src="/pngtree-soccer-player-in-motion-3d-rendering-of-kicking-a-soccer-ball-image_3772157.jpg"
             className="absolute left-0 bottom-0 h-80 opacity-60 hidden lg:block"
             alt="players"
           />
