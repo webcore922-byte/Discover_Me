@@ -10,17 +10,17 @@ import { FaSearch, FaShoppingCart, FaBars } from "react-icons/fa";
 
 import { useStore } from "../../context/StoreContext";
 import ProductCard from "../../components/ProductCard";
-
+import { useTheme } from "../../context/ThemeContext";
 const store = () => {
   const { products, cart, loading } = useStore();
   const productsRef = useRef(null);
-
+  const { theme } = useTheme();
   const scrollToProducts = () => {
     productsRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <div className="min-h-screen bg-[#0f0f0f] text-white font-sans" dir="rtl">
+    <div className="min-h-screen bg-[#0f0f0f] text-white font-sans" >
       <nav className="bg-[#1a1a1a] p-4 sticky top-0 z-50 border-b border-gray-800">
         <div className="container mx-auto flex items-center justify-between">
           <Typography className="text-[#c5a059] font-black text-2xl">
