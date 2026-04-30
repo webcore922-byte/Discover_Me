@@ -8,11 +8,8 @@ import Coaches from "./pages/About/Coaches/Coaches.jsx";
 import Login from "./pages/Login/Login.jsx";
 import Register from "./pages/Register/Register.jsx"; 
 import Blog from "./pages/More/Blog/Blog.jsx";
-
-// استيراد صفحات الداش بورد
 import Dashboard from "./pages/More/Dashboard/Dashboard.jsx"; 
 import PlayerDetails from "./pages/More/Dashboard/PlayerDetails/PlayerDetails.jsx";
-
 import NewsAndUpdates from "./pages/More/NewsAndUpdates/NewsAndUpdates.jsx";
 import Profile from "./pages/Profile/Profile.jsx";
 import FieldTests from "./pages/Programs/FieldTests/FieldTests.jsx";
@@ -34,11 +31,11 @@ import NotFound from "./pages/NotFound/NotFound.jsx";
 import ContactUs from "./pages/ContactUs/ContactUs.jsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy.jsx";
 
-// --- مكون حماية الأدمن (النسخة النهائية المعتمدة) ---
+
 const ProtectedAdminRoute = ({ children }) => {
   const { currentUser, loading } = useAuth();
 
-  // 1. لو لسه بيحمل من الـ LocalStorage، بنعرض لودر بسيط
+
   if (loading) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
@@ -47,15 +44,15 @@ const ProtectedAdminRoute = ({ children }) => {
     );
   }
 
-  // 2. التحقق من أن المستخدم مسجل دخول وصلاحيته "أدمن"
+
   const isAdmin = currentUser && currentUser.role === 'admin';
 
   if (!isAdmin) {
-    // لو مش أدمن، بنرجعه للهوم فوراً
+    
     return <Navigate to="/" replace />;
   }
 
-  // 3. لو أدمن، بنعرض المحتوى المطلوب (الداش بورد)
+ 
   return children;
 };
 
@@ -65,15 +62,12 @@ const App = () => {
       <div className="app-container">
         <Header />
         <Routes>
-          {/* مسارات عامة */}
           <Route path="/" element={ <Home /> } />
           <Route path="/about-the-platform" element={<AboutThePlatform />} />
           <Route path="/coaches" element={<Coaches />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/blog" element={<Blog />} />
-
-          {/* مسارات لوحة التحكم - محمية للأدمن فقط */}
           <Route 
             path="/dashboard" 
             element={
@@ -90,8 +84,6 @@ const App = () => {
               </ProtectedAdminRoute>
             } 
           />
-
-          {/* باقي مسارات المنصة */}
           <Route path="/news-and-updates" element={<NewsAndUpdates />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/field-tests" element={<FieldTests />} />
@@ -111,8 +103,6 @@ const App = () => {
           <Route path="/sports-psychology" element={<SportsPsychology />} />
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-
-          {/* صفحة 404 */}
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
