@@ -7,8 +7,13 @@ import {
   CardBody,
   CardHeader,
 } from "@material-tailwind/react";
+import { useTheme } from "../../contexts/ThemeContext/ThemeContext";
+
 
 const SuccessStoriesContent = () => {
+  const { theme } = useTheme();
+  const lightimage = "bg-[url('../bg-success_stories-light.png')]";
+  const darkimage = "bg-[url('../bg_success_stories.jpeg')]";
   const navigate = useNavigate();
   const stories = [
     {
@@ -42,7 +47,8 @@ const SuccessStoriesContent = () => {
   ];
 
   return (
-    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-cover bg-center bg-[url('../bg_success_stories.jpeg')]">
+    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-cover bg-center bg-[url('../bg_success_stories-light.png')] 
+    dark:bg-[url('../bg_success_stories.jpeg')]">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <Typography
@@ -54,7 +60,7 @@ const SuccessStoriesContent = () => {
           <div className="w-24 h-1 bg-[var(--color-gold-main)] mx-auto mb-6 rounded-full"></div>
           <Typography
             variant="lead"
-            className="text-[var(--color-text-white)] max-w-3xl mx-auto text-sm"
+            className="dark:text-[var(--color-text-white)] max-w-3xl mx-auto text-sm text-[var(--color-text-main)]"
           >
             النجاح ليس صدفة، بل هو نتيجة جهد مستمر ودعم صحيح. في هذا القسم،
             نسلط الضوء على قصص أشخاص بدأوا بإرادة قوية وحققوا نجاحات ملحوظة. هذه
@@ -86,7 +92,8 @@ const SuccessStoriesContent = () => {
                 >
                   {story.name} - {story.title}
                 </Typography>
-                <Typography className="text-[var(--color-text-gray)] mb-4 leading-relaxed">
+                <Typography className="dark:text-[var(--color-text-gray)] text-[var(--color-text-main)] 
+                mb-4 leading-relaxed">
                   {story.description}
                 </Typography>
 

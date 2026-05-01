@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider, useAuth } from "./contexts/AuthContext/AuthContext.jsx";
+
+import { lazy,Suspense } from "react";
 import Home from "./pages/Home/Home.jsx";
 import Header from "./components/Header/Header.jsx";
 import Footer from "./components/Footer/Footer.jsx";
@@ -20,7 +21,7 @@ import SuccessStories from "./pages/SuccessStories/SuccessStories.jsx";
 import SuccessStoriesCr from "./pages/SuccessStories/SuccessStoriesCr/SuccessStoriesCr.jsx";
 import SuccessStoriesMo from "./pages/SuccessStories/SuccessStoriesMo/SuccessStoriesMo.jsx";
 import SuccessStoriesLeo from "./pages/SuccessStories/SuccessStoriesLeo/SuccessStoriesLeo.jsx";
-import AcceptableTalent from "./pages/AcceptableTalent/AcceptableTalent";
+const AcceptableTalent = lazy(() => import("./pages/AcceptableTalent/AcceptableTalent.jsx"));
 import DecisionMakingSkills from "./pages/More/Blog/DecisionMakingSkills/DecisionMakingSkills.jsx";
 import Fitness from "./pages/More/Blog/Fitness/Fitness.jsx";
 import InjuryPrevention from "./pages/More/Blog/InjuryPrevention/InjuryPrevention.jsx";
@@ -30,6 +31,9 @@ import SportsPsychology from "./pages/More/Blog/SportsPsychology/SportsPsycholog
 import NotFound from "./pages/NotFound/NotFound.jsx";
 import ContactUs from "./pages/ContactUs/ContactUs.jsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy.jsx";
+import { ThemeProvider } from "./contexts/ThemeContext/ThemeContext.jsx";
+import { AuthProvider, useAuth } from "./contexts/AuthContext/AuthContext.jsx";
+
 
 
 const ProtectedAdminRoute = ({ children }) => {
@@ -59,6 +63,7 @@ const ProtectedAdminRoute = ({ children }) => {
 const App = () => {
   return (
     <AuthProvider>
+      <ThemeProvider>
       <div className="app-container">
         <Header />
         <Routes>
@@ -107,8 +112,10 @@ const App = () => {
         </Routes>
         <Footer />
       </div>
+      </ThemeProvider>
     </AuthProvider>
   );
 };
 
 export default App;
+

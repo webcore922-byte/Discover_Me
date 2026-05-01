@@ -1,6 +1,8 @@
 import React, { Suspense, lazy } from 'react';
+import { useTheme } from '../../../../contexts/ThemeContext/ThemeContext';
 
 const DecisionMakingContent = () => {
+  const { theme } = useTheme();
   return (
     <div className="min-h-screen bg-[var(--color-bg-main)] text-[var(--color-text-white)] font-sans" dir="rtl">
       
@@ -16,7 +18,7 @@ const DecisionMakingContent = () => {
           <h1 className="text-4xl md:text-6xl font-extrabold text-[var(--color-gold-main)] mb-4 drop-shadow-2xl">
             مهارة اتخاذ القرار
           </h1>
-          <p className="text-xl text-[var(--color-text-gray)] max-w-2xl mx-auto">
+          <p className="text-xl dark:text-[var(--color-text-gray)] text-[var(--color-bg-main)] max-w-2xl mx-auto">
             الفرق بين "لاعب الكرة" العادي و"النجم" الذي يصنع الفارق في أجزاء من الثانية.
           </p>
         </div>
@@ -25,7 +27,7 @@ const DecisionMakingContent = () => {
       <div className="max-w-4xl mx-auto px-6 py-16">
         
         <section className="mb-16">
-          <p className="text-xl leading-relaxed text-[var(--color-text-gray)] border-r-4 border-[var(--color-border)] pr-6">
+          <p className="text-xl leading-relaxed dark:text-[var(--color-text-gray)] text-[var(--color-text-main)] border-r-4 border-[var(--color-border)] pr-6">
             هل سألت نفسك يوماً لماذا يبدو العباقرة وكأنهم يلعبون في زمن أبطأ من الباقين؟ 
             السر ليس في السرعة البدنية فقط، بل في سرعة <span className="text-[var(--color-gold-main)] font-bold text-2xl px-1">اتخاذ القرار</span>. 
             في كرة القدم، القرار الصحيح الذي يتأخر ثانية واحدة يتحول فوراً لقرار خاطئ.
@@ -37,7 +39,7 @@ const DecisionMakingContent = () => {
           <h2 className="text-2xl font-bold text-[var(--color-gold-main)] mb-6 flex items-center gap-3">
              ما هو "اتخاذ القرار" في الملعب؟
           </h2>
-          <p className="text-[var(--color-text-white)] text-lg leading-loose opacity-90">
+          <p className="dark:text-[var(--color-text-white)] text-[var(--color-text-main)] text-lg leading-loose opacity-90">
             هو العملية الذهنية التي يختار فيها اللاعب أفضل تصرف ممكن (تمرير، تسديد، مراوغة، أو تمركز) 
             بناءً على المعلومات التي يجمعها من الملعب، وفي أقل جزء من الثانية تحت ضغط الخصم العالي.
           </p>
@@ -50,10 +52,10 @@ const DecisionMakingContent = () => {
             { title: "الإدراك (Perception)", desc: "فهم المساحات الخالية. أين هي الثغرة؟ ومن هو الزميل الذي في وضعية تسمح له بالتقدم؟" },
             { title: "التنفيذ (Execution)", desc: "هنا يأتي دور المهارة الفنية، فما فائدة القرار العبقري إذا كنت لا تملك دقة التنفيذ?" }
           ].map((item, index) => (
-            <div key={index} className="bg-[var(--color-bg-card)] p-8 rounded-xl border border-[var(--color-border)]/20 text-center transition-all hover:border-[var(--color-gold-main)] group">
-              <div className="text-[var(--color-border)] group-hover:text-[var(--color-gold-main)] text-4xl mb-4 font-black transition-colors">0{index + 1}</div>
+            <div key={index} className="bg-[var(--color-bg-card)] p-8 rounded-xl border dark:border-[var(--color-border)]/20 border-[var(--color-gold-main)] text-center group">
+              <div className="dark:text-[var(--color-border)] text-[var(--color-gold-main)] text-4xl mb-4 font-black">0{index + 1}</div>
               <h3 className="text-[var(--color-gold-main)] text-xl font-bold mb-3">{item.title}</h3>
-              <p className="text-[var(--color-text-gray)] text-sm leading-relaxed">{item.desc}</p>
+              <p className="dark:text-[var(--color-text-gray)] text-[var(--color-text-main)] text-sm leading-relaxed">{item.desc}</p>
             </div>
           ))}
         </div>
@@ -65,16 +67,16 @@ const DecisionMakingContent = () => {
             <div className="flex flex-col md:flex-row gap-6 bg-[var(--color-bg-card)]/50 p-6 rounded-lg border-r-2 border-[var(--color-gold-main)]">
               <span className="text-[var(--color-gold-main)] font-bold text-2xl">01</span>
               <div>
-                <h4 className="text-xl font-bold mb-2 uppercase tracking-wide text-[var(--color-text-white)]">ارفع رأسك عن الكرة</h4>
-                <p className="text-[var(--color-text-gray)]">تدرب على استلام الكرة وتحريكها دون النظر إليها مباشرة. الكرة في مكانها، لكن الخصم يتحرك بسرعة.</p>
+                <h4 className="text-xl font-bold mb-2 uppercase tracking-wide dark:text-[var(--color-text-white)] text-[var(--color-gold-main)]">ارفع رأسك عن الكرة</h4>
+                <p className="dark:text-[var(--color-text-gray)] text-[var(--color-text-main)]">تدرب على استلام الكرة وتحريكها دون النظر إليها مباشرة. الكرة في مكانها، لكن الخصم يتحرك بسرعة.</p>
               </div>
             </div>
 
             <div className="flex flex-col md:flex-row gap-6 bg-[var(--color-bg-card)]/50 p-6 rounded-lg border-r-2 border-[var(--color-gold-main)]">
               <span className="text-[var(--color-gold-main)] font-bold text-2xl">02</span>
               <div>
-                <h4 className="text-xl font-bold mb-2 uppercase tracking-wide text-[var(--color-text-white)]">مبدأ السهل الممتنع</h4>
-                <p className="text-[var(--color-text-gray)]">أحياناً يكون القرار الأفضل هو التمريرة الأبسط. لا تحاول تعقيد اللعب إذا كان التمرير للخلف سيفتح ثغرة جديدة.</p>
+                <h4 className="text-xl font-bold mb-2 uppercase tracking-wide dark:text-[var(--color-text-white)] text-[var(--color-gold-main)]">مبدأ السهل الممتنع</h4>
+                <p className="dark:text-[var(--color-text-gray)] text-[var(--color-text-main)]">أحياناً يكون القرار الأفضل هو التمريرة الأبسط. لا تحاول تعقيد اللعب إذا كان التمرير للخلف سيفتح ثغرة جديدة.</p>
               </div>
             </div>
           </div>
@@ -87,8 +89,8 @@ const DecisionMakingContent = () => {
         </div>
 
         <div className="bg-[var(--color-bg-card)] p-10 rounded-2xl border-2 border-[var(--color-gold-main)] text-center shadow-[0_10px_40px_rgba(212,175,55,0.1)]">
-          <h3 className="text-[var(--color-text-white)] text-3xl font-bold mb-4">هل أنت مستعد لتكون "عقل" فريقك؟</h3>
-          <p className="text-[var(--color-text-gray)] mb-8 max-w-md mx-auto text-lg">
+          <h3 className="dark:text-[var(--color-text-white)] text-[var(--color-gold-main)] text-3xl font-bold mb-4">هل أنت مستعد لتكون "عقل" فريقك؟</h3>
+          <p className="dark:text-[var(--color-text-gray)] text-[var(--color-text-main)] mb-8 max-w-md mx-auto text-lg">
             ابدأ اليوم بتطبيق تمارين المسح البصري في تدريباتك وراقب كيف سيتغير مستوى رؤيتك للملعب.
           </p>
         </div>

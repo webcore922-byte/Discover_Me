@@ -1,13 +1,17 @@
 import React, { Suspense, lazy } from "react";
 import { Card, Typography } from "@material-tailwind/react";
 import { FaTrophy, FaFutbol, FaStar, FaAward } from "react-icons/fa";
+import { useTheme } from "../../../contexts/ThemeContext/ThemeContext";
 
 const SuccessStoriesMoContent = () => {
+   const { theme } = useTheme();
+    const lightimage = "bg-[url('./bg_success_stories_light_3.jpeg')]";
+    const darkimage = "bg-[url('./bg_success_stories_3.jpeg')]";
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden font-sans bg-[var(--color-bg-main)]">
    
       <img
-        src="./bg_success_stories_3.jpeg"
+        src={theme === "light" ? "./bg_success_stories_light_3.jpeg" : "./bg_success_stories_3.jpeg"}
         className="w-full h-full object-cover object-bottom  fixed inset-0 z-0 max-w-full"
         alt="Success Stories Background"
         loading="lazy"
@@ -99,7 +103,7 @@ const SuccessStoriesMoContent = () => {
     <Typography className="text-gradient-gold font-bold mb-1 text-right text-sm md:text-base">
       من المقاولون إلى ليفربول
     </Typography>
-    <Typography className="text-[var(--color-text-gray)] text-xs md:text-base leading-relaxed text-right">
+    <Typography className="dark:text-[var(--color-text-gray)] text-[var(--color-text-main)] text-xs md:text-base leading-relaxed text-right">
       بدأت المسيرة من نادي المقاولون العرب، ومنه انطلق إلى بازل السويسري حيث تُوج بلقب الدوري. خاض بعدها تجارب احترافية في أندية تشيلسي، وفيورنتينا، وروما، ساهمت في صقل موهبته قبل العودة للدوري الإنجليزي من بوابة ليفربول في صفقة تاريخية عام 2017.
     </Typography>
   </Card>
@@ -124,7 +128,7 @@ const SuccessStoriesMoContent = () => {
         <Typography className="text-gradient-gold font-bold mb-1 text-right text-sm md:text-base">
           بطل ليفربول الأسطوري
         </Typography>
-        <Typography className="text-[var(--color-text-gray)] text-xs md:text-base leading-relaxed text-right">
+        <Typography className="dark:text-[var(--color-text-gray)] text-[var(--color-text-main)] text-xs md:text-base leading-relaxed text-right">
           في قلعة 'الأنفيلد'، صنع صلاح تاريخاً استثنائياً؛ حيث قاد الفريق لاستعادة لقب الدوري الإنجليزي بعد غياب دام 30 عاماً، كما حقق لقب دوري أبطال أوروبا، وأصبح الهداف التاريخي للنادي في عهد الدوري الممتاز.
         </Typography>
       </Card>
@@ -154,7 +158,7 @@ const SuccessStoriesMoContent = () => {
 
 
       <Card className="w-full border border-[var(--color-border)] bg-[var(--color-bg-card)] rounded-xl p-5 md:p-6 shadow-inner ">
-        <Typography className="text-[var(--color-text-gray)]  sm:text-xs md:text-sm leading-relaxed text-right ">
+        <Typography className="dark:text-[var(--color-text-gray)] text-[var(--color-text-main)]  sm:text-xs md:text-sm leading-relaxed text-right ">
     لم تكن رحلة محمد صلاح مجرد نجاح رياضي، بل هي قصة إصرار بدأت برحلة يومية شاقة من قريته إلى القاهرة. يمثل صلاح الآن نموذجاً عالمياً للطموح، فقد أثبت أن العمل الجاد والإيمان بالهدف هما الطريق للوصول من الملاعب الناشئة إلى قمة الكرة العالمية
         </Typography>
       </Card>

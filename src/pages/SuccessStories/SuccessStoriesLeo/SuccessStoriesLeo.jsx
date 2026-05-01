@@ -1,14 +1,18 @@
 import React, { Suspense, lazy } from "react";
 import { Card, Typography } from "@material-tailwind/react";
 import { FaTrophy, FaFutbol, FaStar, FaAward } from "react-icons/fa";
+import { useTheme } from "../../../contexts/ThemeContext/ThemeContext";
 
 const SuccessStoriesMessiContent = () => {
+     const { theme } = useTheme();
+     const lightimage = "bg-[url('./bg_success_stories_light_3.jpeg')]";
+     const darkimage = "bg-[url('./bg_success_stories_3.jpeg')]";
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden font-sans bg-[var(--color-bg-main)]">
    
      
       <img
-        src="./bg_success_stories_3.jpeg" 
+        src={theme === "light" ? "./bg_success_stories_light_3.jpeg" : "./bg_success_stories_3.jpeg"} 
         className="w-full h-full object-cover object-bottom fixed inset-0 z-0 max-w-full"
         alt="Messi Success Stories Background"
         loading="lazy"
@@ -95,7 +99,7 @@ const SuccessStoriesMessiContent = () => {
     <Typography className="text-gradient-gold font-bold mb-1 text-right text-sm md:text-base">
       " من روزاريو إلى قمة "كامب نو
     </Typography>
-    <Typography className="text-[var(--color-text-gray)] text-xs md:text-base leading-relaxed text-right">
+    <Typography className="dark:text-[var(--color-text-gray)] text-[var(--color-text-main)] text-xs md:text-base leading-relaxed text-right">
        تحدى ميسي نقص النمو لينتقل من الأرجنتين إلى برشلونة، حيث وقع عقده الأول على منديل ورقي. في "لا ماسيا"، تفجرت موهبته ليصبح الهداف التاريخي للنادي وللدوري الإسباني، محققاً كل الألقاب الممكنة بقميص البلوجرانا..
     </Typography>
   </Card>
@@ -119,7 +123,7 @@ const SuccessStoriesMessiContent = () => {
         <Typography className="text-gradient-gold font-bold mb-1 text-right text-sm md:text-base">
          الكمال الكروي في قطر 2022
         </Typography>
-        <Typography className="text-[var(--color-text-gray)] text-xs md:text-base leading-relaxed text-right">
+        <Typography className="dark:text-[var(--color-text-gray)] text-[var(--color-text-main)] text-xs md:text-base leading-relaxed text-right">
            بعد سنوات من الانتظار، حقق ليو حلمه الأكبر برفع كأس العالم في قطر، مكملاً بذلك مجموعة ألقابه الأسطورية، ومثبتاً أحقيته بلقب "الأفضل في التاريخ" بعد أن قاد الأرجنتين لمنصات التتويج القارية والعالمية..
         </Typography>
       </Card>
@@ -144,7 +148,7 @@ const SuccessStoriesMessiContent = () => {
                   ليونيل ميسي - سحر لا ينتهي
                 </Typography>
                 <Card className="w-full border border-[var(--color-border)] bg-[var(--color-bg-card)] rounded-xl p-5 md:p-6 shadow-inner ">
-                  <Typography className="text-[var(--color-text-gray)] sm:text-xs md:text-sm leading-relaxed text-right ">
+                  <Typography className="dark:text-[var(--color-text-gray)] text-[var(--color-text-main)] sm:text-xs md:text-sm leading-relaxed text-right ">
                     قصة ميسي ليست مجرد أهداف وبطولات، بل هي درس في الوفاء، التواضع، والقدرة على مواجهة الصعاب الجسدية. يظل ليو ملهماً للملايين، حيث أثبت أن الموهبة الفطرية حين تقترن بالاحترافية العالية، تخلق معجزات تدوم للأبد في ذاكرة كرة القدم.
                   </Typography>
                 </Card>
