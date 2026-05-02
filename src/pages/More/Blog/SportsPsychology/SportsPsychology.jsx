@@ -7,9 +7,7 @@ import {
   ListItem,
   ListItemPrefix,
 } from "@material-tailwind/react";
-import { useTheme } from "../../../../context/ThemeContext";
 const SportsPsychology = () => {
-  const { theme } = useTheme();
   return (
     <div className="bg-[var(--color-bg-main)] min-h-screen p-6 lg:p-12 text-[var(--color-text-gray)] font-sans">
       <div className="max-w-6xl mx-auto">

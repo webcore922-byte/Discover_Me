@@ -10,11 +10,9 @@ import { FaSearch, FaShoppingCart, FaBars } from "react-icons/fa";
 
 import { useStore } from "../../context/StoreContext";
 import ProductCard from "../../components/ProductCard";
-import { useTheme } from "../../context/ThemeContext";
 const store = () => {
   const { products, cart, loading } = useStore();
   const productsRef = useRef(null);
-  const { theme } = useTheme();
   const scrollToProducts = () => {
     productsRef.current?.scrollIntoView({ behavior: "smooth" });
   };

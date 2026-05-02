@@ -1,7 +1,7 @@
 import React, { Suspense, lazy } from "react";
 import { Card, Typography } from "@material-tailwind/react";
 import { FaTrophy, FaFutbol, FaStar, FaAward } from "react-icons/fa";
-import { useTheme } from "../../../context/ThemeContext";
+import { useTheme } from "../../../context/ThemeContext/ThemeContext";
 const SuccessStoriesMoContent = () => {
    const { theme } = useTheme();
     const lightimage = "bg-[url('./bg_success_stories_light_3.jpeg')]";

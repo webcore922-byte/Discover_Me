@@ -1,8 +1,8 @@
 import { GiDiamondTrophy } from "react-icons/gi";
-import { useTheme } from "../../context/ThemeContext";
 import React, { useEffect, useState } from "react";
 import { HiOutlineRefresh } from "react-icons/hi"; 
 import { MdOutlineErrorOutline } from "react-icons/md"; 
+import { useTheme } from "../../context/ThemeContext/ThemeContext";
 
 const AcceptableTalent = () => {
   const [players, setPlayers] = useState([]);
