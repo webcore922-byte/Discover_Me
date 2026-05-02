@@ -1,8 +1,6 @@
 
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaFeatherAlt } from "react-icons/fa";
-import { useTheme } from "../../context/ThemeContext";
 const Footer = () => {
-  const { theme } = useTheme();
   const currentYear = new Date().getFullYear();
 
   return (
