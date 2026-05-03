@@ -1,8 +1,8 @@
 import React from 'react'
-import { useTheme } from '../../../context/ThemeContext/ThemeContext'
+
 
 const AboutThePlatform = () => {
-  const { theme } = useTheme()
+
   return (
      <main className="bg-[var(--color-bg-main)] text-[var(--color-text-white)] min-h-screen flex flex-col overflow-x-hidden">
       

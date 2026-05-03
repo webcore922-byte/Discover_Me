@@ -8,6 +8,7 @@ import {
   CardHeader,
 } from "@material-tailwind/react";
 
+
 const SuccessStoriesContent = () => {
   const lightimage = "bg-[url('../bg-success_stories-light.png')]";
   const darkimage = "bg-[url('../bg_success_stories.jpeg')]";

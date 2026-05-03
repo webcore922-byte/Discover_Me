@@ -1,16 +1,21 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense,lazy } from 'react';
+
 const DecisionMakingContent = () => {
+
   return (
     <div className="min-h-screen bg-[var(--color-bg-main)] text-[var(--color-text-white)] font-sans" dir="rtl">
       
       <div className="relative h-[450px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-black/60 z-10"></div>
+        <div className="absolute inset-0 bg-[var(--color-overlay)]/60 z-10"></div>
+
         <img 
           src="/decision-making.jpeg" 
           alt="Football Strategy" 
-          loading="lazy"
+          loading="eager"
+          decoding="async"
           className="absolute inset-0 w-full h-full lg:h-fit object-cover"
         />
+
         <div className="relative z-20 text-center px-4">
           <h1 className="text-4xl md:text-6xl font-extrabold text-[var(--color-gold-main)] mb-4 drop-shadow-2xl">
             مهارة اتخاذ القرار
@@ -42,7 +47,10 @@ const DecisionMakingContent = () => {
           </p>
         </div>
 
-        <h2 className="text-3xl font-bold mb-10 text-center text-[var(--color-gold-main)]">مثلث اتخاذ القرار الناجح</h2>
+        <h2 className="text-3xl font-bold mb-10 text-center text-[var(--color-gold-main)]">
+          مثلث اتخاذ القرار الناجح
+        </h2>
+
         <div className="grid md:grid-cols-3 gap-8 mb-20">
           {[
             { title: "المسح (Scanning)", desc: "قبل أن تصلك الكرة، يجب أن تكون قد نظرت حولك 3 مرات لمعرفة أماكن الزملاء والخصم." },
@@ -50,30 +58,46 @@ const DecisionMakingContent = () => {
             { title: "التنفيذ (Execution)", desc: "هنا يأتي دور المهارة الفنية، فما فائدة القرار العبقري إذا كنت لا تملك دقة التنفيذ?" }
           ].map((item, index) => (
             <div key={index} className="bg-[var(--color-bg-card)] p-8 rounded-xl border dark:border-[var(--color-border)]/20 border-[var(--color-gold-main)] text-center group">
-              <div className="dark:text-[var(--color-border)] text-[var(--color-gold-main)] text-4xl mb-4 font-black">0{index + 1}</div>
-              <h3 className="text-[var(--color-gold-main)] text-xl font-bold mb-3">{item.title}</h3>
-              <p className="dark:text-[var(--color-text-gray)] text-[var(--color-text-main)] text-sm leading-relaxed">{item.desc}</p>
+              <div className="dark:text-[var(--color-border)] text-[var(--color-gold-main)] text-4xl mb-4 font-black">
+                0{index + 1}
+              </div>
+              <h3 className="text-[var(--color-gold-main)] text-xl font-bold mb-3">
+                {item.title}
+              </h3>
+              <p className="dark:text-[var(--color-text-gray)] text-[var(--color-text-main)] text-sm leading-relaxed">
+                {item.desc}
+              </p>
             </div>
           ))}
         </div>
 
         <div className="space-y-12 mb-20">
-          <h2 className="text-3xl font-bold text-[var(--color-gold-main)] border-b border-[var(--color-border)] pb-4 inline-block">خطوات عملية لتطوير مهاراتك</h2>
+          <h2 className="text-3xl font-bold text-[var(--color-gold-main)] border-b border-[var(--color-border)] pb-4 inline-block">
+            خطوات عملية لتطوير مهاراتك
+          </h2>
           
           <div className="grid gap-8">
             <div className="flex flex-col md:flex-row gap-6 bg-[var(--color-bg-card)]/50 p-6 rounded-lg border-r-2 border-[var(--color-gold-main)]">
               <span className="text-[var(--color-gold-main)] font-bold text-2xl">01</span>
               <div>
-                <h4 className="text-xl font-bold mb-2 uppercase tracking-wide dark:text-[var(--color-text-white)] text-[var(--color-gold-main)]">ارفع رأسك عن الكرة</h4>
-                <p className="dark:text-[var(--color-text-gray)] text-[var(--color-text-main)]">تدرب على استلام الكرة وتحريكها دون النظر إليها مباشرة. الكرة في مكانها، لكن الخصم يتحرك بسرعة.</p>
+                <h4 className="text-xl font-bold mb-2 uppercase tracking-wide dark:text-[var(--color-text-white)] text-[var(--color-gold-main)]">
+                  ارفع رأسك عن الكرة
+                </h4>
+                <p className="dark:text-[var(--color-text-gray)] text-[var(--color-text-main)]">
+                  تدرب على استلام الكرة وتحريكها دون النظر إليها مباشرة. الكرة في مكانها، لكن الخصم يتحرك بسرعة.
+                </p>
               </div>
             </div>
 
             <div className="flex flex-col md:flex-row gap-6 bg-[var(--color-bg-card)]/50 p-6 rounded-lg border-r-2 border-[var(--color-gold-main)]">
               <span className="text-[var(--color-gold-main)] font-bold text-2xl">02</span>
               <div>
-                <h4 className="text-xl font-bold mb-2 uppercase tracking-wide dark:text-[var(--color-text-white)] text-[var(--color-gold-main)]">مبدأ السهل الممتنع</h4>
-                <p className="dark:text-[var(--color-text-gray)] text-[var(--color-text-main)]">أحياناً يكون القرار الأفضل هو التمريرة الأبسط. لا تحاول تعقيد اللعب إذا كان التمرير للخلف سيفتح ثغرة جديدة.</p>
+                <h4 className="text-xl font-bold mb-2 uppercase tracking-wide dark:text-[var(--color-text-white)] text-[var(--color-gold-main)]">
+                  مبدأ السهل الممتنع
+                </h4>
+                <p className="dark:text-[var(--color-text-gray)] text-[var(--color-text-main)]">
+                  أحياناً يكون القرار الأفضل هو التمريرة الأبسط. لا تحاول تعقيد اللعب إذا كان التمرير للخلف سيفتح ثغرة جديدة.
+                </p>
               </div>
             </div>
           </div>
@@ -86,7 +110,9 @@ const DecisionMakingContent = () => {
         </div>
 
         <div className="bg-[var(--color-bg-card)] p-10 rounded-2xl border-2 border-[var(--color-gold-main)] text-center shadow-[0_10px_40px_rgba(212,175,55,0.1)]">
-          <h3 className="dark:text-[var(--color-text-white)] text-[var(--color-gold-main)] text-3xl font-bold mb-4">هل أنت مستعد لتكون "عقل" فريقك؟</h3>
+          <h3 className="dark:text-[var(--color-text-white)] text-[var(--color-gold-main)] text-3xl font-bold mb-4">
+            هل أنت مستعد لتكون "عقل" فريقك؟
+          </h3>
           <p className="dark:text-[var(--color-text-gray)] text-[var(--color-text-main)] mb-8 max-w-md mx-auto text-lg">
             ابدأ اليوم بتطبيق تمارين المسح البصري في تدريباتك وراقب كيف سيتغير مستوى رؤيتك للملعب.
           </p>

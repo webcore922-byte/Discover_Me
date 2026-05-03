@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, Typography, Button } from "@material-tailwind/react";
-import { useStore } from "../context/StoreContext";
+import { useStore } from "../contexts/StoreContext/StoreContext";
+
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useStore();

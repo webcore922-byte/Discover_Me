@@ -8,8 +8,9 @@ import {
 } from "@material-tailwind/react";
 import { FaSearch, FaShoppingCart, FaBars } from "react-icons/fa";
 
-import { useStore } from "../../context/StoreContext";
+
 import ProductCard from "../../components/ProductCard";
+import { useStore } from "../../contexts/StoreContext/StoreContext";
 const store = () => {
   const { products, cart, loading } = useStore();
   const productsRef = useRef(null);

@@ -25,19 +25,23 @@
 }
 
 [data-theme="light"] {
-  --color-bg-main: #f9f9f7;
-  --color-bg-card: #ffffff;
-  --color-gold-main: #b8860b;
-  --color-btn-start: #d4af37;
-  --color-btn-end: #a68946;
-  --color-border: #e5d5b0;
-  --color-text-main: #2d2d2d;
-  --color-text-gray: #757575;
-  --gold-gradient: linear-gradient(to right, #a67c00, #bf953f, #d4af37, #bf953f, #a67c00);
-  --gold-glow: 0 4px 15px rgba(184, 134, 11, 0.15);
-  --card-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08);
-}
+--color-bg-main: #f7f7f5;
+--color-bg-card: #ffffff; /* كريمي خفيف بدل أبيض فاقع */
 
+  --color-gold-main: #caa74a;
+  --color-btn-start: #e6c76a;
+  --color-btn-end: #b8933c;
+
+  --color-border: #ddd0b0;
+
+  --color-text-main: #2a2a2a;
+  --color-text-gray: #6b6b6b;
+
+  --gold-gradient: linear-gradient(to right, #b8933c, #d4af37, #f0d67a, #d4af37, #b8933c);
+
+  --gold-glow: 0 8px 25px rgba(184, 134, 11, 0.22);
+  --card-shadow: 0 15px 40px -10px rgba(0, 0, 0, 0.12);
+}
 .text-gradient-gold {
   background: var(--gold-gradient);
   -webkit-background-clip: text;
@@ -121,4 +125,22 @@
 
 .timeline-line {
   background: linear-gradient(90deg, transparent, var(--color-border), transparent);
+}
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-spin-slow {
+  animation: spin-slow 3s linear infinite;
+}
+/* تنسيق أزرار سويت أليرت لتمشي مع البراند */
+.swal2-styled.swal2-confirm {
+  background-image: linear-gradient(to right, #D4AF37, #F2D472) !important;
+  color: black !important;
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3) !important;
+  border: none !important;
+}
+
+.swal2-popup {
+  font-family: 'Tajawal', sans-serif; /* أو أي خط عربي بتستخدمه */
 }
