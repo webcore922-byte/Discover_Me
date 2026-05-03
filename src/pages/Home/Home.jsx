@@ -1,10 +1,12 @@
-import React, { Suspense } from 'react';
+import React, { Suspense ,lazy } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext/AuthContext';
 
 const HomeContent = () => {
   const goldGradient = "from-[#fcf6ba] via-[#d4af37] to-[#aa8b2c]";
   const hoverGoldGradient = "hover:from-[#d4af37] hover:via-[#aa8b2c] hover:to-[#8a6216]";
+  const lightimage = "bg-[url('../bg-home-light.jpeg')]";
+  const darkimage = "bg-[url('../bg_home_Ar.jpeg')]";
   const { user } = useAuth();
   const navigate = useNavigate();
 

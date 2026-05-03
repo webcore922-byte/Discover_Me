@@ -1,8 +1,5 @@
-import React, { Suspense } from 'react';
-import { useTheme } from '../../../../contexts/ThemeContext/ThemeContext';
-
+import React, { Suspense ,lazy} from 'react';
 const InjuryPreventionContent = () => {
-  const { theme } = useTheme();
 
   return (
     <div className="min-h-screen bg-[var(--color-bg-main)] text-[var(--color-text-white)] font-sans selection:bg-[var(--color-gold-main)] selection:text-black">

@@ -36,6 +36,7 @@ import { AuthProvider, useAuth } from "./contexts/AuthContext/AuthContext.jsx";
 
 
 
+
 const ProtectedAdminRoute = ({ children }) => {
   const { currentUser, loading } = useAuth();
 

@@ -1,10 +1,8 @@
 import React, { Suspense } from "react";
 import { useNavigate } from "react-router-dom";
-import { useTheme } from "../../../contexts/ThemeContext/ThemeContext";
 
 const BlogContent = () => {
   const navigate = useNavigate();
-  const { theme } = useTheme();
 
   const articles = [
     {

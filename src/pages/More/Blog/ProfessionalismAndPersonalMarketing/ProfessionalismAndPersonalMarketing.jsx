@@ -1,8 +1,6 @@
-import React, { Suspense } from 'react';
-import { useTheme } from '../../../../contexts/ThemeContext/ThemeContext';
 
+import React, { Suspense, lazy } from 'react';
 const ProfessionalismContent = () => {
-  const { theme } = useTheme();
 
   return (
     <div className="min-h-screen bg-[var(--color-bg-main)] text-[var(--color-text-white)] font-sans" dir="rtl">

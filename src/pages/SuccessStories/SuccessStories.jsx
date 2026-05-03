@@ -7,11 +7,9 @@ import {
   CardBody,
   CardHeader,
 } from "@material-tailwind/react";
-import { useTheme } from "../../contexts/ThemeContext/ThemeContext";
 
 
 const SuccessStoriesContent = () => {
-  const { theme } = useTheme();
   const lightimage = "bg-[url('../bg-success_stories-light.png')]";
   const darkimage = "bg-[url('../bg_success_stories.jpeg')]";
   const navigate = useNavigate();

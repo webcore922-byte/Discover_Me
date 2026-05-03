@@ -20,6 +20,8 @@ import {
 } from "@heroicons/react/24/outline";
 import { useTheme } from "../../contexts/ThemeContext/ThemeContext";
 
+
+
 const menuStructure = [
   { name: "الرئيسية", path: "/" },
   { 
@@ -75,17 +77,17 @@ const MobileDropdown = ({ title, items, onClose }) => {
   return (
     <li className="flex flex-col">
       <div 
-        className="flex items-center justify-between cursor-pointer py-3 px-3 rounded-lg hover:bg-[#1A1D1E] hover:text-[var(--color-gold-main)] transition-all duration-200 text-lg"
+        className="flex items-center justify-between cursor-pointer py-3 px-3 rounded-lg hover:bg-[var(--color-bg-main)] hover:text-[var(--color-gold-main)] transition-all duration-200 text-lg"
         onClick={() => setIsOpen(!isOpen)}
       >
         <span>{title}</span>
         <ChevronDownIcon className={`h-4 w-4 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
       </div>
       {isOpen && (
-        <ul className="mr-6 flex flex-col gap-1 border-r border-[var(--color-border)] mt-1 mb-2">
+        <ul className="mr-6 flex flex-col gap-1 border-r border-[var(--color-border)] mt-1 mb-2 ">
           {items.map((item, i) => (
             <Link key={i} to={item.path} onClick={onClose}>
-              <li className="text-md py-2 px-4 rounded-md text-[var(--color-text-gray)] opacity-80 hover:text-[var(--color-gold-main)] hover:bg-[#1A1D1E] cursor-pointer">
+              <li className="text-md py-2 px-4 rounded-md text-[var(--color-text-gray)] opacity-80 hover:text-[var(--color-gold-main)] hover:bg-[var(--color-bg-main)] cursor-pointer">
                 {item.name}
               </li>
             </Link>
@@ -118,7 +120,7 @@ const HeaderContent = () => {
               item.subItems ? 
               <MobileDropdown key={i} title={item.name} items={item.subItems} onClose={handleClose} /> :
               <Link key={i} to={item.path} onClick={handleClose}>
-                <li className="text-lg py-3 px-3 rounded-lg hover:bg-[#1A1D1E] hover:text-[var(--color-gold-main)] transition-all cursor-pointer">{item.name}</li>
+                <li className="text-lg py-3 px-3 rounded-lg hover:bg-[var(--color-bg-main)] hover:text-[var(--color-gold-main)] transition-all cursor-pointer">{item.name}</li>
               </Link>
             ))}
           </ul>
@@ -164,13 +166,14 @@ const HeaderContent = () => {
 
         <div className="md:hidden">
           <Collapse open={open}>
-            <div className="mt-4 bg-[var(--color-bg-card)] border-t border-[var(--color-border)] pt-4 max-h-[70vh] overflow-y-auto">
+            <div className="mt-4 bg-[var(--color-bg-card)] text-[var(--color-text-gray)] border-t border-[var(--color-border)] pt-4 max-h-[70vh] overflow-y-auto">
               <ul className="flex flex-col gap-1">
                 {[...menuStructure, ...extraSidebarItems].map((item, i) => (
                   item.subItems ? 
                   <MobileDropdown key={i} title={item.name} items={item.subItems} onClose={handleClose} /> :
                   <Link key={i} to={item.path} onClick={handleClose}>
-                    <li className="text-lg py-3 px-3 rounded-lg hover:bg-[#1A1D1E] hover:text-[var(--color-gold-main)] transition-all">{item.name}</li>
+                    <li className="text-lg py-3 px-3 rounded-lg hover:bg-[var(--color-bg-main)] text-[var(--color-text-gray)] hover:text-[var(--color-gold-main)] transition-all">
+                      {item.name}</li>
                   </Link>
                 ))}
                 <li className="mt-4 pb-4">
