@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
 
   const updatePlayerState = (updatedPlayerData) => {
     setUser(prevUser => {
-      const newUser = { ...prevUser, player: updatedPlayerData };
+      const newUser = { ...prevUser, player: updatedPlayerData, role: updatedPlayerData.status === 'approved' ? 'player' : 'user' };
       localStorage.setItem('scoutUser', JSON.stringify(newUser));
       return newUser;
     });
@@ -51,16 +51,14 @@ export const AuthProvider = ({ children }) => {
         const players = await playerRes.json();
         const playerInfo = players[0] || null;
 
-        const isApproved = playerInfo && playerInfo.status === 'approved';
-        
         const fullUser = { 
           ...userData, 
-          role: isApproved ? 'player' : 'user', 
+          role: (playerInfo && playerInfo.status === 'approved') ? 'player' : 'user', 
           player: playerInfo 
         };
         
         saveUser(fullUser);
-        navigate(isApproved ? '/profile' : '/');
+        navigate(fullUser.role === 'player' ? '/profile' : '/');
         return { success: true, role: fullUser.role };
       }
       
@@ -72,13 +70,10 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData, isPlayer) => {
     try {
-      const cleanPhone = String(userData.phone).trim();
       const allUsersRes = await fetch(`${API_URL}/users`);
       const allUsers = await allUsersRes.json();
 
-      if (allUsers.some(u => u.username === userData.username)) return { success: false, message: 'اسم المستخدم مكرر' };
       if (allUsers.some(u => u.email === userData.email)) return { success: false, message: 'الإيميل مكرر' };
-      if (allUsers.some(u => u.phone === cleanPhone)) return { success: false, message: 'الموبايل مكرر' };
 
       const userRes = await fetch(`${API_URL}/users`, {
         method: 'POST',
@@ -87,7 +82,7 @@ export const AuthProvider = ({ children }) => {
           username: userData.username,
           email: userData.email,
           password: userData.password,
-          phone: cleanPhone,
+          phone: userData.phone,
           createdAt: new Date().toISOString()
         })
       });
@@ -113,7 +108,8 @@ export const AuthProvider = ({ children }) => {
             rating: "0.0",
             status: "pending",
             tags: [],
-            image: `https://api.dicebear.com/7.x/avataaars/svg?seed=${userData.username}`
+            image: `https://api.dicebear.com/7.x/avataaars/svg?seed=${userData.username}`,
+            skills: { pace: 0, shooting: 0, passing: 0, dribbling: 0, defending: 0, physical: 0 }
           })
         });
       }
@@ -132,15 +128,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ 
-      user, 
-      currentUser: user, 
-      login, 
-      register, 
-      logout, 
-      loading, 
-      updatePlayerState 
-    }}>
+    <AuthContext.Provider value={{ user, currentUser: user, login, register, logout, loading, updatePlayerState }}>
       {children}
     </AuthContext.Provider>
   );

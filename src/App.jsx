@@ -39,7 +39,6 @@ import { AuthProvider, useAuth } from "./contexts/AuthContext/AuthContext.jsx";
 const ProtectedAdminRoute = ({ children }) => {
   const { currentUser, loading } = useAuth();
 
-
   if (loading) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">

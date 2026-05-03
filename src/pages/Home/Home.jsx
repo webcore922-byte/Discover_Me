@@ -1,17 +1,26 @@
-import React, { Suspense, lazy } from 'react';
-import { useTheme } from '../../contexts/ThemeContext/ThemeContext';
+import React, { Suspense } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext/AuthContext';
 
 const HomeContent = () => {
   const goldGradient = "from-[#fcf6ba] via-[#d4af37] to-[#aa8b2c]";
   const hoverGoldGradient = "hover:from-[#d4af37] hover:via-[#aa8b2c] hover:to-[#8a6216]";
-  const { theme } = useTheme();
-  const lightimage = "bg-[url('../bg-home-light.jpeg')]";
-  const darkimage = "bg-[url('../bg_home_Ar.jpeg')]";
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleUploadSkills = () => {
+    if (!user) {
+      navigate('/register', { state: { registerAsPlayer: true } });
+    } else if (user.role === 'user' && !user.player) {
+      navigate('/profile', { state: { openUpgradeForm: true } });
+    } else {
+      navigate('/profile');
+    }
+  };
 
   return (
     <main className="relative text-white overflow-hidden" >
       <section 
-
         className="relative flex items-center justify-start bg-cover bg-center px-6 md:px-24 
         bg-[url('../bg-home-light.jpeg')] dark:bg-[url('../bg_home_Ar.jpeg')]
          h-[calc(100vh-140px)]"
@@ -35,6 +44,7 @@ const HomeContent = () => {
 
           <div className="flex flex-col gap-3 w-fit">
             <button
+              onClick={handleUploadSkills}
               className={`bg-gradient-to-l ${goldGradient} ${hoverGoldGradient}
               text-black px-6 md:px-12 py-2 md:py-3
               rounded-lg font-bold text-sm md:text-xl
@@ -45,6 +55,7 @@ const HomeContent = () => {
             </button>
             
             <button
+              onClick={() => navigate('/acceptable-talent')}
               className={`bg-gradient-to-l ${goldGradient} ${hoverGoldGradient}
               text-black px-6 md:px-12 py-2 md:py-3
               rounded-lg font-bold text-sm md:text-xl

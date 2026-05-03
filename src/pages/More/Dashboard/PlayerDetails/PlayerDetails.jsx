@@ -3,11 +3,17 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import emailjs from '@emailjs/browser';
 
+const SUGGESTED_TAGS = [
+  "سرعة انفجارية", "مراوغ ماهر", "قناص أهداف", "صانع ألعاب ذكي", 
+  "ارتقاء عالي", "دقة تمرير", "قوة بدنية", "قطع كرات", "تسديدات بعيدة"
+];
+
 const PlayerDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [player, setPlayer] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [selectedTags, setSelectedTags] = useState([]); 
   
   const [skills, setSkills] = useState({
     pace: 5, shooting: 5, passing: 5, dribbling: 5, defending: 5, physical: 5
@@ -24,6 +30,7 @@ const PlayerDetails = () => {
       .then(data => {
         setPlayer(data);
         if(data.skills) setSkills(data.skills);
+        if(data.tags) setSelectedTags(data.tags); 
         setLoading(false);
       })
       .catch(err => {
@@ -32,6 +39,24 @@ const PlayerDetails = () => {
         setLoading(false);
       });
   }, [id, API_URL]);
+
+  const toggleTag = (tag) => {
+    if (selectedTags.includes(tag)) {
+      setSelectedTags(selectedTags.filter(t => t !== tag));
+    } else {
+      if (selectedTags.length < 3) {
+        setSelectedTags([...selectedTags, tag]);
+      } else {
+        Swal.fire({ 
+            title: 'الحد الأقصى 3 سمات فقط', 
+            icon: 'warning', 
+            background: '#1a1a1a', 
+            color: '#fff',
+            confirmButtonColor: '#D4AF37'
+        });
+      }
+    }
+  };
 
   const handleOpenVideo = () => {
     let url = player.videoUrl;
@@ -85,6 +110,7 @@ const PlayerDetails = () => {
           status, 
           rating: finalRating,
           skills: skills,
+          tags: selectedTags,
           rejectionReason: rejectionReason 
         }),
       });
@@ -170,6 +196,26 @@ const PlayerDetails = () => {
               <SkillSlider label="المراوغة (Dribbling)" value={skills.dribbling} onChange={(v) => setSkills({...skills, dribbling: v})} />
               <SkillSlider label="الدفاع (Defending)" value={skills.defending} onChange={(v) => setSkills({...skills, defending: v})} />
               <SkillSlider label="اللياقة (Physical)" value={skills.physical} onChange={(v) => setSkills({...skills, physical: v})} />
+            </div>
+
+            
+            <div className="mt-12 pt-8 border-t border-white/5">
+              <h4 className="text-[10px] font-black text-yellow-500 uppercase mb-5 tracking-[0.2em] italic">Player Characteristics / سمات الموهبة (اختر 3)</h4>
+              <div className="flex flex-wrap gap-3">
+                {SUGGESTED_TAGS.map(tag => (
+                  <button
+                    key={tag}
+                    onClick={() => toggleTag(tag)}
+                    className={`px-4 py-2 rounded-xl text-[11px] font-bold transition-all border ${
+                      selectedTags.includes(tag) 
+                      ? 'bg-[var(--gold-gradient)] text-black border-transparent shadow-[var(--gold-glow)] scale-105' 
+                      : 'bg-white/5 text-gray-500 border-white/10 hover:border-yellow-500/50'
+                    }`}
+                  >
+                    {tag}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 

@@ -197,6 +197,7 @@ const Dashboard = () => {
                 <tr className="bg-white/5 text-yellow-500 text-xs font-black uppercase">
                   <th className="p-6">اللاعب</th>
                   <th className="p-6 text-center">المركز</th>
+                  <th className="p-6 text-center">السمات</th>
                   <th className="p-6 text-center">فيديو</th>
                   <th className="p-6 text-center">التقييم</th>
                   <th className="p-6 text-center">العمليات</th>
@@ -216,6 +217,15 @@ const Dashboard = () => {
                     </td>
                     <td className="p-6 text-center">
                       <span className="px-3 py-1 bg-white/5 rounded-full text-[10px]">{player.position}</span>
+                    </td>
+                    <td className="p-6 text-center">
+                      <div className="flex flex-wrap gap-1 justify-center max-w-[120px] mx-auto">
+                        {player.tags && player.tags.map((tag, idx) => (
+                          <span key={idx} className="text-[8px] bg-yellow-500/10 text-yellow-500 border border-yellow-500/20 px-1.5 py-0.5 rounded">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
                     </td>
                     <td className="p-6 text-center">
                       <button onClick={() => window.open(player.videoUrl, '_blank')} className="text-red-500 hover:text-red-400">

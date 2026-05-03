@@ -1,10 +1,11 @@
-import React, { Suspense, lazy } from "react";
+import React, { Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../../../contexts/ThemeContext/ThemeContext";
 
 const BlogContent = () => {
   const navigate = useNavigate();
   const { theme } = useTheme();
+
   const articles = [
     {
       id: 1,
@@ -50,10 +51,8 @@ const BlogContent = () => {
         <h1 className="text-[var(--color-gold-main)] text-5xl font-bold mb-4">
           المدونة
         </h1>
-        <p className="dark:text-[var(--color-text-white)] text-[var(--color-text-main)] max-w-2xl mx-auto">
-          نقدم محتوى غني يشمل مقالات تعليمية، نصائح عملية، وأفكار تساعدك على
-          تطوير مهاراتك وتحقيق أهدافك. يتم إعداد المحتوى بواسطة متخصصين لضمان
-          الجودة والفائدة.
+        <p className="text-[var(--color-text-main)] dark:text-[var(--color-text-white)] max-w-2xl mx-auto">
+          نقدم محتوى غني يشمل مقالات تعليمية ونصائح عملية لتطوير مهاراتك.
         </p>
       </div>
 
@@ -61,14 +60,15 @@ const BlogContent = () => {
         {articles.map((article) => (
           <div
             key={article.id}
-            className="bg-[var(--color-bg-main)] border border-[var(--color-gold-main)] rounded-xl overflow-hidden p-4 group"
+            className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-xl overflow-hidden p-4 group"
           >
             <div className="relative h-56 overflow-hidden rounded-lg">
               <img
                 src={article.image}
                 alt={article.title}
                 loading="lazy"
-                className="w-full h-60 object-cover"
+                decoding="async"
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
             </div>
 
@@ -77,18 +77,15 @@ const BlogContent = () => {
                 {article.title}
               </h3>
 
-              <div className="flex items-center justify-between mt-4">
-                <div className="flex items-center gap-2"></div>
-                <button
-                  className="text-[var(--color-text-white)] bg-[var(--color-gold-main)] px-4 py-1 rounded-full text-sm "
-                  onClick={() => {
-                    navigate(article.path);
-                    window.scrollTo(0, 0);
-                  }}
-                >
-                  اقرأ المزيد
-                </button>
-              </div>
+              <button
+                className="text-[var(--color-text-white)] bg-[var(--color-gold-main)] px-4 py-1 rounded-full text-sm"
+                onClick={() => {
+                  navigate(article.path);
+                  window.scrollTo(0, 0);
+                }}
+              >
+                اقرأ المزيد
+              </button>
             </div>
           </div>
         ))}
@@ -101,10 +98,8 @@ const Blog = () => {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-[var(--color-bg-main)] flex items-center justify-center">
-          <div className="text-[var(--color-gold-main)] text-2xl font-bold animate-pulse">
-            جاري تحميل المدونة...
-          </div>
+        <div className="min-h-screen bg-[var(--color-bg-main)] flex items-center justify-center text-[var(--color-gold-main)]">
+          جاري التحميل...
         </div>
       }
     >
