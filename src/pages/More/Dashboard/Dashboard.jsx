@@ -155,18 +155,18 @@ const Dashboard = () => {
 
   if (error) return (
     <div className="min-h-screen bg-[--color-bg-main] flex flex-col items-center justify-center text-white gap-4">
-      <h2 className="text-2xl font-black text-yellow-500 uppercase">{error}</h2>
+      <h2 className="text-2xl font-black text-[var(--color-gold-main)] uppercase">{error}</h2>
       <button onClick={fetchPlayers} className="px-8 py-3 bg-white/5 border border-white/10 rounded-xl hover:bg-yellow-500 hover:text-black transition-all font-bold">إعادة المحاولة 🔄</button>
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-[--color-bg-main] text-white p-4 md:p-10" dir="rtl">
+    <div className="min-h-screen bg-[--color-bg-main] text-white p-4 md:p-10">
       <div className="max-w-7xl mx-auto space-y-10">
         
         <div className="flex flex-col md:flex-row justify-between items-end gap-8 border-b border-white/5 pb-10">
           <div className="space-y-2">
-            <h1 className="text-5xl font-black text-yellow-500 italic uppercase">لوحة التحكم</h1>
+            <h1 className="text-5xl font-black text-[var(--color-gold-main)] italic uppercase">لوحة التحكم</h1>
           </div>
           <div className="flex gap-6">
             <StatCard label="المعتمدين" value={players.filter(p => p.status === 'approved').length} color="#D4AF37" />
@@ -175,18 +175,18 @@ const Dashboard = () => {
         </div>
 
         <div className="flex flex-col md:flex-row gap-6 items-center justify-between">
-          <div className="flex bg-white/5 p-1 rounded-3xl border border-white/5 w-full md:max-w-md">
-            <button onClick={() => setActiveTab('pending')} className={`flex-1 py-3 rounded-2xl font-bold transition-all ${activeTab === 'pending' ? 'bg-yellow-500 text-black' : 'text-white/40'}`}>Pending</button>
-            <button onClick={() => setActiveTab('approved')} className={`flex-1 py-3 rounded-2xl font-bold transition-all ${activeTab === 'approved' ? 'bg-yellow-500 text-black' : 'text-white/40'}`}>Approved</button>
+          <div className="flex dark:bg-white/5 bg-gray-400 p-1 rounded-3xl border border-white/5 w-full md:max-w-md">
+            <button onClick={() => setActiveTab('pending')} className={`flex-1 py-3 rounded-2xl font-bold transition-all ${activeTab === 'pending' ? 'bg-[var(--color-gold-main)] text-black' : 'text-black'}`}>Pending</button>
+            <button onClick={() => setActiveTab('approved')} className={`flex-1 py-3 rounded-2xl font-bold transition-all ${activeTab === 'approved' ? 'bg-[var(--color-gold-main)] text-black' : 'text-black'}`}>Approved</button>
           </div>
 
           <select 
             value={positionFilter}
             onChange={(e) => setPositionFilter(e.target.value)}
-            className="bg-white/5 border border-white/10 rounded-xl px-6 py-3 text-white outline-none"
+            className="dark:bg-white/5 bg-[var(--color-text-main)] border border-white/10 rounded-xl px-6 py-3 text-white outline-none"
           >
-            <option value="All" className='bg-[--color-bg-main]'>جميع المراكز</option>
-            {POSITION_OPTIONS.map(opt => <option key={opt.value} value={opt.value} className='bg-[--color-bg-main]'>{opt.label}</option>)}
+            <option value="All" className='dark:bg-[--color-bg-main] bg-[--color-text-main]'>جميع المراكز</option>
+            {POSITION_OPTIONS.map(opt => <option key={opt.value} value={opt.value} className='dark:bg-[--color-bg-main] bg-[--color-text-main]'>{opt.label}</option>)}
           </select>
         </div>
 
@@ -194,7 +194,7 @@ const Dashboard = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-right">
               <thead>
-                <tr className="bg-white/5 text-yellow-500 text-xs font-black uppercase">
+                <tr className="bg-white/5 text-[var(--color-gold-main)] text-sm font-black uppercase">
                   <th className="p-6">اللاعب</th>
                   <th className="p-6 text-center">المركز</th>
                   <th className="p-6 text-center">السمات</th>
@@ -210,18 +210,18 @@ const Dashboard = () => {
                       <div className="flex items-center gap-4">
                         <img src={player.image} className="w-12 h-12 rounded-xl object-cover" alt="" />
                         <div>
-                          <p className="font-bold text-lg">{player.name}</p>
-                          <p className="text-xs text-gray-500">{player.userEmail}</p>
+                          <p className="font-bold text-lg dark:text-white text-black">{player.name}</p>
+                          <p className="text-xs text-gray-600">{player.userEmail}</p>
                         </div>
                       </div>
                     </td>
                     <td className="p-6 text-center">
-                      <span className="px-3 py-1 bg-white/5 rounded-full text-[10px]">{player.position}</span>
+                      <span className="px-3 py-1 dark:bg-white/5 bg-gray-600 rounded-full text-[10px]">{player.position}</span>
                     </td>
                     <td className="p-6 text-center">
                       <div className="flex flex-wrap gap-1 justify-center max-w-[120px] mx-auto">
                         {player.tags && player.tags.map((tag, idx) => (
-                          <span key={idx} className="text-[8px] bg-yellow-500/10 text-yellow-500 border border-yellow-500/20 px-1.5 py-0.5 rounded">
+                          <span key={idx} className="text-[8px] bg-[var(--color-gold-main)]/10 text-[var(--color-gold-main)] border border-[var(--color-gold-main)]/20 px-1.5 py-0.5 rounded">
                             {tag}
                           </span>
                         ))}
@@ -237,7 +237,7 @@ const Dashboard = () => {
                         type="number" step="0.1" max="10" min="0" 
                         defaultValue={player.rating} 
                         onBlur={(e) => updateRating(player.id, e.target.value)} 
-                        className="w-16 bg-transparent border border-white/10 rounded text-center text-yellow-500 font-bold" 
+                        className="w-16 bg-transparent border border-white/10 rounded text-center text-[var(--color-gold-main)] font-bold" 
                       />
                     </td>
                     <td className="p-6">
@@ -248,7 +248,7 @@ const Dashboard = () => {
                             <button onClick={() => changePlayerStatus(player, 'rejected')} className="px-4 py-2 bg-red-600/20 text-red-500 rounded-lg text-[10px] font-bold hover:bg-red-600 hover:text-white transition-all">REJECT</button>
                           </>
                         )}
-                        <button onClick={() => navigate(`/dashboard/player/${player.id}`)} className="px-4 py-2 bg-white/5 text-white rounded-lg text-[10px] font-bold">EDIT</button>
+                        <button onClick={() => navigate(`/dashboard/player/${player.id}`)} className="px-4 py-2 dark:bg-white/5 bg-gray-600 text-white rounded-lg text-[10px] font-bold">EDIT</button>
                         <button onClick={() => handleDeletePlayer(player.id, player.name)} className="px-4 py-2 bg-red-900/20 text-red-700 rounded-lg text-[10px] font-bold">DEL</button>
                       </div>
                     </td>
@@ -265,7 +265,7 @@ const Dashboard = () => {
 
 const StatCard = ({ label, value, color }) => (
   <div className="bg-white/5 px-8 py-4 rounded-2xl border border-white/5 text-center min-w-[140px]">
-    <p className="text-[10px] text-gray-500 mb-1">{label}</p>
+    <p className="text-[10px] text-[var(--color-text-gray)] mb-1">{label}</p>
     <p className="text-3xl font-black italic" style={{ color }}>{value}</p>
   </div>
 );

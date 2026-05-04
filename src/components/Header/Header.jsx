@@ -19,7 +19,8 @@ import {
   MoonIcon 
 } from "@heroicons/react/24/outline";
 import { useTheme } from "../../contexts/ThemeContext/ThemeContext";
-
+import IconProfile from "./Icon-Profile/Icon-Profile";
+import { useAuth } from "../../contexts/AuthContext/AuthContext";
 
 
 const menuStructure = [
@@ -102,6 +103,8 @@ const HeaderContent = () => {
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const { theme, toggleTheme } = useTheme();
+  const { user, logout } = useAuth();
+
 
   return (
     <div className="w-full relative">
@@ -124,9 +127,9 @@ const HeaderContent = () => {
               </Link>
             ))}
           </ul>
-          <div className="mt-auto pt-6 border-t border-[var(--color-border)] mb-4">
-             <Link to="/login" onClick={handleClose}><Button fullWidth variant="outlined" className="border-[var(--color-border)] text-[var(--color-text-gray)]">تسجيل الدخول / إنشاء حساب</Button></Link>
-          </div>
+        <div className="mt-auto pt-6 border-t border-[var(--color-border)] mb-4">
+   <IconProfile user={user} logout={logout} isMobile={true} onClose={handleClose} />
+</div>
         </div>
       </div>
 
@@ -159,9 +162,8 @@ const HeaderContent = () => {
               )}
             </IconButton>
 
-          <Link to="/login" className="hidden xl:block">
-            <Button variant="outlined" className="text-lg p-2 border-[var(--color-border)] text-[var(--color-text-gray)]">تسجيل الدخول / إنشاء حساب</Button>
-          </Link>
+         {/* استبدل Link القديم بهذا */}
+         <IconProfile user={user} logout={logout} />
         </div>
 
         <div className="md:hidden">
@@ -176,9 +178,9 @@ const HeaderContent = () => {
                       {item.name}</li>
                   </Link>
                 ))}
-                <li className="mt-4 pb-4">
-                  <Link to="/login" onClick={handleClose}><Button fullWidth variant="outlined" className="border-[var(--color-border)] text-[var(--color-text-gray)]">تسجيل الدخول / إنشاء حساب</Button></Link>
-                </li>
+                <li className="mt-4 pb-4 ">
+       < IconProfile user={user} logout={logout} isMobile={true} onClose={handleClose} />
+          </li>
               </ul>
             </div>
           </Collapse>

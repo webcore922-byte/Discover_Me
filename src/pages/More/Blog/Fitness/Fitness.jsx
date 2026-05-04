@@ -65,7 +65,7 @@ const Fitness = () => {
                                 <span className="text-[var(--color-gold-main)] font-bold tracking-widest text-sm block">
                                     FOOTBALL FITNESS
                                 </span>
-                                <h2 className="text-4xl font-bold text-[var(--color-text-white)] leading-tight">
+                                <h2 className="text-4xl font-bold dark:text-[var(--color-text-white)] text-[var(--color-text-main)] leading-tight">
                                     {section.title}
                                 </h2>
                                 <div className="h-1 w-20 bg-[var(--color-gold-main)]"></div>
@@ -110,7 +110,7 @@ const Fitness = () => {
             <section className="py-24 px-4 bg-[var(--color-bg-card)] mt-20 border-t border-[var(--color-border)]">
                 <div className="max-w-4xl mx-auto text-center space-y-6">
                     <h2 className="text-3xl font-bold text-[var(--color-gold-main)]">الخلاصة</h2>
-                    <p className="text-[var(--color-text-white)] text-2xl leading-relaxed max-w-3xl mx-auto">
+                    <p className="dark:text-[var(--color-text-white)] text-[var(--color-text-main)] text-2xl leading-relaxed max-w-3xl mx-auto">
                         "الموهبة تمنحك الفرصة، لكن اللياقة البدنية هي التي تجعلك تستغلها حتى الدقيقة الأخيرة."
                     </p>
                     <div className="pt-8">

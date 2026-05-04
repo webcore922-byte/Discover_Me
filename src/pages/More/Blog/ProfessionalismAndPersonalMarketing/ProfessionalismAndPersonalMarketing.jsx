@@ -15,7 +15,7 @@ const ProfessionalismContent = () => {
           </p>
         </div>
 
-        <div className="absolute top-10 left-[-5%] text-[15rem] font-black opacity-10 select-none pointer-events-none uppercase">
+        <div className="absolute top-10 left-[-5%] text-[15rem] font-black dark:text-white dark:opacity-10 text-black opacity-20 select-none pointer-events-none uppercase">
           Elite
         </div>
       </div>
