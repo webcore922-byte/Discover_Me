@@ -26,8 +26,7 @@
 
 [data-theme="light"] {
 --color-bg-main: #f7f7f5;
---color-bg-card: #ffffff; /* كريمي خفيف بدل أبيض فاقع */
-
+--color-bg-card: #ffffff; 
   --color-gold-main: #caa74a;
   --color-btn-start: #e6c76a;
   --color-btn-end: #b8933c;

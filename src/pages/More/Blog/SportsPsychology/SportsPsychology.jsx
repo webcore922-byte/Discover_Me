@@ -70,7 +70,7 @@ const SportsPsychology = () => {
             </article>
 
             <div className="relative p-8 rounded-3xl border-r-4 border-[var(--color-border)] bg-[var(--color-bg-card)]">
-              <Typography variant="h4" className="italic font-light text-[var(--color-text-white)]">
+              <Typography variant="h4" className="italic font-light dark:text-[var(--color-text-white)] text-[var(--color-text-main)]">
                 "الشخصية الذهنية هي ما يجعلك تكمل عندما يتوقف الجميع."
               </Typography>
             </div>
