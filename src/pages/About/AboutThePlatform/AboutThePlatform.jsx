@@ -1,6 +1,8 @@
 import React from 'react'
 
+
 const AboutThePlatform = () => {
+
   return (
      <main className="bg-[var(--color-bg-main)] text-[var(--color-text-white)] min-h-screen flex flex-col overflow-x-hidden">
       
