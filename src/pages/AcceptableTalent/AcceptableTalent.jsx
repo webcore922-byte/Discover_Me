@@ -122,9 +122,10 @@ return (
                   <div className="w-1/2">
                     <div className="aspect-[4/5] overflow-hidden rounded-xl border border-white/10">
                       <img
-                      loading="lazy"
+                      
                         src={image}
                         alt={name}
+                        loading="lazy"
                         className="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-500"
                       />
                     </div>
