@@ -1,44 +1,33 @@
+import { GiDiamondTrophy } from "react-icons/gi";
+import { ChevronDownIcon } from '@heroicons/react/24/outline'
 
 import React, { useEffect, useState } from "react";
-import { useTheme } from "../../contexts/ThemeContext/ThemeContext";
-
-const Icons = {
-  Trophy: () => (
-    <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon-gold">
-      <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22h10c0-1.76-.85-3.25-2.03-3.79-.5-.23-.97-.66-.97-1.21v-2.34c3.41-.43 6-3.32 6-6.66V4H4v4c0 3.34 2.59 6.23 6 6.66Z" />
-    </svg>
-  ),
-  ArrowDown: () => (
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-      <path d="m6 9 6 6 6-6" />
-    </svg>
-  ),
-};
+import { HiOutlineRefresh } from "react-icons/hi"; 
+import { MdOutlineErrorOutline } from "react-icons/md"; 
+import {useTheme} from "../../contexts/ThemeContext/ThemeContext";
 
 const AcceptableTalent = () => {
   const [players, setPlayers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [visibleCount, setVisibleCount] = useState(10);
-  const [error, setError] = useState(null);
-
+  const [loadplayers, setLoadPlayers] = useState(true);
+  const [errorplayers, setErrorPlayers] = useState(null);
+  const [visibleCount, setVisibleCount] = useState(8);
+  const [videoError, setVideoError] = useState(false);
+  const { theme } = useTheme();
+  const lightBg = "bg-[url('../bg_Acceptable_talent_light.jpeg')]";
+  const darkBg = "bg-[url('../bg_Acceptable_talent.jpeg')]";
   const getData = async () => {
     try {
-      setError(null);
-
       const url = import.meta.env.VITE_API_URL;
-      const req = await fetch(`${url}/players`);
-
-      if (!req.ok) {
-        throw new Error("فشل في الاتصال بالسيرفر");
-      }
-
+      const req = await fetch(`${url}/players`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
       const res = await req.json();
-      setPlayers(res.filter(p => p.status === "approved"));
+      setPlayers((res.filter(p => p.status == "approved")));
+      setLoadPlayers(false);
     } catch (e) {
-      console.error(e);
-      setError("تعذر تحميل البيانات حالياً، يرجى المحاولة لاحقاً");
-    } finally {
-      setLoading(false);
+      setErrorPlayers("حدث خطأ في تحميل البيانات، يرجى المحاولة لاحقاً");
+      setLoadPlayers(false);
     }
   };
 
@@ -47,168 +36,158 @@ const AcceptableTalent = () => {
   }, []);
 
   const handleLoadMore = () => {
-    setVisibleCount(prev => prev + 10);
+    setVisibleCount(prev => prev + 8);
   };
 
-  return (
-    <div className="min-h-screen bg-[var(--color-bg-main)] py-12 px-4 lg:px-20 text-right transition-colors" dir="rtl">
+return (
+    
+    <div 
+      className={`min-h-screen ${theme === 'light' ? lightBg : darkBg} bg-fixed bg-cover bg-center relative`} 
+    >
 
-      <header className="max-w-4xl mx-auto mb-12 text-center">
-        <div className="flex items-center justify-center gap-3 mb-4">
-          <Icons.Trophy />
-          <h1 className="text-gradient-gold text-3xl md:text-5xl font-black uppercase tracking-tighter">
-            المواهب المقبولة
+
+      <div className="relative z-10 py-8 px-6 lg:px-20 text-right">
+        <div className="max-w-4xl mx-auto mb-4 -mt-6 text-center flex flex-col items-center">
+          <h1 className="text-gradient-gold text-xl md:text-4xl font-bold mb-4 tracking-tight drop-shadow-md flex items-center justify-center gap-3 py-2">
+            <GiDiamondTrophy className="text-xl md:text-3xl icon-gold" />
+            <span>المواهب المقبولة</span>
           </h1>
-          <Icons.Trophy />
-        </div>
 
-        <p className="text-[var(--color-text-gray)] text-base md:text-lg max-w-2xl mx-auto font-bold leading-relaxed">
+
+  <p className="dark:text-[var(--color-text-gray)] text-[var(--color-text-main)] text-sm md:text-base max-w-2xl mx-auto leading-relaxed px-4">
           استكشف قائمة بأفضل المواهب التي تم قبولها بعد اجتياز مراحل التقييم المختلفة.
-        </p>
-      </header>
+  </p>
 
-      {error && (
-        <div className="max-w-3xl mx-auto text-center py-24 px-6">
-          <div className="relative bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-3xl p-10 overflow-hidden shadow-2xl">
 
-            <div className="absolute inset-0 opacity-10">
-              <div className="w-72 h-72 bg-red-500 rounded-full blur-3xl mx-auto mt-10"></div>
-            </div>
+          <div className="flex items-center justify-center mt-6 w-full max-w-[300px]">
+            <div className="h-[3px] flex-grow bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent opacity-50"></div>
+            <div className="mx-3 rotate-45 w-2 h-2 border border-[#D4AF37] transform"></div>
+            <div className="h-[3px] flex-grow bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent opacity-50"></div>
+          </div>
+        </div>
+      </div>
 
-            <div className="relative z-10">
-
-              <div className="text-red-500 text-5xl mb-6 animate-pulse">
-                ⚠️
-              </div>
-
-              <h2 className="text-2xl md:text-3xl font-black text-[var(--color-text-white)] mb-4">
-                حدث خطأ غير متوقع
-              </h2>
-
-              <p className="text-[var(--color-text-gray)] text-lg mb-8 leading-relaxed">
-                {error}
-              </p>
-
-              <div className="flex flex-col sm:flex-row justify-center gap-4">
-
-                <button
-                  onClick={() => {
-                    setLoading(true);
-                    getData();
-                  }}
-                  className="px-8 py-3 rounded-xl font-black text-black bg-[var(--color-gold-main)] hover:scale-105 active:scale-95 transition-all shadow-lg"
-                  style={{ boxShadow: "var(--gold-glow)" }}
-                >
-                  إعادة المحاولة
-                </button>
-
-                <button
-                  onClick={() => window.history.back()}
-                  className="px-8 py-3 rounded-xl font-black border border-[var(--color-border)] text-[var(--color-text-white)] hover:border-[var(--color-gold-main)] hover:text-[var(--color-gold-main)] transition-all"
-                >
-                  رجوع
-                </button>
-
-              </div>
-
-            </div>
+{loadplayers && (
+  <div className="flex flex-col items-center justify-center min-h-[400px] w-full">
+  
+    <div className="relative">
+      <div className="w-16 h-16 border-4 border-[#D4AF37]/20 border-t-[#D4AF37] rounded-full animate-spin"></div>
+      <div className="absolute inset-0 w-16 h-16 border-4 border-transparent border-b-[#D4AF37]/30 rounded-full animate-reverse-spin"></div>
+    </div>
+    
+    <p className="mt-4 text-[#D4AF37] font-medium animate-pulse">
+      جاري التحميل...
+    </p>
+  </div>
+)}
+      {errorplayers && (
+        <div className="relative max-w-[90%] sm:max-w-md mx-auto mt-10 px-2">
+          <div className="absolute inset-0 bg-[#D4AF37] opacity-[0.05] blur-[40px] sm:blur-[60px] rounded-full"></div>
+          <div className="relative overflow-hidden bg-[#1a1d1e]/95 border border-[#D4AF37]/20 backdrop-blur-xl rounded-[1.25rem] sm:rounded-[1.5rem] p-5 sm:p-8 text-center shadow-2xl">
+            <h3 className="text-lg sm:text-xl font-bold text-white mb-2">عذراً، حدث خطأ ما</h3>
+            <p className="text-gray-400 text-[12px] sm:text-[13px] mb-6">{errorplayers}</p>
+           <button
+  onClick={() => { setLoadPlayers(true); setErrorPlayers(null); getData(); }}
+  className="px-8 py-2.5 bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#aa771c] rounded-lg font-bold text-black flex items-center gap-2 mx-auto"
+>
+  <HiOutlineRefresh className="text-lg animate-spin-hover" /> 
+  إعادة المحاولة
+</button>
           </div>
         </div>
       )}
-
-      {loading && !error ? (
-        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
-          {[...Array(10)].map((_, i) => (
-            <div key={i} className="h-80 bg-[var(--color-bg-card)] rounded-2xl animate-pulse border border-[var(--color-border)]/10 opacity-50"></div>
-          ))}
-        </div>
-      ) : !error ? (
-        <>
-          <div className="max-w-[1400px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
-            {players.slice(0, visibleCount).map((player) => (
+      
+        <div className="max-w-7xl mx-auto px-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 pb-6">
+          {players.slice(0, visibleCount).map(({ id, name, position, location, rating, image, tags, age, videoUrl }) => (
               <div
-                key={player.id}
-                className="glass-card p-5 rounded-2xl flex flex-col border-[var(--color-border)]/20 transition-all hover:border-[var(--color-gold-main)]/50"
-                style={{ backgroundColor: 'var(--color-bg-card)' }}
+                key={id}
+                className="bg-[var(--color-bg-card)] border border-[#D4AF37]/20 rounded-2xl p-5 shadow-2xl hover:border-[#D4AF37]/60 transition-all duration-300 group"
               >
-                <div className="flex-grow">
-                  <div className="flex justify-between items-start gap-2 mb-4">
-                    <div className="flex flex-col gap-1 flex-1 min-w-0">
-                      <h3 className="text-[var(--color-text-white)] text-lg font-black leading-tight truncate">
-                        {player.name}
-                      </h3>
-
-                      <p className="text-[var(--color-gold-main)] text-[11px] font-black uppercase italic tracking-wider">
-                        كرة قدم
-                      </p>
-
-                      <p className="text-[var(--color-text-gray)] text-[12px] font-bold">
-                        {player.age} سنة
-                      </p>
-
-                      <p className="text-[var(--color-text-gray)] text-[12px] font-bold truncate">
-                        📍 {player.location}
-                      </p>
-
-                      <div className="mt-2 text-[var(--color-text-gray)] text-[12px] font-bold">
-                        التقييم:{" "}
-                        <span className="text-[var(--color-gold-main)] font-black italic">
-                          {player.rating || "9.0"}
-                        </span>
-                      </div>
+                <div className="flex flex-row items-start justify-between gap-4 mb-6">
+                  <div className="w-1/2 flex flex-col gap-1 text-right">
+                    <h3 className="text-white text-lg font-bold truncate leading-none">{name}</h3>
+                    <p className="text-[#D4AF37] text-xs font-semibold mt-1">{position}</p>
+                    <p className="text-gray-400 text-[13px]">{age} : سنة</p>
+                    <div className="flex items-center gap-1 text-gray-500 text-[11px] mt-1">
+                      <span className="text-[#D4AF37]">📍</span>
+                      <span>{location}</span>
                     </div>
-
-                    <div className="w-20 h-24 rounded-xl overflow-hidden border border-[var(--color-border)]/20 shrink-0 shadow-lg bg-black/40">
+                    <div className="mt-3 py-1 px-2 bg-black/30 rounded-md border border-white/5 inline-block w-fit text-right">
+                      <p className="text-gray-300 text-[10px] font-mono">
+                        <span className="text-gray-500 italic ml-1">التقييم:</span>
+                        {rating}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="w-1/2">
+                    <div className="aspect-[4/5] overflow-hidden rounded-xl border border-white/10">
                       <img
+                      
+                        src={image}
+                        alt={name}
                         loading="lazy"
-                        src={player.image}
-                        alt={player.name}
-                        className="w-full h-full object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-500"
+                        className="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-500"
                       />
                     </div>
                   </div>
-
-                  <div className="flex flex-wrap gap-1.5 mb-2 h-16 overflow-hidden content-start border-t border-white/5 pt-3">
-                    {player.tags?.map((tag, idx) => (
-                      <span key={idx} className="bg-[var(--color-gold-main)] text-black px-2.5 py-1 rounded-md text-[10px] font-black">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
                 </div>
 
-                <button
-                  onClick={() => player.videoUrl && window.open(player.videoUrl, "_blank")}
-                  className="w-full py-3.5 rounded-xl font-black text-black text-[11px] uppercase italic tracking-tighter hover:brightness-110 active:scale-95 transition-all shadow-lg"
-                  style={{ backgroundColor: 'var(--color-gold-main)', boxShadow: 'var(--gold-glow)' }}
-                >
-                  شاهد الفيديو الخاص به
-                </button>
+                <div className="flex flex-row flex-wrap gap-2 mb-6 justify-start">
+                  {tags?.map((tag, idx) => (
+                    <span key={idx} className="bg-black/40 text-[#D4AF37] border border-[#D4AF37]/30 px-2.5 py-1 rounded text-[10px] font-bold">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+               <button
+               onClick={() => {
+                 if (videoUrl) {
+                  window.open(videoUrl, "_blank");
+                  } else {
+                  setVideoError(true);
+                  setTimeout(() => setVideoError(false), 3000);
+                     }
+                     }}
+                         className="w-full py-3 rounded-xl font-bold text-[#1a1d1e] bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#aa771c] hover:scale-105 transition-all shadow-[0_0_15px_rgba(212,175,55,0.3)]"
+                               >
+                          شاهد الفيديو الخاص به           
+                      </button>
               </div>
             ))}
-          </div>
+        </div>
+        
+        {players.length > visibleCount ? (
+  <div className="flex justify-center pb-12 mt-6 relative z-10"> 
+    <button
+      onClick={handleLoadMore}
+      className="group flex flex-col items-center gap-3 transition-all duration-500 bg-transparent" 
+    >
+      <span className="text-[#D4AF37] font-bold text-[10px] md:text-xs uppercase tracking-[0.3em] group-hover:tracking-[0.5em] transition-all duration-500">
+        انقر لعرض المزيد
+      </span>
 
-          {players.length > visibleCount && (
-            <div className="flex justify-center mt-20 mb-6">
-              <button
-                onClick={handleLoadMore}
-                className="group relative flex flex-col items-center gap-4 transition-all duration-500"
-              >
-                <span className="relative text-[var(--color-gold-main)] font-black text-[10px] md:text-xs uppercase tracking-[0.4em] group-hover:tracking-[0.6em] transition-all duration-500">
-                  انقر لعرض المزيد
-                </span>
+      <div className="w-12 h-12 md:w-14 md:h-14 rounded-full border border-[#D4AF37]/30 flex items-center justify-center bg-transparent group-hover:border-[#D4AF37] transition-all duration-500 shadow-none group-hover:shadow-[0_0_20px_rgba(212,175,55,0.2)]">
+        <ChevronDownIcon 
+          className="w-5 h-5 md:w-6 md:h-6 text-[#D4AF37] animate-bounce" 
+          style={{ animationDuration: '2s' }} 
+        />
+      </div>
+    </button>
+  </div>
+) : null}
 
-                <div className="relative w-14 h-14 rounded-full border border-[var(--color-border)]/20 flex items-center justify-center">
-                  <Icons.ArrowDown />
-                </div>
-              </button>
-            </div>
-          )}
-        </>
-      ) : null}
-
+      <div className={`fixed bottom-10 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 transform ${videoError ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0 pointer-events-none"}`}>
+        <div className="bg-[#1a1d1e]/90 backdrop-blur-md border border-[#D4AF37]/50 px-6 py-3 rounded-full shadow-[0_10px_40px_rgba(0,0,0,0.7)] flex items-center gap-3">
+          <div className="w-2 h-2 bg-[#D4AF37] rounded-full animate-pulse"></div>
+          <p className="text-[#D4AF37] text-sm font-bold">عذراً، الفيديو غير متاح حاليًا</p>
+        </div>
+      </div> 
     </div>
   );
 };
+
+
+
 
 export default AcceptableTalent;
