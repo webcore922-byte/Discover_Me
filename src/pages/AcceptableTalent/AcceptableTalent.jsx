@@ -4,7 +4,7 @@ import { ChevronDownIcon } from '@heroicons/react/24/outline'
 import React, { useEffect, useState } from "react";
 import { HiOutlineRefresh } from "react-icons/hi"; 
 import { MdOutlineErrorOutline } from "react-icons/md"; 
-import {useTheme} from "../Context/ThemeContext";
+import {useTheme} from "../../contexts/ThemeContext/ThemeContext";
 
 const AcceptableTalent = () => {
   const [players, setPlayers] = useState([]);
