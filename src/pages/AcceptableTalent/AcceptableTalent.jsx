@@ -1,4 +1,5 @@
 import { GiDiamondTrophy } from "react-icons/gi";
+import { ChevronDownIcon } from '@heroicons/react/24/outline'
 
 import React, { useEffect, useState } from "react";
 import { HiOutlineRefresh } from "react-icons/hi"; 
@@ -9,7 +10,8 @@ const AcceptableTalent = () => {
   const [players, setPlayers] = useState([]);
   const [loadplayers, setLoadPlayers] = useState(true);
   const [errorplayers, setErrorPlayers] = useState(null);
-  const [VideoError, setVideoError] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(8);
+  const [videoError, setVideoError] = useState(false);
   const { theme } = useTheme();
   const lightBg = "bg-[url('../bg_Acceptable_talent_light.jpeg')]";
   const darkBg = "bg-[url('../bg_Acceptable_talent.jpeg')]";
@@ -21,7 +23,7 @@ const AcceptableTalent = () => {
         headers: { "Content-Type": "application/json" },
       });
       const res = await req.json();
-      setPlayers(res);
+      setPlayers((res.filter(p => p.status == "approved")));
       setLoadPlayers(false);
     } catch (e) {
       setErrorPlayers("حدث خطأ في تحميل البيانات، يرجى المحاولة لاحقاً");
@@ -33,6 +35,9 @@ const AcceptableTalent = () => {
     getData();
   }, []);
 
+  const handleLoadMore = () => {
+    setVisibleCount(prev => prev + 8);
+  };
 
 return (
     
@@ -50,9 +55,7 @@ return (
 
 
   <p className="dark:text-[var(--color-text-gray)] text-[var(--color-text-main)] text-sm md:text-base max-w-2xl mx-auto leading-relaxed px-4">
-    هنا يمكنك استكشاف قائمة بأفضل المواهب التي تم قبولها بعد اجتياز مراحل التقييم المختلفة.<br />
-    يتم اختبار هذه المواهب بناءً على معايير دقيقة تشمل الأداء، الإبداع، والقدرة على التطور. هذه<br />
-    الصفحة تعكس مستوى الجودة الذي نسعى إليه داخل المنصة.
+          استكشف قائمة بأفضل المواهب التي تم قبولها بعد اجتياز مراحل التقييم المختلفة.
   </p>
 
 
@@ -64,23 +67,19 @@ return (
         </div>
       </div>
 
-      {loadplayers &&  (
-        <div className="max-w-7xl mx-auto px-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div key={i} className="bg-white/5 border border-[#D4AF37]/10 rounded-2xl p-5 animate-pulse">
-              <div className="flex justify-between gap-4 mb-6">
-                <div className="w-1/2 space-y-3 text-right">
-                  <div className="h-4 bg-white/10 rounded w-full"></div>
-                  <div className="h-3 bg-white/5 rounded w-2/3"></div>
-                  <div className="h-3 bg-white/5 rounded w-1/2"></div>
-                </div>
-                <div className="w-1/2 aspect-[4/5] bg-white/10 rounded-xl"></div>
-              </div>
-              <div className="h-12 bg-white/10 rounded-xl"></div>
-            </div>
-          ))}
-        </div>
-      )}
+{loadplayers && (
+  <div className="flex flex-col items-center justify-center min-h-[400px] w-full">
+  
+    <div className="relative">
+      <div className="w-16 h-16 border-4 border-[#D4AF37]/20 border-t-[#D4AF37] rounded-full animate-spin"></div>
+      <div className="absolute inset-0 w-16 h-16 border-4 border-transparent border-b-[#D4AF37]/30 rounded-full animate-reverse-spin"></div>
+    </div>
+    
+    <p className="mt-4 text-[#D4AF37] font-medium animate-pulse">
+      جاري التحميل...
+    </p>
+  </div>
+)}
       {errorplayers && (
         <div className="relative max-w-[90%] sm:max-w-md mx-auto mt-10 px-2">
           <div className="absolute inset-0 bg-[#D4AF37] opacity-[0.05] blur-[40px] sm:blur-[60px] rounded-full"></div>
@@ -98,10 +97,8 @@ return (
         </div>
       )}
       
-        <div className="max-w-7xl mx-auto px-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 pb-14">
-          {players
-            .filter((player) => player.status == "approved")
-            .map(({ id, name, position, location, rating, image, tags, age, videoUrl }) => (
+        <div className="max-w-7xl mx-auto px-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 pb-6">
+          {players.slice(0, visibleCount).map(({ id, name, position, location, rating, image, tags, age, videoUrl }) => (
               <div
                 key={id}
                 className="bg-[var(--color-bg-card)] border border-[#D4AF37]/20 rounded-2xl p-5 shadow-2xl hover:border-[#D4AF37]/60 transition-all duration-300 group"
@@ -117,7 +114,7 @@ return (
                     </div>
                     <div className="mt-3 py-1 px-2 bg-black/30 rounded-md border border-white/5 inline-block w-fit text-right">
                       <p className="text-gray-300 text-[10px] font-mono">
-                        <span className="text-gray-500 italic ml-1">:التقييم</span>
+                        <span className="text-gray-500 italic ml-1">التقييم:</span>
                         {rating}
                       </p>
                     </div>
@@ -125,6 +122,7 @@ return (
                   <div className="w-1/2">
                     <div className="aspect-[4/5] overflow-hidden rounded-xl border border-white/10">
                       <img
+                      loading="lazy"
                         src={image}
                         alt={name}
                         className="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-500"
@@ -134,7 +132,7 @@ return (
                 </div>
 
                 <div className="flex flex-row flex-wrap gap-2 mb-6 justify-start">
-                  {tags.map((tag, idx) => (
+                  {tags?.map((tag, idx) => (
                     <span key={idx} className="bg-black/40 text-[#D4AF37] border border-[#D4AF37]/30 px-2.5 py-1 rounded text-[10px] font-bold">
                       {tag}
                     </span>
@@ -157,14 +155,38 @@ return (
               </div>
             ))}
         </div>
-       
-      <div className={`fixed bottom-10 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 transform ${VideoError ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0 pointer-events-none"}`}>
+        
+        {players.length > visibleCount ? (
+  <div className="flex justify-center pb-12 mt-6 relative z-10"> 
+    <button
+      onClick={handleLoadMore}
+      className="group flex flex-col items-center gap-3 transition-all duration-500 bg-transparent" 
+    >
+      <span className="text-[#D4AF37] font-bold text-[10px] md:text-xs uppercase tracking-[0.3em] group-hover:tracking-[0.5em] transition-all duration-500">
+        انقر لعرض المزيد
+      </span>
+
+      <div className="w-12 h-12 md:w-14 md:h-14 rounded-full border border-[#D4AF37]/30 flex items-center justify-center bg-transparent group-hover:border-[#D4AF37] transition-all duration-500 shadow-none group-hover:shadow-[0_0_20px_rgba(212,175,55,0.2)]">
+        <ChevronDownIcon 
+          className="w-5 h-5 md:w-6 md:h-6 text-[#D4AF37] animate-bounce" 
+          style={{ animationDuration: '2s' }} 
+        />
+      </div>
+    </button>
+  </div>
+) : null}
+
+      <div className={`fixed bottom-10 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 transform ${videoError ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0 pointer-events-none"}`}>
         <div className="bg-[#1a1d1e]/90 backdrop-blur-md border border-[#D4AF37]/50 px-6 py-3 rounded-full shadow-[0_10px_40px_rgba(0,0,0,0.7)] flex items-center gap-3">
           <div className="w-2 h-2 bg-[#D4AF37] rounded-full animate-pulse"></div>
           <p className="text-[#D4AF37] text-sm font-bold">عذراً، الفيديو غير متاح حاليًا</p>
         </div>
       </div> 
-    </div> 
+    </div>
   );
 };
+
+
+
+
 export default AcceptableTalent;
