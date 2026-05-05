@@ -1,6 +1,8 @@
 import React from 'react'
 
+
 const AboutThePlatform = () => {
+
   return (
      <main className="bg-[var(--color-bg-main)] text-[var(--color-text-white)] min-h-screen flex flex-col overflow-x-hidden">
       
@@ -10,13 +12,13 @@ const AboutThePlatform = () => {
           نحن منصة رقمية متخصصة
         </h1>
         <div className="max-w-3xl mx-auto space-y-4">
-          <p className="text-base md:text-lg text-[var(--color-text-gray)] leading-relaxed">
+          <p className="text-base md:text-lg dark:text-[var(--color-text-gray)] text-[var(--color-text-main)] leading-relaxed">
             نحن منصة رقمية متخصصة في اكتشاف ورعاية المواهب في مختلف المجالات. 
             نؤمن أن كل شخص يمتلك موهبة فريدة تستحق أن تُكتشف وتُطوّر. 
             لذلك قمنا ببناء بيئة رقمية متكاملة تساعد المستخدمين على عرض مهاراتهم، 
             الحصول على تقييم احترافي، والانضمام إلى برامج تدريبية متقدمة.
           </p>
-          <p className="text-base md:text-lg text-[var(--color-text-gray)] leading-relaxed opacity-80">
+          <p className="text-base md:text-lg dark:text-[var(--color-text-gray)] text-[var(--color-text-main)] leading-relaxed ">
             نعمل باستمرار على تطوير أدواتنا وخدماتنا لضمان تقديم أفضل تجربة ممكنة للمستخدمين.
           </p>
         </div>
@@ -28,7 +30,7 @@ const AboutThePlatform = () => {
           <h2 className="text-xl md:text-2xl font-bold text-[var(--color-gold-main)] mb-4">
             رؤيتنا
           </h2>
-          <p className="text-base md:text-xl text-[var(--color-text-gray)] max-w-2xl mx-auto leading-relaxed italic">
+          <p className="text-base md:text-xl dark:text-[var(--color-text-gray)] text-[var(--color-text-main)] max-w-2xl mx-auto leading-relaxed italic">
             أن نكون المنصة الرائدة في العالم العربي لاكتشاف وتطوير المواهب، 
             وأن نصنع مجتمعًا داعمًا يساعد الأفراد على تحقيق أحلامهم والوصول إلى أعلى مستويات النجاح.
           </p>
@@ -40,7 +42,7 @@ const AboutThePlatform = () => {
         <h2 className="text-xl md:text-2xl font-bold text-[var(--color-gold-main)] mb-4">
           رسالتنا
         </h2>
-        <p className="text-base md:text-xl text-[var(--color-text-gray)] max-w-2xl mx-auto leading-relaxed">
+        <p className="text-base md:text-xl dark:text-[var(--color-text-gray)] text-[var(--color-text-main)] max-w-2xl mx-auto leading-relaxed">
           نسعى إلى تمكين الأفراد من خلال توفير فرص تدريب حقيقية، تقييمات دقيقة، 
           وبيئة تشجع على الإبداع والتطور المستمر.
         </p>
