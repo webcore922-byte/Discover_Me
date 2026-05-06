@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }) => {
         return newUser;
       });
 
-      
+
       if (isImageUpdate && user?.id) {
         await fetch(`${API_URL}/users/${user.id}`, {
           method: 'PATCH',
