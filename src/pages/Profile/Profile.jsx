@@ -79,13 +79,16 @@ const Profile = () => {
   const handleUpgradeSubmit = async (e) => {
     e.preventDefault();
     Swal.fire({ title: 'جاري تسجيلك كلاعب...', allowOutsideClick: false, background: '#121212', color: '#fff', didOpen: () => Swal.showLoading() });
+    
+    const sharedImage = `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.username}`;
+    
     const newPlayerPayload = {
       userEmail: user.email,
       name: user.username,
       ...upgradeData,
       currentClub: "لاعب حر",
       height: "175", weight: "70", rating: "0.0", status: "pending", tags: [],
-      image: `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.username}`,
+      image: sharedImage,
       skills: { pace: 0, shooting: 0, passing: 0, dribbling: 0, defending: 0, physical: 0 }
     };
     try {
@@ -152,7 +155,9 @@ const Profile = () => {
                 if (e.target.files[0]) {
                   compressImage(e.target.files[0], (compressedBase64) => {
                     setEditData({ ...editData, image: compressedBase64 });
-                    if (user.player) updatePlayerState({ ...user.player, image: compressedBase64 });
+                    if (user.player) {
+                      updatePlayerState({ ...user.player, image: compressedBase64 });
+                    }
                   });
                 }
               }}

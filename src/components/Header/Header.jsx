@@ -20,8 +20,6 @@ import {
 } from "@heroicons/react/24/outline";
 import { useTheme } from "../../contexts/ThemeContext/ThemeContext";
 
-
-
 const menuStructure = [
   { name: "الرئيسية", path: "/" },
   { 
@@ -51,18 +49,19 @@ const extraSidebarItems = [
   { name: "الملف الشخصي", path: "/profile" },
   { name: "اتصل بنا", path: "/contact-us" },
 ];
+
 const DropdownItem = ({ title, items, onClose }) => {
   return (
     <Menu>
       <MenuHandler>
-        <li className="flex items-center gap-1 cursor-pointer text-xl text-[var(--color-text-gray)]  hover:text-[var(--color-gold-main)] transition-colors">
+        <li className="flex items-center gap-1 cursor-pointer text-xl text-[var(--color-text-gray)] hover:text-[var(--color-gold-main)] transition-colors">
           {title} <ChevronDownIcon className="h-4 w-4" />
         </li>
       </MenuHandler>
       <MenuList className="w-52 bg-[var(--color-bg-card)] border border-[var(--color-border)] text-[var(--color-text-gray)] z-[200]">
         {items.map((item, i) => (
           <Link key={i} to={item.path} onClick={onClose}>
-            <MenuItem className="hover:text-[var(--color-gold-main)] hover:bg-[var(--color-bg-main)] ">
+            <MenuItem className="hover:text-[var(--color-gold-main)] hover:bg-[var(--color-bg-main)]">
               {item.name}
             </MenuItem>
           </Link>
@@ -84,7 +83,7 @@ const MobileDropdown = ({ title, items, onClose }) => {
         <ChevronDownIcon className={`h-4 w-4 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
       </div>
       {isOpen && (
-        <ul className="mr-6 flex flex-col gap-1 border-r border-[var(--color-border)] mt-1 mb-2 ">
+        <ul className="mr-6 flex flex-col gap-1 border-r border-[var(--color-border)] mt-1 mb-2">
           {items.map((item, i) => (
             <Link key={i} to={item.path} onClick={onClose}>
               <li className="text-md py-2 px-4 rounded-md text-[var(--color-text-gray)] opacity-80 hover:text-[var(--color-gold-main)] hover:bg-[var(--color-bg-main)] cursor-pointer">
@@ -105,7 +104,6 @@ const HeaderContent = () => {
 
   return (
     <div className="w-full relative">
-      
       {open && (
         <div 
           className="fixed inset-0 top-[72px] md:top-[80px] bg-black/40 backdrop-blur-md z-[80]"
@@ -113,6 +111,7 @@ const HeaderContent = () => {
         />
       )}
 
+      {/* Sidebar - Desktop & Tablet */}
       <div className={`fixed top-[72px] md:top-[80px] right-0 h-[calc(100vh-80px)] w-72 bg-[var(--color-bg-card)] text-[var(--color-text-gray)] shadow-2xl transition-transform duration-300 z-[120] hidden md:block border-t border-[var(--color-border)] ${open ? "translate-x-0" : "translate-x-full"}`}>
         <div className="p-4 overflow-y-auto h-full flex flex-col justify-between">
           <ul className="flex flex-col gap-1">
@@ -125,21 +124,24 @@ const HeaderContent = () => {
             ))}
           </ul>
           <div className="mt-auto pt-6 border-t border-[var(--color-border)] mb-4">
-             <Link to="/login" onClick={handleClose}><Button fullWidth variant="outlined" className="border-[var(--color-border)] text-[var(--color-text-gray)]">تسجيل الدخول / إنشاء حساب</Button></Link>
+             <Link to="/login" onClick={handleClose}>
+                <Button fullWidth variant="outlined" className="border-[var(--color-border)] text-[var(--color-text-gray)]">تسجيل الدخول / إنشاء حساب</Button>
+             </Link>
           </div>
         </div>
       </div>
 
       <Navbar variant="filled" shadow={false} blurred={false} fullWidth className="fixed top-0 left-0 z-[150] border-none outline-none rounded-none p-4 bg-[var(--color-bg-card)]">
         <div className="flex items-center justify-between w-full">
+          {/* Logo & Menu Toggle */}
           <div className="flex items-center gap-3">
             <IconButton variant="text" className="text-3xl text-[var(--color-gold-main)] outline-none" onClick={() => setOpen(!open)}>
               {open ? <XMarkIcon className="h-8 w-8" /> : <Bars3Icon className="h-8 w-8" />}
             </IconButton>
-            
             <Link to="/"><img src="../logo.png" className="h-10" alt="logo" /></Link>
           </div>
 
+          {/* Center Navigation */}
           <ul className="hidden xl:flex items-center gap-10">
             {menuStructure.map((item, i) => (
               item.subItems ? 
@@ -147,23 +149,24 @@ const HeaderContent = () => {
               <Link key={i} to={item.path} className="text-xl text-[var(--color-text-gray)] hover:text-[var(--color-gold-main)] transition-all whitespace-nowrap">{item.name}</Link>
             ))}
           </ul>
-          <IconButton 
+
+          {/* Actions: Login & Theme Toggle */}
+          <div className="flex items-center gap-2">
+            <Link to="/login" className="hidden xl:block">
+              <Button variant="outlined" className="text-lg p-2 border-[var(--color-border)] text-[var(--color-text-gray)]">تسجيل الدخول / إنشاء حساب</Button>
+            </Link>
+
+            <IconButton 
               variant="text" 
               onClick={toggleTheme}
               className="rounded-full icon-pulse text-[var(--color-gold-main)] shadow-none hover:bg-[var(--color-bg-main)] transition-all duration-300" 
             >
-              {theme === "dark" ? (
-                <SunIcon className="h-7 w-7" />
-              ) : (
-                <MoonIcon className="h-7 w-7" />
-              )}
+              {theme === "dark" ? <SunIcon className="h-7 w-7" /> : <MoonIcon className="h-7 w-7" />}
             </IconButton>
-
-          <Link to="/login" className="hidden xl:block">
-            <Button variant="outlined" className="text-lg p-2 border-[var(--color-border)] text-[var(--color-text-gray)]">تسجيل الدخول / إنشاء حساب</Button>
-          </Link>
+          </div>
         </div>
 
+        {/* Mobile View Collapse */}
         <div className="md:hidden">
           <Collapse open={open}>
             <div className="mt-4 bg-[var(--color-bg-card)] text-[var(--color-text-gray)] border-t border-[var(--color-border)] pt-4 max-h-[70vh] overflow-y-auto">
@@ -173,11 +176,14 @@ const HeaderContent = () => {
                   <MobileDropdown key={i} title={item.name} items={item.subItems} onClose={handleClose} /> :
                   <Link key={i} to={item.path} onClick={handleClose}>
                     <li className="text-lg py-3 px-3 rounded-lg hover:bg-[var(--color-bg-main)] text-[var(--color-text-gray)] hover:text-[var(--color-gold-main)] transition-all">
-                      {item.name}</li>
+                      {item.name}
+                    </li>
                   </Link>
                 ))}
                 <li className="mt-4 pb-4">
-                  <Link to="/login" onClick={handleClose}><Button fullWidth variant="outlined" className="border-[var(--color-border)] text-[var(--color-text-gray)]">تسجيل الدخول / إنشاء حساب</Button></Link>
+                  <Link to="/login" onClick={handleClose}>
+                    <Button fullWidth variant="outlined" className="border-[var(--color-border)] text-[var(--color-text-gray)]">تسجيل الدخول / إنشاء حساب</Button>
+                  </Link>
                 </li>
               </ul>
             </div>

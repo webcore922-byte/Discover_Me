@@ -22,12 +22,33 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('scoutUser', JSON.stringify(userData));
   };
 
-  const updatePlayerState = (updatedPlayerData) => {
-    setUser(prevUser => {
-      const newUser = { ...prevUser, player: updatedPlayerData, role: updatedPlayerData.status === 'approved' ? 'player' : 'user' };
-      localStorage.setItem('scoutUser', JSON.stringify(newUser));
-      return newUser;
-    });
+  const updatePlayerState = async (updatedData) => {
+    try {
+      const isImageUpdate = updatedData.image !== user.image;
+      
+      // تحديث الحالة محلياً فوراً لتحسين تجربة المستخدم
+      setUser(prevUser => {
+        const newUser = { 
+          ...prevUser, 
+          ...updatedData,
+          player: prevUser.player ? { ...prevUser.player, ...updatedData } : null,
+          role: (prevUser.player?.status === 'approved' || updatedData.status === 'approved') ? 'player' : 'user' 
+        };
+        localStorage.setItem('scoutUser', JSON.stringify(newUser));
+        return newUser;
+      });
+
+      
+      if (isImageUpdate && user?.id) {
+        await fetch(`${API_URL}/users/${user.id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ image: updatedData.image })
+        });
+      }
+    } catch (err) {
+      console.error("Error syncing user data:", err);
+    }
   };
 
   const login = async (email, password) => {
@@ -75,6 +96,8 @@ export const AuthProvider = ({ children }) => {
 
       if (allUsers.some(u => u.email === userData.email)) return { success: false, message: 'الإيميل مكرر' };
 
+      const sharedImage = `https://api.dicebear.com/7.x/avataaars/svg?seed=${userData.username}`;
+
       const userRes = await fetch(`${API_URL}/users`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -83,6 +106,7 @@ export const AuthProvider = ({ children }) => {
           email: userData.email,
           password: userData.password,
           phone: userData.phone,
+          image: sharedImage,
           createdAt: new Date().toISOString()
         })
       });
@@ -108,7 +132,7 @@ export const AuthProvider = ({ children }) => {
             rating: "0.0",
             status: "pending",
             tags: [],
-            image: `https://api.dicebear.com/7.x/avataaars/svg?seed=${userData.username}`,
+            image: sharedImage,
             skills: { pace: 0, shooting: 0, passing: 0, dribbling: 0, defending: 0, physical: 0 }
           })
         });
