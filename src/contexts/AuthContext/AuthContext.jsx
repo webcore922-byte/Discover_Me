@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }) => {
         return newUser;
       });
 
-      // لو التحديث فيه صورة، نحدث جدول الـ Users كمان عشان نضمن المطابقة
+
       if (isImageUpdate && user?.id) {
         await fetch(`${API_URL}/users/${user.id}`, {
           method: 'PATCH',

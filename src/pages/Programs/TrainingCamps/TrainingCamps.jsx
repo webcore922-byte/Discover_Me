@@ -185,7 +185,7 @@ const TrainingCamps = () => {
         </div>
 
         <div className="flex flex-col items-center gap-4">
-          <Link to="/registration">
+          <Link to="/training-camps/form">
             <Button className="bg-[#c5a059] hover:bg-[#8e7037] text-[#1a1d1e] font-bold px-12 py-4 rounded-full text-lg flex items-center gap-3 transition-all duration-300 hover:-translate-y-0.5 shadow-gold">
               تسجيل الآن <span className="text-xl">⚽</span>
             </Button>
