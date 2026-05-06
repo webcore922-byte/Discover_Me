@@ -104,7 +104,7 @@ const TrainingCamps = () => {
           </Typography>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+        <div className="flex flex-wrap justify-center items-center gap-8 mb-16">
           {camps.map((camp) => (
             <Card
               key={camp.id}
