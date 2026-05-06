@@ -33,6 +33,7 @@ import ContactUs from "./pages/ContactUs/ContactUs.jsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy.jsx";
 import { ThemeProvider } from "./contexts/ThemeContext/ThemeContext.jsx";
 import { AuthProvider, useAuth } from "./contexts/AuthContext/AuthContext.jsx";
+import TrainingCampsForm from "./pages/Programs/TrainingCamps/TrainingCampsForm/TrainingCampsForm.jsx";
 
 
 
@@ -94,6 +95,7 @@ const App = () => {
           <Route path="/field-tests" element={<FieldTests />} />
           <Route path="/prizes-and-competitions" element={<PrizesAndCompetitions />} />
           <Route path="/training-camps" element={<TrainingCamps />} />
+          <Route path="/training-camps/form" element={<TrainingCampsForm />} />
           <Route path="/store" element={<Store />} />
           <Route path="/success-stories" element={<SuccessStories />} />
           <Route path="/success-stories-cr" element={<SuccessStoriesCr />} />
