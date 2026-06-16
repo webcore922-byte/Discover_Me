@@ -26,7 +26,6 @@ export const AuthProvider = ({ children }) => {
     try {
       const isImageUpdate = updatedData.image !== user.image;
       
-      // تحديث الحالة محلياً فوراً لتحسين تجربة المستخدم
       setUser(prevUser => {
         const newUser = { 
           ...prevUser, 
@@ -37,7 +36,6 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('scoutUser', JSON.stringify(newUser));
         return newUser;
       });
-
 
       if (isImageUpdate && user?.id) {
         await fetch(`${API_URL}/users/${user.id}`, {
@@ -53,16 +51,19 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
+      // 1. البحث في جدول الأدمنز
       const adminRes = await fetch(`${API_URL}/admins?email=${email}&password=${password}`);
       const admins = await adminRes.json();
       
       if (admins.length > 0) {
-        const adminData = { ...admins[0], role: 'admin' };
+        // التعديل هنا: نأخذ بيانات الأدمن كما هي من الـ db.json (بما فيها الـ role الفعلي)
+        const adminData = admins[0]; 
         saveUser(adminData);
         navigate('/dashboard');
-        return { success: true, role: 'admin' };
+        return { success: true, role: adminData.role };
       }
 
+      // 2. البحث في جدول المستخدمين العاديين
       const userRes = await fetch(`${API_URL}/users?email=${email}&password=${password}`);
       const users = await userRes.json();
       
