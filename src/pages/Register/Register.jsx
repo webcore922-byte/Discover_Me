@@ -24,7 +24,6 @@ const InputField = ({ label, name, placeholder, type = "text", className, value,
     </label>
     <input 
       type={type} 
-      required
       name={name}
       value={value || ''} 
       placeholder={placeholder}
@@ -52,32 +51,68 @@ const Register = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  // تنبيه احترافي للحقول المفقودة
+  const showValidationError = (message) => {
+    Swal.fire({
+      title: 'مطلوب إدخال بيانات',
+      text: message,
+      icon: 'warning',
+      background: '#1a1a1a',
+      color: '#fff',
+      confirmButtonColor: '#D4AF37',
+      confirmButtonText: 'متابعة التعديل',
+      customClass: {
+        popup: 'border border-[var(--color-gold-main)]/30 rounded-3xl'
+      }
+    });
+  };
+
   const handleRegister = async (e) => {
     e.preventDefault();
+
+    // فحص الحقول الأساسية لجميع الحسابات
+    if (!formData.username?.trim()) return showValidationError('يرجى إدخال اسم المستخدم لإتمام التسجيل.');
+    if (!formData.password?.trim()) return showValidationError('يرجى تعيين كلمة المرور الخاصة بحسابك.');
+    if (!formData.email?.trim()) return showValidationError('يرجى إدخال البريد الإلكتروني للتواصل.');
+    if (!formData.phone?.trim()) return showValidationError('يرجى إدخال رقم الهاتف المحمول.');
+
+    // فحص حقول اللاعب الإضافية
+    if (isPlayer) {
+      if (!formData.fullName?.trim()) return showValidationError('يرجى إدخال الاسم بالكامل كما هو مسجل في الأوراق الرسمية.');
+      if (!formData.nationalId?.trim()) return showValidationError('يرجى إدخال الرقم القومي المكون من 14 رقمًا.');
+      if (!formData.age?.trim()) return showValidationError('يرجى تحديد السن الحالي للاعب.');
+      if (!formData.position) return showValidationError('يرجى اختيار مركز اللعب الرئيسي.');
+      if (!formData.location?.trim()) return showValidationError('يرجى تحديد محافظة الإقامة الحالية.');
+      if (!formData.preferredFoot) return showValidationError('يرجى تحديد القدم المفضلة للعب.');
+      if (!formData.videoUrl?.trim()) return showValidationError('يرجى إدراج رابط فيديو يوضح المهارات الكروية الخاصة بك.');
+    }
+
     const email = formData.email || "";
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      Swal.fire({ title: 'البريد الإلكتروني غير صحيح', text: 'برجاء إدخال بريد إلكتروني صالح', icon: 'error', background: '#1a1a1a', color: '#fff', confirmButtonColor: '#D4AF37' });
+      Swal.fire({ title: 'صيغة غير صالحة', text: 'يرجى إدخال بريد إلكتروني صحيح', icon: 'error', background: '#1a1a1a', color: '#fff', confirmButtonColor: '#D4AF37' });
       return;
     }
+    
     const password = formData.password || "";
     if (password.length < 8 || !/[A-Z]/.test(password) || !/[0-9]/.test(password)) {
-      Swal.fire({ title: 'كلمة المرور ضعيفة', html: `<div style="text-align: right; direction: rtl;">يجب 8 حروف، حرف كبير، ورقم.</div>`, icon: 'warning', background: '#1a1a1a', color: '#fff', confirmButtonColor: '#D4AF37' });
+      Swal.fire({ title: 'كلمة المرور غير مطابقة للمواصفات', html: `<div style="text-align: right; direction: rtl;">يجب أن تتكون من 8 أحرف على الأقل، وتتضمن حرفًا كبيرًا ورقمًا واحدًا.</div>`, icon: 'warning', background: '#1a1a1a', color: '#fff', confirmButtonColor: '#D4AF37' });
       return; 
     }
-    Swal.fire({ title: 'جاري إنشاء الحساب', background: '#1a1a1a', color: '#fff', didOpen: () => { Swal.showLoading(); } });
+
+    Swal.fire({ title: 'جاري إنشاء الحساب', text: 'يرجى الانتظار ثوانٍ معدودة...', background: '#1a1a1a', color: '#fff', didOpen: () => { Swal.showLoading(); } });
     try {
       const res = await register(formData, isPlayer);
       Swal.close();
       if (res.success) {
-        Swal.fire({ title: 'مبروك يا بطل!', icon: 'success', timer: 1500, showConfirmButton: false, background: '#1a1a1a' });
+        Swal.fire({ title: 'تم التسجيل بنجاح', text: 'تم إنشاء حسابك في المنصة بنجاح.', icon: 'success', timer: 1500, showConfirmButton: false, background: '#1a1a1a' });
         setTimeout(() => navigate('/profile'), 1500);
       } else {
         Swal.fire({ title: 'فشل التسجيل', text: res.message, icon: 'error', background: '#1a1a1a' });
       }
     } catch (error) {
       Swal.close();
-      Swal.fire({ title: 'خطأ تقني', icon: 'error', background: '#1a1a1a' });
+      Swal.fire({ title: 'خطأ في النظام', text: 'حدث خطأ تقني، يرجى المحاولة لاحقاً.', icon: 'error', background: '#1a1a1a' });
     }
   };
 
@@ -88,7 +123,7 @@ const Register = () => {
           <div className="text-center mb-10">
             <h2 className="text-3xl md:text-5xl font-black text-gradient-gold italic uppercase tracking-widest">Join ScoutPro</h2>
           </div>
-          <form onSubmit={handleRegister} className="space-y-8">
+          <form onSubmit={handleRegister} className="space-y-8" noValidate>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <InputField label="اسم المستخدم" name="username" placeholder="Username" value={formData.username} onChange={handleChange} />
               <InputField label="كلمة المرور" name="password" type="password" placeholder="8 حروف + حرف كبير + رقم" value={formData.password} onChange={handleChange} />
@@ -100,7 +135,7 @@ const Register = () => {
               onClick={() => setIsPlayer(!isPlayer)}
             >
               <span className={`text-sm font-black uppercase italic tracking-widest ${isPlayer ? 'text-[var(--color-gold-main)]' : 'text-white/60'}`}>
-                {isPlayer ? '✓ أنت تسجل كلاعب موهوب' : 'هل أنت موهبة كروية؟ (اضغط هنا)'}
+                {isPlayer ? '✓ نمط التسجيل الحالي: حساب لاعب محترف' : 'هل ترغب في التسجيل كلاعب؟ (اضغط هنا)'}
               </span>
             </div>
             {isPlayer && (
@@ -110,7 +145,7 @@ const Register = () => {
                 <InputField label="السن" name="age" placeholder="19" value={formData.age} onChange={handleChange} />
                 <div className="space-y-3">
                   <label className="block text-[var(--color-gold-main)] text-sm md:text-lg font-black uppercase tracking-widest mr-2 text-right">المركز</label>
-                  <select name="position" required className="w-full bg-[#1e1e1e] border border-white/10 rounded-xl md:rounded-2xl px-5 py-4 text-white focus:border-[var(--color-gold-main)] outline-none transition-all text-sm md:text-base text-right appearance-none cursor-pointer" onChange={handleChange} value={formData.position || ''}>
+                  <select name="position" className="w-full bg-[#1e1e1e] border border-white/10 rounded-xl md:rounded-2xl px-5 py-4 text-white focus:border-[var(--color-gold-main)] outline-none transition-all text-sm md:text-base text-right appearance-none cursor-pointer" onChange={handleChange} value={formData.position || ''}>
                     <option value="">اختر مركزك</option>
                     {POSITION_OPTIONS.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
                   </select>
@@ -118,7 +153,7 @@ const Register = () => {
                 <InputField label="المحافظة" name="location" placeholder="القاهرة" value={formData.location} onChange={handleChange} />
                 <div className="space-y-3">
                   <label className="block text-[var(--color-gold-main)] text-sm md:text-lg font-black uppercase tracking-widest mr-2 text-right">القدم المفضلة</label>
-                  <select name="preferredFoot" required className="w-full bg-[#1e1e1e] border border-white/10 rounded-xl md:rounded-2xl px-5 py-4 text-white focus:border-[var(--color-gold-main)] outline-none transition-all text-sm md:text-base text-right appearance-none cursor-pointer" onChange={handleChange} value={formData.preferredFoot || ''}>
+                  <select name="preferredFoot" className="w-full bg-[#1e1e1e] border border-white/10 rounded-xl md:rounded-2xl px-5 py-4 text-white focus:border-[var(--color-gold-main)] outline-none transition-all text-sm md:text-base text-right appearance-none cursor-pointer" onChange={handleChange} value={formData.preferredFoot || ''}>
                     <option value="">اختر القدم</option>
                     <option value="يمين">يمين</option>
                     <option value="يسار">يسار</option>

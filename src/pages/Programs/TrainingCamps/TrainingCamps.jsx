@@ -1,199 +1,219 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  Typography,
-  Button,
-} from "@material-tailwind/react";
-import {
-  HiOutlineLocationMarker,
-  HiOutlineClock,
-  HiOutlineClipboardCheck,
-  HiOutlineShieldCheck,
-} from "react-icons/hi";
-import { GiGloves } from "react-icons/gi";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { MapPin, Calendar, Clock, Award } from 'lucide-react';
+import Swal from 'sweetalert2';
 
 const TrainingCamps = () => {
+  const navigate = useNavigate();
   const [camps, setCamps] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-
-  const fetchCamps = async () => {
-    setLoading(true);
-    setError(false);
-    const baseUrl = import.meta.env.VITE_URL;
-    try {
-      const response = await fetch(`${baseUrl}/training_camps`);
-      if (response.ok) {
-        const data = await response.json();
-        setCamps(data);
-        setLoading(false);
-      } else {
-        setError(true);
-        setLoading(false);
-      }
-    } catch (err) {
-      setError(true);
-      setLoading(false);
-    }
-  };
 
   useEffect(() => {
+    const fetchCamps = async () => {
+      try {
+        const apiURL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        const response = await fetch(`${apiURL}/camps`); 
+        
+        if (!response.ok) {
+          throw new Error('لم نتمكن من الاتصال بالخادم حالياً');
+        }
+        
+        const data = await response.json();
+        
+        if (data.camps) {
+          setCamps(data.camps);
+        } else if (Array.isArray(data)) {
+          setCamps(data);
+        } else {
+          throw new Error('صيغة البيانات المستلمة غير مدعومة');
+        }
+        setLoading(false);
+      } catch (err) {
+        setLoading(false);
+        
+        Swal.fire({
+          title: '<span style="color: #fff; font-size: 22px;">عذراً، تعذر تحميل المعسكرات!</span>',
+          html: '<p style="color: var(--color-text-gray); font-size: 15px;">يبدو أن هناك مشكلة في الاتصال بالـ API أو أن البيانات غير متوفرة حالياً.</p>',
+          icon: 'error',
+          iconColor: '#d4af37',
+          background: 'rgba(26, 29, 30, 0.95)',
+          backdrop: 'rgba(0, 0, 0, 0.8)',
+          showCancelButton: true,
+          confirmButtonText: 'إعادة المحاولة 🔄',
+          cancelButtonText: 'العودة للصفحة السابقة 🔙',
+          confirmButtonColor: 'var(--color-gold-main)',
+          cancelButtonColor: '#333',
+          buttonsStyling: true,
+          customClass: {
+            popup: 'glass-card gold-glow-border rounded-2xl',
+            confirmButton: 'px-5 py-2 rounded-xl font-bold text-black',
+            cancelButton: 'px-5 py-2 rounded-xl font-bold text-white'
+          }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            setLoading(true);
+            window.location.reload();
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
+            window.history.back();
+          }
+        });
+      }
+    };
+
     fetchCamps();
   }, []);
 
-  const getIcon = (type) => {
-    switch (type) {
-      case "strategy":
-        return <HiOutlineClipboardCheck className="text-[#d4af37] text-xl" />;
-      case "shield":
-        return <HiOutlineShieldCheck className="text-[#d4af37] text-xl" />;
-      case "gloves":
-        return <GiGloves className="text-[#d4af37] text-xl" />;
-      default:
-        return <HiOutlineClipboardCheck className="text-[#d4af37] text-xl" />;
-    }
-  };
-
-  if (loading)
+  if (loading) {
     return (
-      <div className="min-h-screen bg-[var(--color-bg-main)] flex flex-col items-center justify-center">
-        <div className="w-16 h-16 border-t-2 border-[var(--color-gold-main)] rounded-full animate-spin mb-6 shadow-[var(--gold-glow)]"></div>
-        <p className="text-gradient-gold font-black text-xl tracking-[0.2em] animate-pulse italic uppercase">
-          جاري التحميل ....
-        </p>
-      </div>
-    );
-
-  if (error) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1d1e] text-center px-4">
-        <span className="text-8xl mb-6">⚠️</span>
-        <Typography variant="h4" className="text-white font-bold mb-2">
-          نواجه مشكلة في تحميل البيانات
-        </Typography>
-        <Typography className="text-[#b0b0b0]">حاول مرة أخرى لاحقاً</Typography>
-        <Button
-          onClick={fetchCamps}
-          className="mt-6 bg-[#d4af37] text-[#1a1d1e]"
-        >
-          إعادة المحاولة
-        </Button>
+      <div 
+        className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat relative"
+        style={{ backgroundImage: `url('bg_prizes_and_competitions.jpeg')` }}
+      >
+        <div className="absolute inset-0 bg-black/80 pointer-events-none" />
+        <div className="relative z-10 animate-spin-slow rounded-full h-16 w-16 border-t-2 border-b-2 border-[#d4af37]"></div>
       </div>
     );
   }
 
   return (
-    <section
-      className="min-h-screen bg-[#1a1d1e] py-16 px-4 bg-cover bg-center bg-no-repeat"
+    <section 
+      dir="rtl" 
+      className="min-h-screen text-white py-16 px-4 sm:px-6 lg:px-8 relative bg-cover bg-center bg-no-repeat bg-fixed overflow-hidden"
       style={{ backgroundImage: `url('bg_prizes_and_competitions.jpeg')` }}
     >
-      <div className="container mx-auto max-w-7xl">
-        <div className="text-center mb-16">
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <div className="h-[1px] w-8 bg-[#d4af37]"></div>
-            <Typography variant="h2" className="text-white font-bold text-4xl">
-              المعسكرات التدريبية
-            </Typography>
-            <div className="h-[1px] w-8 bg-[#d4af37]"></div>
-          </div>
-          <Typography className="text-[#b0b0b0]">
-            نقدم معسكرات تدريبية مكثفة لتطوير مهاراتك
-          </Typography>
-        </div>
+      {/* طبقة التعتيم الخلفية */}
+      <div className="absolute inset-0 bg-black/75 pointer-events-none z-0" />
 
-        <div className="flex flex-wrap justify-center items-center gap-8 mb-16">
-          {camps.map((camp) => (
-            <Card
-              key={camp.id}
-              className="bg-[#242829] border border-[#a68946]/20 overflow-hidden shadow-2xl group"
-            >
-              <CardHeader
-                floated={false}
-                shadow={false}
-                className="m-0 rounded-none relative h-56 overflow-hidden"
-              >
+      {/* الهيدر العلوي للملف والصفحة */}
+      <div className="max-w-7xl mx-auto mb-16 text-center relative z-10">
+        <div className="inline-block relative">
+          <span className="absolute -top-6 -right-8 text-xl text-[#d4af37] opacity-70">✨</span>
+          <h2 className="text-3xl md:text-5xl font-extrabold mb-3 tracking-wide text-white">
+            المعسكرات التدريبية
+          </h2>
+          <span className="absolute -bottom-2 -left-8 text-xl text-[#d4af37] opacity-70">✨</span>
+        </div>
+        <p className="text-[#b0b0b0] mt-2 text-sm md:text-base max-w-md mx-auto" style={{ color: 'var(--color-text-gray)' }}>
+          اختر المعسكر المناسب لك وانضم إلينا الآن لتطوير مهاراتك الرياضية
+        </p>
+      </div>
+
+      {/* شبكة الكروت (Grid) */}
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10 mb-16">
+        {camps.map((camp) => (
+          <div
+            key={camp.id}
+            className="glass-card hover-gold-card card-shine rounded-2xl p-5 flex flex-col justify-between transition-all duration-300 relative group"
+          >
+            <div>
+              {/* صورة المعسكر */}
+              <div className="w-full h-48 rounded-xl overflow-hidden mb-5 relative group">
                 <img
-                  src={camp.camp_image}
+                  src={camp.image}
                   alt={camp.title}
-                  loading="lazy"
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  onError={(e) => {
+                    e.target.src = "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=500";
+                  }}
                 />
-                <div className="absolute top-4 left-4 bg-[#1a1d1e]/80 p-2 rounded-lg border border-[#d4af37]/30 z-10">
-                  {getIcon(camp.icon_type)}
-                </div>
-              </CardHeader>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
+              </div>
 
-              <CardBody className="p-6">
-                <Typography
-                  variant="h4"
-                  className="text-[#d4af37] text-center font-bold mb-1"
-                >
-                  {camp.title}
-                </Typography>
-                <Typography className="text-white text-center text-sm mb-6 font-medium">
+              {/* عناوين الكارت */}
+              <div className="text-center mb-4">
+                <h3 className="text-xl font-bold mb-1 text-white">{camp.title}</h3>
+                <h4 className="text-sm text-[#d4af37] font-medium" style={{ color: 'var(--color-gold-main)' }}>
                   {camp.subtitle}
-                </Typography>
+                </h4>
+              </div>
 
-                <div className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full border border-[#d4af37] flex items-center justify-center shrink-0 mt-1">
-                      <div className="w-2 h-2 bg-[#d4af37] rounded-full"></div>
-                    </div>
-                    <Typography className="text-[#b0b0b0] text-sm leading-relaxed">
-                      <span className="text-[#d4af37] font-bold">
-                        يركز على:{" "}
-                      </span>{" "}
-                      {camp.focus}
-                    </Typography>
-                  </div>
-
-                  <div className="flex items-center gap-3">
-                    <HiOutlineLocationMarker className="text-[#d4af37] text-xl shrink-0" />
-                    <Typography className="text-[#b0b0b0] text-sm">
-                      <span className="text-[#d4af37] font-bold">المكان: </span>{" "}
-                      {camp.location}
-                    </Typography>
-                  </div>
-
-                  <div className="flex items-center gap-3 pb-6 border-b border-[#a68946]/10">
-                    <HiOutlineClock className="text-[#d4af37] text-xl shrink-0" />
-                    <Typography className="text-[#b0b0b0] text-sm">
-                      <span className="text-[#d4af37] font-bold">
-                        المواعيد:{" "}
-                      </span>{" "}
-                      {camp.schedule}
-                    </Typography>
-                  </div>
-
-                  <div className="flex items-center justify-end pt-2">
-                    <div className="flex flex-col items-end">
-                      <span className="text-[#d4af37] text-[10px] font-bold">
-                        المدرب
-                      </span>
-                      <span className="text-white text-sm font-bold">
-                        {camp.coach_name}
-                      </span>
-                    </div>
-                  </div>
+              {/* تفاصيل المعسكر */}
+              <div className="space-y-3 text-right text-sm border-t border-gray-800/60 pt-4 mb-4">
+                <div className="flex items-start gap-2">
+                  <Award className="icon-gold w-4 h-4 mt-0.5 flex-shrink-0" />
+                  <p className="text-gray-300">
+                    <span className="text-[#d4af37] font-semibold pl-1">يركز على:</span>
+                    {Array.isArray(camp.focus) ? camp.focus.join('، ') : camp.focus}
+                  </p>
                 </div>
-              </CardBody>
-            </Card>
-          ))}
-        </div>
 
-        <div className="flex flex-col items-center gap-4">
-          <Link to="/training-camps/form">
-            <Button className="bg-[#c5a059] hover:bg-[#8e7037] text-[#1a1d1e] font-bold px-12 py-4 rounded-full text-lg flex items-center gap-3 transition-all duration-300 hover:-translate-y-0.5 shadow-gold">
-              تسجيل الآن <span className="text-xl">⚽</span>
-            </Button>
-          </Link>
-          <Typography className="text-[#b0b0b0] text-sm">
-            اختر المعسكر المناسب وابدأ رحلتك نحو الاحتراف
-          </Typography>
-        </div>
+                <div className="flex items-start gap-2">
+                  <MapPin className="icon-gold w-4 h-4 mt-0.5 flex-shrink-0" />
+                  <p className="text-gray-300">
+                    <span className="text-[#d4af37] font-semibold pl-1">المكان:</span>
+                    {camp.location}
+                  </p>
+                </div>
+
+                <div className="flex items-start gap-2">
+                  <Calendar className="icon-gold w-4 h-4 mt-0.5 flex-shrink-0" />
+                  <p className="text-gray-300">
+                    <span className="text-[#d4af37] font-semibold pl-1">المواعيد:</span>
+                    {camp.schedule}
+                  </p>
+                </div>
+
+                <div className="flex items-start gap-2">
+                  <Clock className="icon-gold w-4 h-4 mt-0.5 flex-shrink-0" />
+                  <p className="text-gray-400 text-xs leading-relaxed">
+                    <span className="text-[#d4af37] text-sm font-semibold pl-1">التفاصيل:</span>
+                    {camp.details}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* العناصر التفاعلية السفلية للكارت */}
+            <div className="space-y-4">
+              
+              {/* زر التسجيل - تمت إعادته لكامل العرض الفخم مع تأثير الـ Hover */}
+              <button 
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation(); 
+                  console.log(`تم اختيار معسكر: ${camp.title}`);
+                  navigate('/training-camps/form');
+                }}
+                className="w-full py-3 px-4 rounded-xl font-extrabold text-black text-sm tracking-wide transition-all duration-300 relative z-20 cursor-pointer overflow-hidden group/btn block hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]"
+                style={{
+                  background: 'linear-gradient(to right, var(--color-btn-start), var(--color-btn-end))',
+                }}
+              >
+                {/* تأثير اللمعان الذي يتحرك بانسيابية فور الحوم فوق الزر */}
+                <span className="absolute inset-0 w-full h-full bg-white/25 transform -skew-x-12 -translate-x-full group-hover/btn:transition-transform group-hover/btn:duration-700 group-hover/btn:translate-x-full pointer-events-none" />
+                
+                <span className="flex items-center justify-center gap-1.5 relative z-10">
+                  سجل الآن في المعسكر ✨ ⚽
+                </span>
+              </button>
+
+              {/* قسم المدرب */}
+              <div className="pt-3 border-t border-gray-800/60">
+                <div className="flex items-center justify-between bg-black/20 p-2 rounded-xl border border-gray-800/40">
+                  <div className="text-right">
+                    <p className="text-[10px] text-[#d4af37]" style={{ color: 'var(--color-gold-main)' }}>المدرب المسؤول</p>
+                    <p className="text-xs font-bold text-white">{camp.coach?.name}</p>
+                  </div>
+                  <img
+                    src={camp.coach?.image}
+                    alt={camp.coach?.name}
+                    className="w-9 h-9 rounded-full object-cover border border-[#a68946]"
+                    style={{ borderColor: 'var(--color-border)' }}
+                    onError={(e) => {
+                      e.target.src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=100";
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+
+          </div>
+        ))}
+      </div>
+
+      {/* فوتر المنصة */}
+      <div className="text-center pt-6 border-t border-white/10 text-[11px] text-gray-400 font-light relative z-10">
+        منصة اكتشفني تضمن تكافؤ الفرص لجميع المواهب الناشئة بمصر 🇪🇬
       </div>
     </section>
   );
