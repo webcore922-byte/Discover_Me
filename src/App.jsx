@@ -85,65 +85,6 @@ const App = () => {
         <StoreProvider>
       <div className="app-container">
         <Header />
-
-        <Routes>
-          <Route path="/" element={ <Home /> } />
-          <Route path="/about-the-platform" element={<AboutThePlatform />} />
-          <Route path="/coaches" element={<Coaches />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route 
-            path="/dashboard" 
-            element={
-              <ProtectedAdminRoute>
-                <Dashboard />
-              </ProtectedAdminRoute>
-            } 
-          />
-          <Route 
-            path="/dashboard/player/:id" 
-            element={
-              <ProtectedAdminRoute>
-                <PlayerDetails />
-              </ProtectedAdminRoute>
-            } 
-          />
-          <Route path="/news-and-updates" element={<NewsAndUpdates />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/field-tests" element={<FieldTests />} />
-          <Route path="/prizes-and-competitions" element={<PrizesAndCompetitions />} />
-          <Route path="/training-camps" element={<TrainingCamps />} />
-          <Route element={<StoreLayout />}>
-    <Route path="/store" element={
-      <Suspense fallback={<StoreLoader />}>
-        <Store />
-      </Suspense>
-    } />
-     <Route path="/products" element={<Products />} />
-     <Route path="/productDetails/:id" element={<ProductDetails />} />
-     <Route path="/cart" element={<Cart />} />
-     <Route path="/checkout" element={<Checkout />} />
-     <Route path="/contactStore" element={<ContactStore />} />
-     <Route path="/myorder" element={<MyOrder />} />
-   </Route>
-          <Route path="/success-stories" element={<SuccessStories />} />
-          <Route path="/success-stories-cr" element={<SuccessStoriesCr />} />
-          <Route path="/success-stories-mo" element={<SuccessStoriesMo />} />
-          <Route path="/success-stories-leo" element={<SuccessStoriesLeo />} />
-          <Route path="/acceptable-talent" element={<AcceptableTalent />} />
-          <Route path="/decision-making-skills" element={<DecisionMakingSkills />} />
-          <Route path="/fitness" element={<Fitness />} />
-          <Route path="/injury-prevention" element={<InjuryPrevention />} />
-          <Route path="/professionalism-and-personal-marketing" element={<ProfessionalismAndPersonalMarketing />} />
-          <Route path="/proper-nutrition" element={<ProperNutrition />} />
-          <Route path="/sports-psychology" element={<SportsPsychology />} />
-          <Route path="/contact-us" element={<ContactUs />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-
-        
         {/* أضفنا Suspense لدعم الـ lazy loading الخاص بـ AcceptableTalent بدون مشاكل */}
         <Suspense fallback={
           <div className="min-h-screen bg-black flex items-center justify-center text-[var(--color-gold-main)] animate-pulse font-bold">
@@ -184,7 +125,19 @@ const App = () => {
             <Route path="/prizes-and-competitions" element={<PrizesAndCompetitions />} />
             <Route path="/training-camps" element={<TrainingCamps />} />
             <Route path="/training-camps/form" element={<TrainingCampsForm />} />
-            <Route path="/store" element={<Store />} />
+             <Route element={<StoreLayout />}>
+    <Route path="/store" element={
+      <Suspense fallback={<StoreLoader />}>
+        <Store />
+      </Suspense>
+    } />
+     <Route path="/products" element={<Products />} />
+     <Route path="/productDetails/:id" element={<ProductDetails />} />
+     <Route path="/cart" element={<Cart />} />
+     <Route path="/checkout" element={<Checkout />} />
+     <Route path="/contactStore" element={<ContactStore />} />
+     <Route path="/myorder" element={<MyOrder />} />
+   </Route>
             <Route path="/success-stories" element={<SuccessStories />} />
             <Route path="/success-stories-cr" element={<SuccessStoriesCr />} />
             <Route path="/success-stories-mo" element={<SuccessStoriesMo />} />
