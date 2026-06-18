@@ -30,7 +30,6 @@ const AcceptableTalent = () => {
       setLoadPlayers(false);
     }
   };
-
   useEffect(() => {
     getData();
   }, []);

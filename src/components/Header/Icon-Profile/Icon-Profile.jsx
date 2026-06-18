@@ -1,8 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Button,
-  IconButton,
   Menu,
   MenuHandler,
   MenuList,
@@ -16,6 +15,7 @@ import {
 } from "@heroicons/react/24/outline";
 
 const IconProfile = ({ user, logout, isMobile = false, onClose }) => {
+  const navigate = useNavigate();
 
   if (!user) {
     return (
@@ -33,7 +33,9 @@ const IconProfile = ({ user, logout, isMobile = false, onClose }) => {
 
   const rawImage = user.image || user.avatar || user.profile_image;
   const placeholder = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.username || user.name)}&background=D4AF37&color=fff`;
-  const isAdmin = user.role === "admin";
+  
+  // تعديل الشرط ليشمل أي مستخدم ليس "مستخدم عادي" وليس "لاعب" (أي أدمن بمختلف مسمياتهم)
+  const isAdmin = user.role !== "user" && user.role !== "player";
 
   const handleError = (e) => {
     if (e.target.src !== placeholder) {
@@ -41,7 +43,6 @@ const IconProfile = ({ user, logout, isMobile = false, onClose }) => {
     }
   };
 
-  // المكون المشترك للصورة مع التأكد أنها تملأ العنصر الأب
   const ProfileImg = ({ className }) => (
     <img 
       key={rawImage} 
@@ -52,6 +53,7 @@ const IconProfile = ({ user, logout, isMobile = false, onClose }) => {
     />
   );
 
+  // 1. عرض القائمة داخل السايد بار (شاشات الجوال والشاشات الصغيرة)
   if (isMobile) {
     return (
       <div className="flex flex-col gap-2 w-full px-2">
@@ -61,12 +63,12 @@ const IconProfile = ({ user, logout, isMobile = false, onClose }) => {
           </div>
           <div className="flex flex-col">
             <Typography className="font-bold text-[var(--color-text-gray)]">{user.username || user.name}</Typography>
-            {isAdmin && <span className="text-[10px] bg-[var(--color-gold-main)] text-black px-2 rounded-full w-fit">مدير النظام</span>}
+            {isAdmin && <span className="text-[10px] bg-[var(--color-gold-main)] text-black px-2 rounded-full w-fit">إدارة النظام</span>}
           </div>
         </div>
         
         {isAdmin && (
-          <Link to="/admin-dashboard" onClick={onClose} className="flex items-center gap-2 p-2 hover:bg-[var(--color-bg-main)] text-[var(--color-gold-main)] rounded-lg">
+          <Link to="/dashboard" onClick={onClose} className="flex items-center gap-2 p-2 hover:bg-[var(--color-bg-main)] text-[var(--color-gold-main)] rounded-lg">
             <RectangleGroupIcon className="h-5 w-5" /> <span>لوحة التحكم</span>
           </Link>
         )}
@@ -82,30 +84,37 @@ const IconProfile = ({ user, logout, isMobile = false, onClose }) => {
     );
   }
 
+  // 2. عرض القائمة المنسدلة العادية في الهيدر (الشاشات الكبيرة)
   return (
     <Menu placement="bottom-end">
       <MenuHandler>
         <button 
-          className="rounded-full  overflow-hidden h-12 w-12 outline-none p-0 flex items-center justify-center bg-transparent"
+          className="rounded-full overflow-hidden h-12 w-12 outline-none p-0 flex items-center justify-center bg-transparent cursor-pointer"
         >
           <ProfileImg />
         </button>
       </MenuHandler>
       <MenuList className="bg-[var(--color-bg-card)] border-[var(--color-border)] text-[var(--color-text-gray)] shadow-xl z-[200]">
+        
         {isAdmin && (
-          <Link to="/dashboard">
-            <MenuItem className="flex items-center gap-2 text-[var(--color-gold-main)] font-bold">
-              <RectangleGroupIcon className="h-4 w-4" /> لوحة التحكم 
-            </MenuItem>
-          </Link>
-        )}
-        <Link to="/profile">
-          <MenuItem className="flex items-center gap-2">
-            <UserIcon className="h-4 w-4" /> الملف الشخصي
+          <MenuItem 
+            onClick={() => navigate("/dashboard")} 
+            className="flex items-center gap-2 text-[var(--color-gold-main)] font-bold cursor-pointer"
+          >
+            <RectangleGroupIcon className="h-4 w-4" /> لوحة التحكم 
           </MenuItem>
-        </Link>
+        )}
+
+        <MenuItem 
+          onClick={() => navigate("/profile")} 
+          className="flex items-center gap-2 cursor-pointer"
+        >
+          <UserIcon className="h-4 w-4" /> الملف الشخصي
+        </MenuItem>
+
         <hr className="my-2 border-[var(--color-border)]" />
-        <MenuItem onClick={logout} className="flex items-center gap-2 text-red-500 hover:bg-red-500/10">
+        
+        <MenuItem onClick={logout} className="flex items-center gap-2 text-red-500 hover:bg-red-500/10 cursor-pointer">
           <PowerIcon className="h-4 w-4" /> تسجيل الخروج
         </MenuItem>
       </MenuList>

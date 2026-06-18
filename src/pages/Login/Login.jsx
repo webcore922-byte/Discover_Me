@@ -9,12 +9,42 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    // تحقق احترافي من المدخلات الفارغة
+    if (!formData.email.trim()) {
+      Swal.fire({
+        title: 'تنبيه',
+        text: 'يرجى إدخال البريد الإلكتروني الخاص بك لتسجيل الدخول.',
+        icon: 'warning',
+        background: '#1a1a1a',
+        color: '#fff',
+        confirmButtonColor: '#D4AF37',
+        confirmButtonText: 'موافق',
+        customClass: { popup: 'border border-[var(--color-gold-main)]/30 rounded-3xl' }
+      });
+      return;
+    }
+
+    if (!formData.password.trim()) {
+      Swal.fire({
+        title: 'تنبيه',
+        text: 'يرجى إدخال كلمة المرور المربوطة بالحساب.',
+        icon: 'warning',
+        background: '#1a1a1a',
+        color: '#fff',
+        confirmButtonColor: '#D4AF37',
+        confirmButtonText: 'موافق',
+        customClass: { popup: 'border border-[var(--color-gold-main)]/30 rounded-3xl' }
+      });
+      return;
+    }
+
     const res = await login(formData.email, formData.password);
     
     if (res.success) {
       Swal.fire({
-        title: 'أهلاً بك مجدداً!',
-        text: 'جاري الدخول إلى حسابك في ScoutPro...',
+        title: 'تم تسجيل الدخول نجاح',
+        text: 'جاري تهيئة لوحة التحكم ونقل الحساب...',
         icon: 'success',
         timer: 1500,
         showConfirmButton: false,
@@ -24,13 +54,13 @@ const Login = () => {
       });
     } else {
       Swal.fire({
-        title: 'فشل الدخول',
-        text: res.message || 'البريد أو كلمة المرور غير صحيحة',
+        title: 'فشل عملية الدخول',
+        text: res.message || 'البريد الإلكتروني أو كلمة المرور غير صحيحة، يرجى إعادة المحاولة.',
         icon: 'error',
         background: '#1a1a1a',
         color: '#fff',
         confirmButtonColor: '#D4AF37',
-        confirmButtonText: 'حاول مرة أخرى'
+        confirmButtonText: 'إعادة المحاولة'
       });
     }
   };
@@ -46,7 +76,7 @@ const Login = () => {
             <p className="text-[9px] md:text-xs tracking-[0.2em] uppercase mt-1 opacity-60 text-center">ScoutPro System</p>
           </div>
 
-          <form onSubmit={handleLogin} className="space-y-4 md:space-y-6">
+          <form onSubmit={handleLogin} className="space-y-4 md:space-y-6" noValidate>
             <div className="space-y-2">
               <label className="block text-[var(--color-gold-main)] text-sm md:text-lg font-black uppercase tracking-widest mr-1 text-right">البريد الإلكتروني</label>
               <input 
@@ -54,7 +84,6 @@ const Login = () => {
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-[var(--color-gold-main)] outline-none transition-all text-sm md:text-base text-right"
                 placeholder="أدخل البريد الإلكتروني"
                 onChange={(e) => setFormData({...formData, email: e.target.value})}
-                required
               />
             </div>
 
@@ -65,7 +94,6 @@ const Login = () => {
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-[var(--color-gold-main)] outline-none transition-all text-sm md:text-base text-right"
                 placeholder="أدخل كلمة المرور"
                 onChange={(e) => setFormData({...formData, password: e.target.value})}
-                required
               />
             </div>
             
