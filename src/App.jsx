@@ -1,5 +1,4 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-
 import { lazy,Suspense } from "react";
 import Home from "./pages/Home/Home.jsx";
 import Header from "./components/Header/Header.jsx";
@@ -16,7 +15,13 @@ import Profile from "./pages/Profile/Profile.jsx";
 import FieldTests from "./pages/Programs/FieldTests/FieldTests.jsx";
 import PrizesAndCompetitions from "./pages/Programs/PrizesAndCompetitions/PrizesAndCompetitions.jsx";
 import TrainingCamps from "./pages/Programs/TrainingCamps/TrainingCamps.jsx";
-import Store from "./pages/Store/Store.jsx";
+const Store = lazy(() => import("./pages/Store/Store.jsx"));
+import Products from "./pages/Store/Products.jsx";
+import ProductDetails from "./pages/Store/ProductDetails.jsx";
+import Cart from "./pages/Store/Cart.jsx";
+import Checkout from "./pages/Store/Checkout.jsx";
+import ContactStore from "./pages/Store/ContactStore.jsx";
+import MyOrder from "./pages/Store/MyOrder.jsx";
 import SuccessStories from "./pages/SuccessStories/SuccessStories.jsx";
 import SuccessStoriesCr from "./pages/SuccessStories/SuccessStoriesCr/SuccessStoriesCr.jsx";
 import SuccessStoriesMo from "./pages/SuccessStories/SuccessStoriesMo/SuccessStoriesMo.jsx";
@@ -33,9 +38,14 @@ import ContactUs from "./pages/ContactUs/ContactUs.jsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy.jsx";
 import { ThemeProvider } from "./contexts/ThemeContext/ThemeContext.jsx";
 import { AuthProvider, useAuth } from "./contexts/AuthContext/AuthContext.jsx";
+import {StoreProvider} from "./contexts/StoreContext/StoreContext.jsx"
+import StoreLayout from "./components/StoreLayout/StoreLayout";
 
-
-
+const StoreLoader = () => (
+  <div className="flex h-[60vh] w-full items-center justify-center">
+    <div className="h-12 w-12 animate-spin rounded-full border-4 border-[var(--color-gold-main)] border-t-transparent"></div>
+  </div>
+);
 
 const ProtectedAdminRoute = ({ children }) => {
   const { currentUser, loading } = useAuth();
@@ -64,6 +74,7 @@ const App = () => {
   return (
     <AuthProvider>
       <ThemeProvider>
+        <StoreProvider>
       <div className="app-container">
         <Header />
         <Routes>
@@ -94,7 +105,19 @@ const App = () => {
           <Route path="/field-tests" element={<FieldTests />} />
           <Route path="/prizes-and-competitions" element={<PrizesAndCompetitions />} />
           <Route path="/training-camps" element={<TrainingCamps />} />
-          <Route path="/store" element={<Store />} />
+          <Route element={<StoreLayout />}>
+    <Route path="/store" element={
+      <Suspense fallback={<StoreLoader />}>
+        <Store />
+      </Suspense>
+    } />
+     <Route path="/products" element={<Products />} />
+     <Route path="/productDetails/:id" element={<ProductDetails />} />
+     <Route path="/cart" element={<Cart />} />
+     <Route path="/checkout" element={<Checkout />} />
+     <Route path="/contactStore" element={<ContactStore />} />
+     <Route path="/myorder" element={<MyOrder />} />
+   </Route>
           <Route path="/success-stories" element={<SuccessStories />} />
           <Route path="/success-stories-cr" element={<SuccessStoriesCr />} />
           <Route path="/success-stories-mo" element={<SuccessStoriesMo />} />
@@ -112,8 +135,10 @@ const App = () => {
         </Routes>
         <Footer />
       </div>
+      </StoreProvider>
       </ThemeProvider>
     </AuthProvider>
+    
   );
 };
 
