@@ -22,30 +22,49 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('scoutUser', JSON.stringify(userData));
   };
 
+  // ✅ الدالة دي بتتعامل مع 3 حالات:
+  // 1. تحديث بيانات لاعب موجود (edit profile)
+  // 2. تسجيل يوزر كلاعب جديد (upgrade) → player object جديد خالص
+  // 3. تحديث صورة فقط
   const updatePlayerState = async (updatedData) => {
     try {
-      const isImageUpdate = updatedData.image !== user.image;
-      
       setUser(prevUser => {
-        const newUser = { 
-          ...prevUser, 
-          ...updatedData,
-          player: prevUser.player ? { ...prevUser.player, ...updatedData } : null,
-          role: (prevUser.player?.status === 'approved' || updatedData.status === 'approved') ? 'player' : 'user' 
-        };
+        let newUser;
+
+        // الحالة دي: اليوزر مكنش عنده player وبيسجل كلاعب دلوقتي
+        // updatedData هيكون player object جديد فيه userEmail
+        if (!prevUser.player && updatedData.userEmail) {
+          newUser = {
+            ...prevUser,
+            player: updatedData,
+            // role بيفضل 'user' لأن الـ status لسه pending
+            role: 'user',
+          };
+        } else {
+          // الحالة دي: تحديث بيانات لاعب موجود
+          const updatedPlayer = prevUser.player
+            ? { ...prevUser.player, ...updatedData }
+            : null;
+
+          // تحديد الـ role بناءً على الـ status الجديد
+          const newStatus = updatedPlayer?.status || prevUser.player?.status;
+          const isApprovedPlayer =
+            newStatus === 'approved' || newStatus === 'final_accepted';
+
+          newUser = {
+            ...prevUser,
+            player: updatedPlayer,
+            role: isApprovedPlayer ? 'player' : 'user',
+            // لو الـ updatedData فيه image (تحديث صورة)
+            image: updatedData.image || prevUser.image,
+          };
+        }
+
         localStorage.setItem('scoutUser', JSON.stringify(newUser));
         return newUser;
       });
-
-      if (isImageUpdate && user?.id) {
-        await fetch(`${API_URL}/users/${user.id}`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ image: updatedData.image })
-        });
-      }
     } catch (err) {
-      console.error("Error syncing user data:", err);
+      console.error('Error syncing user data:', err);
     }
   };
 
@@ -54,39 +73,42 @@ export const AuthProvider = ({ children }) => {
       // 1. البحث في جدول الأدمنز
       const adminRes = await fetch(`${API_URL}/admins?email=${email}&password=${password}`);
       const admins = await adminRes.json();
-      
+
       if (admins.length > 0) {
-        // التعديل هنا: نأخذ بيانات الأدمن كما هي من الـ db.json (بما فيها الـ role الفعلي)
-        const adminData = admins[0]; 
+        const adminData = admins[0];
         saveUser(adminData);
         navigate('/dashboard');
         return { success: true, role: adminData.role };
       }
 
-      // 2. البحث في جدول المستخدمين العاديين
+      // 2. البحث في جدول المستخدمين
       const userRes = await fetch(`${API_URL}/users?email=${email}&password=${password}`);
       const users = await userRes.json();
-      
+
       if (users.length > 0) {
         const userData = users[0];
         const playerRes = await fetch(`${API_URL}/players?userEmail=${userData.email}`);
         const players = await playerRes.json();
         const playerInfo = players[0] || null;
 
-        const fullUser = { 
-          ...userData, 
-          role: (playerInfo && playerInfo.status === 'approved') ? 'player' : 'user', 
-          player: playerInfo 
+        const playerStatus = playerInfo?.status;
+        const isApprovedPlayer =
+          playerStatus === 'approved' || playerStatus === 'final_accepted';
+
+        const fullUser = {
+          ...userData,
+          role: isApprovedPlayer ? 'player' : 'user',
+          player: playerInfo,
         };
-        
+
         saveUser(fullUser);
-        navigate(fullUser.role === 'player' ? '/profile' : '/');
+        navigate(isApprovedPlayer ? '/profile' : '/');
         return { success: true, role: fullUser.role };
       }
-      
+
       return { success: false, message: 'بيانات الدخول غير صحيحة' };
-    } catch (err) { 
-      return { success: false, message: 'خطأ في الاتصال بالسيرفر' }; 
+    } catch (err) {
+      return { success: false, message: 'خطأ في الاتصال بالسيرفر' };
     }
   };
 
@@ -95,7 +117,8 @@ export const AuthProvider = ({ children }) => {
       const allUsersRes = await fetch(`${API_URL}/users`);
       const allUsers = await allUsersRes.json();
 
-      if (allUsers.some(u => u.email === userData.email)) return { success: false, message: 'الإيميل مكرر' };
+      if (allUsers.some(u => u.email === userData.email))
+        return { success: false, message: 'الإيميل مكرر' };
 
       const sharedImage = `https://api.dicebear.com/7.x/avataaars/svg?seed=${userData.username}`;
 
@@ -108,8 +131,8 @@ export const AuthProvider = ({ children }) => {
           password: userData.password,
           phone: userData.phone,
           image: sharedImage,
-          createdAt: new Date().toISOString()
-        })
+          createdAt: new Date().toISOString(),
+        }),
       });
 
       const newUser = await userRes.json();
@@ -125,35 +148,37 @@ export const AuthProvider = ({ children }) => {
             position: userData.position,
             age: userData.age,
             location: userData.location,
-            height: "175", 
-            weight: "70",
+            height: '175',
+            weight: '70',
             preferredFoot: userData.preferredFoot,
-            currentClub: "لاعب حر",
-            videoUrl: userData.videoUrl || "",
-            rating: "0.0",
-            status: "pending",
+            currentClub: 'لاعب حر',
+            videoUrl: userData.videoUrl || '',
+            rating: '0.0',
+            status: 'pending',
             tags: [],
             image: sharedImage,
-            skills: { pace: 0, shooting: 0, passing: 0, dribbling: 0, defending: 0, physical: 0 }
-          })
+            skills: { pace: 0, shooting: 0, passing: 0, dribbling: 0, defending: 0, physical: 0 },
+          }),
         });
       }
 
       await login(userData.email, userData.password);
       return { success: true };
-    } catch (err) { 
-      return { success: false, message: 'خطأ أثناء إنشاء الحساب' }; 
+    } catch (err) {
+      return { success: false, message: 'خطأ أثناء إنشاء الحساب' };
     }
   };
 
-  const logout = () => { 
-    setUser(null); 
-    localStorage.removeItem('scoutUser'); 
-    navigate('/login'); 
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem('scoutUser');
+    navigate('/login');
   };
 
   return (
-    <AuthContext.Provider value={{ user, currentUser: user, login, register, logout, loading, updatePlayerState }}>
+    <AuthContext.Provider
+      value={{ user, currentUser: user, login, register, logout, loading, updatePlayerState }}
+    >
       {children}
     </AuthContext.Provider>
   );
