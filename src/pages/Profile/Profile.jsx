@@ -46,7 +46,6 @@ const Profile = () => {
   const [upgradeData, setUpgradeData] = useState({ nationalId: '', position: '', age: '', location: '', preferredFoot: '', videoUrl: '' });
   const [editData, setEditData] = useState({ currentClub: '', location: '', age: '', videoUrl: '', height: '', weight: '', preferredFoot: '', image: '' });
 
-  // فحص شامل ودقيق لدور الأدمن
   const isAdmin = 
     user?.role === 'admin' || 
     user?.role === 'Admin' || 
@@ -54,10 +53,9 @@ const Profile = () => {
     user?.isAdmin === 'true' ||
     user?.username?.toLowerCase().includes('admin');
 
-  // استخراج نوع الأدمن أو الـ Role الفعلي لعرضه ديناميكياً
   const adminType = user?.role || (isAdmin ? 'Admin' : '');
 
-  const isPlayer = !isAdmin && (user?.role === 'player' || (user?.player && user?.player.status === 'approved'));
+  const isPlayer = !isAdmin && (user?.role === 'player' || (user?.player && user?.player.status === 'approved' || user?.player.status === 'pending' || user?.player.status === 'rejected'|| user?.player.status === 'final_accepted' || user?.player.status === 'final_rejected'));
   const isPendingOrRejectedPlayer = !isAdmin && user?.player && (user.player.status === 'pending' || user.player.status === 'rejected');
   const isUser = !isAdmin && !isPlayer && !isPendingOrRejectedPlayer;
 
@@ -103,9 +101,8 @@ const Profile = () => {
   if (!user) return null;
   const status = user.player ? user.player.status : null;
 
-  // الدالة السحرية لتحديث الصورة الموحدة في البلاير واليوزر معاً بالسيرفر والـ Context
   const handleProfileImageChange = (e) => {
-    if (isAdmin) return; // منع الأدمن من تغيير الصورة برمجياً أيضاً
+    if (isAdmin) return;
     if (e.target.files && e.target.files[0]) {
       Swal.fire({ title: 'جاري معالجة الصورة...', allowOutsideClick: false, background: '#121212', color: '#fff', didOpen: () => Swal.showLoading() });
       
@@ -113,7 +110,6 @@ const Profile = () => {
         try {
           const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
           
-          // 1. تحديث جدول المستخدمين (Users) دائماً لأن كل الحسابات تمتلك مستخدم أساسي
           const userRes = await fetch(`${API_URL}/users/${user.id}`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
@@ -122,7 +118,6 @@ const Profile = () => {
 
           let updatedPlayerData = null;
           
-          // 2. إذا كان له حساب لاعب (Player) بنفس الإيميل، نقوم بتحديث كرت اللاعب فوراً لتوحيد الصورة
           if (user.player && user.player.id) {
             const playerRes = await fetch(`${API_URL}/players/${user.player.id}`, {
               method: 'PATCH',
@@ -135,16 +130,11 @@ const Profile = () => {
           }
 
           if (userRes.ok) {
-            const updatedUserData = await userRes.json();
-            
-            // 3. تحديث الحالة المحلية للـ Inputs
             setEditData(prev => ({ ...prev, image: compressedBase64 }));
             
-            // 4. تحديث الـ Context لكي تتغير الصورة في الـ Navbar وفي كل مكان بالتطبيق تلقائياً
             if (updatedPlayerData) {
               updatePlayerState(updatedPlayerData);
             } else {
-              // إذا لم يكن لاعب، نقوم بتحديث كائن الـ User داخل السياق
               updatePlayerState({ ...user, image: compressedBase64 });
             }
 
@@ -153,7 +143,7 @@ const Profile = () => {
             throw new Error();
           }
         } catch (err) {
-          Swal.fire({ title: 'خطأ', text: 'فشل في تحديث الصورة  بالسيرفر', icon: 'error', background: '#121212', color: '#fff' });
+          Swal.fire({ title: 'خطأ', text: 'فشل في تحديث الصورة بالسيرفر', icon: 'error', background: '#121212', color: '#fff' });
         }
       });
     }
@@ -163,7 +153,6 @@ const Profile = () => {
     e.preventDefault();
     Swal.fire({ title: 'جاري تسجيلك كلاعب...', allowOutsideClick: false, background: '#121212', color: '#fff', didOpen: () => Swal.showLoading() });
     
-    // استخدام نفس صورة الحساب الحالية لضمان التوحيد من البداية عند الترقية
     const currentProfileImage = editData.image || user.image || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.username}`;
     
     const newPlayerPayload = {
@@ -193,17 +182,31 @@ const Profile = () => {
     Swal.fire({ title: 'جاري الحفظ...', allowOutsideClick: false, background: '#121212', color: '#fff', didOpen: () => { Swal.showLoading(); } });
     try {
       const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+      
+      let payload = { ...editData };
+
+      if (user.player && user.player.status === 'rejected' ) {
+        payload.status = 'pending';
+        payload.rejectionReason = '';
+      }
+
       const response = await fetch(`${API_URL}/players/${user.player.id}`, { 
         method: 'PATCH', 
         headers: { 'Content-Type': 'application/json' }, 
-        body: JSON.stringify(editData) 
+        body: JSON.stringify(payload) 
       });
+
       if (!response.ok) throw new Error();
       const updatedPlayer = await response.json();
       updatePlayerState(updatedPlayer);
-      Swal.fire({ title: 'تم الحفظ!', icon: 'success', background: '#121212', color: '#fff' });
+
+      if (user.player && user.player.status === 'rejected' ) {
+        Swal.fire({ title: 'تم تعديل البيانات!', text: 'تم إعادة إرسال ملفك الفني للمراجعة مجدداً.', icon: 'success', background: '#121212', color: '#fff' });
+      } else {
+        Swal.fire({ title: 'تم الحفظ!', icon: 'success', background: '#121212', color: '#fff' });
+      }
     } catch (err) {
-      Swal.fire({ title: 'خطأ', text: 'فشل الاتصال بالسيرفر', icon: 'error', background: '#121212' });
+      Swal.fire({ title: 'خطأ', text: 'فشل الاتصال بالسيرفر', icon: 'error', background: '#121212', color: '#fff' });
     }
   };
 
@@ -211,14 +214,12 @@ const Profile = () => {
     Swal.fire({ title: 'خروج؟', icon: 'warning', showCancelButton: true, confirmButtonText: 'نعم', background: '#121212', color: '#fff' }).then((r) => { if (r.isConfirmed) logout(); });
   };
 
-  // استخراج أول حرفين لاسم الأدمن
   const adminInitials = user.username ? user.username.trim().substring(0, 2).toUpperCase() : 'AD';
 
   return (
     <div className="min-h-screen bg-[var(--color-bg-main)] py-10 md:py-16 px-4 md:px-8 text-right font-sans" dir="rtl">
       <div className="max-w-6xl mx-auto space-y-10">
         
-        {/* التنبيهات الخاصة باللاعبين */}
         {!isAdmin && user.player && (
           <div className="space-y-4">
             {showCongrats && isPlayer && (
@@ -237,7 +238,6 @@ const Profile = () => {
           </div>
         )}
 
-        {/* الكرت الرئيسي للملف الشخصي */}
         <div className="glass-card rounded-[2.5rem] md:rounded-[3.5rem] p-8 md:p-12 border border-white/10 flex flex-col md:flex-row items-center gap-8 md:gap-12 relative overflow-visible shadow-2xl">
           <div className="relative group">
             <input
@@ -251,12 +251,10 @@ const Profile = () => {
             <label htmlFor={!isAdmin ? "profile-upload" : undefined} className={`block text-center ${!isAdmin ? 'cursor-pointer' : 'cursor-default'}`}>
               <div className="relative">
                 {isAdmin ? (
-                  /* عرض أول حرفين من اسم الأدمن داخل دائرة مميزة وبنفس الأبعاد المحددة للـ Avatar */
                   <div className="w-40 h-40 md:w-52 md:h-52 rounded-full border-4 border-[var(--color-gold-main)] z-10 bg-black shadow-[var(--gold-glow)] flex items-center justify-center relative font-sans text-4xl md:text-5xl font-black text-[var(--color-gold-main)] italic tracking-wider">
                     {adminInitials}
                   </div>
                 ) : (
-                  /* عرض الصورة العادية للاعبين والأعضاء مع تأثيرات التغيير */
                   <>
                     <img 
                       src={editData.image || (user.player ? user.player.image : user.image || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.username}`)} 
@@ -270,7 +268,6 @@ const Profile = () => {
                 )}
               </div>
               
-              {/* إظهار النص فقط إذا لم يكن الحساب إدارياً */}
               {!isAdmin && (
                 <p className="text-[var(--color-gold-main)] text-[10px] font-black uppercase mt-3 tracking-widest italic opacity-70">
                   اضغط لتغيير الصورة 
@@ -299,7 +296,6 @@ const Profile = () => {
           <button onClick={handleLogout} className="px-10 py-4 bg-red-500/10 border-2 border-red-500/20 text-red-500 text-xs font-black rounded-2xl hover:bg-red-500 hover:text-white transition-all z-10 italic"> تسجيل الخروج </button>
         </div>
 
-        {/* قسم تفاصيل البيانات السفلي */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div className="lg:col-span-4 space-y-8">
             <div className="glass-card rounded-[2.5rem] p-10 border border-white/10 shadow-xl space-y-8">
@@ -365,7 +361,22 @@ const Profile = () => {
                   </div>
                 </div>
 
-                <EditableStatCard label="لينك فيديو مهاراتك (Google Drive / YouTube)" value={editData.videoUrl} onChange={(v) => setEditData({...editData, videoUrl: v})} />
+                {/* هنا يظهر التنبيه المطلوب مباشرة وبشكل منسق بجانب حقل الفيديو عند الرفض */}
+                <EditableStatCard 
+                  label={
+                    <div className="flex items-center justify-between w-full">
+                      <span>لينك فيديو مهاراتك (Google Drive / YouTube)</span>
+                      {status === 'rejected' && (
+                        <span className="text-yellow-500 font-bold text-xs animate-pulse bg-yellow-500/10 px-3 py-1 rounded-full border border-yellow-500/20">
+                          ⚠️ غير الفيديو وسوف يراجع مرة أخرى ⏳
+                        </span>
+                      )}
+                    </div>
+                  } 
+                  value={editData.videoUrl} 
+                  onChange={(v) => setEditData({...editData, videoUrl: v})} 
+                />
+                
                 <button onClick={handleSave} className="w-full bg-[var(--gold-gradient)] text-black font-black py-7 rounded-[2.5rem] shadow-[var(--gold-glow)] hover:scale-[1.01] active:scale-95 transition-all text-2xl uppercase border-b-8 border-black/20 italic"> تحديث بيانات اللاعب </button>
               </div>
             ) : isUser ? (
@@ -373,7 +384,7 @@ const Profile = () => {
                 {!isUpgrading ? (
                   <>
                     <h2 className="text-4xl md:text-5xl font-black text-gradient-gold italic uppercase mb-6">Scout Mode</h2>
-                    <p className="text-white/40 mb-10 font-bold">هل تود الانضمام لمنصة المواهب كلاعب؟</p>
+                    <p className="text-white/40 mb-10 font-bold">هل تود الانضمام لمنصة المواهب كلاعب?</p>
                     <button onClick={() => setIsUpgrading(true)} className="bg-[var(--gold-gradient)] text-black font-black px-12 py-5 rounded-2xl shadow-[var(--gold-glow)] hover:scale-105 transition-all text-xl uppercase italic border-b-4 border-black/20"> سجل كلاعب الآن </button>
                   </>
                 ) : (
@@ -397,7 +408,7 @@ const Profile = () => {
                         <option value="">اختر القدم</option> <option value="يمين" className="bg-[#1e1e1e]">يمين</option> <option value="يسار" className="bg-[#1e1e1e]">يسار</option> <option value="القدمين" className="bg-[#1e1e1e]">القدمين</option>
                       </select>
                     </div>
-                    <UpgradeInput label="لينك فيديو مهاراتك" placeholder="Google Drive / YouTube" onChange={v => onChange(e.target.value)} />
+                    <UpgradeInput label="لينك فيديو مهاراتك" placeholder="Google Drive / YouTube" onChange={v => setUpgradeData({...upgradeData, videoUrl: v})} />
                     <div className="flex gap-4 mt-8">
                       <button type="submit" className="flex-1 bg-[var(--gold-gradient)] text-black font-black py-5 rounded-2xl text-xl uppercase italic">تأكيد البيانات</button>
                       <button type="button" onClick={() => setIsUpgrading(false)} className="px-8 py-5 bg-white/5 text-white/50 rounded-2xl font-black uppercase italic">إلغاء</button>
@@ -417,7 +428,7 @@ const InfoBox = ({ label, value }) => ( <div className="flex flex-col gap-1 bord
 
 const EditableStatCard = ({ label, value, onChange, readOnly }) => ( 
   <div className={`glass-card p-8 rounded-[2.5rem] border border-white/5 transition-all bg-white/[0.01] mt-4 ${!readOnly && 'hover:border-[var(--color-gold-main)]/30'}`}> 
-    <p className="text-[var(--color-text-gray)] text-[11px] font-black uppercase mb-3 italic tracking-widest px-2">{label}</p> 
+    <div className="text-[var(--color-text-gray)] text-[11px] font-black uppercase mb-3 italic tracking-widest px-2">{label}</div> 
     <input 
       type="text" 
       value={value} 

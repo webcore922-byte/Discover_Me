@@ -37,8 +37,7 @@ import { ThemeProvider } from "./contexts/ThemeContext/ThemeContext.jsx";
 import { AuthProvider, useAuth } from "./contexts/AuthContext/AuthContext.jsx";
 import TrainingCampsForm from "./pages/Programs/TrainingCamps/TrainingCampsForm/TrainingCampsForm.jsx";
 import NewsDetails from "./pages/More/NewsAndUpdates/NewsDetails.jsx";
-
-// 🛡️ تحديث حماية مسار الإدارة ليتوافق مع الأدوار المتعددة للوحة التحكم
+import ProfilePrizes from "./pages/Programs/PrizesAndCompetitions/ProfilePrizes/ProfilePrizes.jsx";
 const ProtectedAdminRoute = ({ children }) => {
   const { currentUser, loading } = useAuth();
 
@@ -108,6 +107,7 @@ const App = () => {
             <Route path="/prizes-and-competitions" element={<PrizesAndCompetitions />} />
             <Route path="/training-camps" element={<TrainingCamps />} />
             <Route path="/training-camps/form" element={<TrainingCampsForm />} />
+            <Route path="/admin/profile-prizes" element={<ProfilePrizes />} />
             <Route path="/store" element={<Store />} />
             <Route path="/success-stories" element={<SuccessStories />} />
             <Route path="/success-stories-cr" element={<SuccessStoriesCr />} />
