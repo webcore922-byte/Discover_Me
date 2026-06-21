@@ -25,7 +25,7 @@ const ProperNutrition = () => {
         
         <div className="lg:w-1/2 overflow-hidden h-96 lg:h-auto">
           <img
-            src="/food_img.png"
+            src="/public/food-img.jpg"
             alt="Football Nutrition"
             loading="lazy"
             decoding="async"
