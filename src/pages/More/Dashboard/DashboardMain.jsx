@@ -6,6 +6,7 @@ import PlayersSection from '../../../components/Dashboard/PlayersSection';
 import CampsSection from '../../../components/Dashboard/CampsSection';
 import ContestsSection from '../../../components/Dashboard/ContestsSection';
 import NewsSection from '../../../components/Dashboard/NewsSection';
+import ContactSection from '../../../components/Dashboard/Contact';
 
 const DashboardMain = () => {
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ const DashboardMain = () => {
     const permissions = {
       technical_coach: ['pending', 'approved_waiting', 'final_accepted', 'final_rejected'],
       camps_manager: ['manage_camps'],
-      marketing_admin: ['manage_contests', 'manage_news']
+      marketing_admin: ['manage_contests', 'manage_news', 'manage_contact']
     };
 
     return permissions[adminRole]?.includes(tabName) || false;
@@ -100,6 +101,10 @@ const DashboardMain = () => {
             {hasPermission('manage_news') && (
               <button onClick={() => setActiveTab('manage_news')} className={`flex-1 min-w-[140px] py-3 rounded-2xl text-xs font-black ${activeTab === 'manage_news' ? 'bg-purple-600 text-white' : 'text-purple-400'}`}>📰 الأخبار</button>
             )}
+
+            {hasPermission('manage_contact') && (
+              <button onClick={() => setActiveTab('manage_contact')} className={`flex-1 min-w-[140px] py-3 rounded-2xl text-xs font-black ${activeTab === 'manage_contact' ? 'bg-teal-500 text-black' : 'text-teal-400'}`}>✉️ التواصل</button>
+            )}
           </div>
         </div>
         
@@ -110,6 +115,7 @@ const DashboardMain = () => {
               {activeTab === 'manage_camps' && <CampsSection />}
               {activeTab === 'manage_contests' && <ContestsSection />}
               {activeTab === 'manage_news' && <NewsSection />}
+              {activeTab === 'manage_contact' && <ContactSection />}
             </>
           )}
         </main>

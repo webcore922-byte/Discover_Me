@@ -2,12 +2,21 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapPin, Calendar, Clock, Award } from 'lucide-react';
 import Swal from 'sweetalert2';
+import { useAuth } from '../../../contexts/AuthContext/AuthContext';
+
 
 const TrainingCamps = () => {
   const navigate = useNavigate();
   const [camps, setCamps] = useState([]);
   const [loading, setLoading] = useState(true);
+    const { user } = useAuth();
+    const playerData = user?.player || null;
+    const role = user?.role; 
 
+    const isAdmin = role === 'admin';
+  const playerRole =!isAdmin && playerData;
+
+  
   useEffect(() => {
     const fetchCamps = async () => {
       try {
@@ -165,8 +174,7 @@ const TrainingCamps = () => {
 
             {/* العناصر التفاعلية السفلية للكارت */}
             <div className="space-y-4">
-              
-              {/* زر التسجيل - تمت إعادته لكامل العرض الفخم مع تأثير الـ Hover */}
+             {playerRole && (
               <button 
                 type="button"
                 onClick={(e) => {
@@ -179,13 +187,12 @@ const TrainingCamps = () => {
                   background: 'linear-gradient(to right, var(--color-btn-start), var(--color-btn-end))',
                 }}
               >
-                {/* تأثير اللمعان الذي يتحرك بانسيابية فور الحوم فوق الزر */}
                 <span className="absolute inset-0 w-full h-full bg-white/25 transform -skew-x-12 -translate-x-full group-hover/btn:transition-transform group-hover/btn:duration-700 group-hover/btn:translate-x-full pointer-events-none" />
                 
                 <span className="flex items-center justify-center gap-1.5 relative z-10">
                   سجل الآن في المعسكر ✨ ⚽
                 </span>
-              </button>
+              </button>)}
 
               {/* قسم المدرب */}
               <div className="pt-3 border-t border-gray-800/60">
