@@ -18,7 +18,7 @@ const Store = () => {
                 استعد للموسم الجديد!
               </h1>
               <p className="text-gray-200 mb-6 text-xs md:text-xl opacity-90 leading-relaxed">
-                أحدث أطقم الأندية والمنتخبات لعام 2024
+                أحدث أطقم الأندية والمنتخبات لعام 2026
               </p>
 
               <Link to="/products" className="inline-block">
