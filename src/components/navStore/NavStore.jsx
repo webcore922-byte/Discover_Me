@@ -45,9 +45,7 @@ const NavStore = () => {
       </span>
     )}
         </Link>
-        <Link to="/Profile">
-        <div className="icon-gold text-lg md:text-xl cursor-pointer"><IoPersonSharp /></div>
-        </Link>
+        
       </div>
       
     </nav>

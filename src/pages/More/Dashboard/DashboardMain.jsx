@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShieldCheck, LogOut } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
 
 import PlayersSection from '../../../components/Dashboard/PlayersSection';
 import CampsSection from '../../../components/Dashboard/CampsSection';
@@ -19,22 +19,19 @@ const DashboardMain = () => {
     
     if (savedUser) {
       const user = JSON.parse(savedUser);
-      // استخدام الدور المخزن في ملف الـ json الخاص بالأدمن
       const role = user.role || 'user'; 
       setAdminRole(role);
 
-      // توجيه الأدمن للتبويب المناسب لصلاحياته
       if (role === 'technical_coach') setActiveTab('pending');
       else if (role === 'camps_manager') setActiveTab('manage_camps');
       else if (role === 'marketing_admin') setActiveTab('manage_contests');
-      else setActiveTab('pending'); // الافتراضي للسوبر أدمن
+      else setActiveTab('pending');
     } else {
-      navigate('/login'); // توجيه للمنصة إذا لم يكن هناك مستخدم مسجل
+      navigate('/login');
     }
   }, [navigate]);
 
   const hasPermission = (tabName) => {
-    // السوبر أدمن يمتلك كل الصلاحيات
     if (adminRole === 'super_admin') return true; 
     
     const permissions = {
@@ -44,11 +41,6 @@ const DashboardMain = () => {
     };
 
     return permissions[adminRole]?.includes(tabName) || false;
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem('scoutUser');
-    navigate('/login');
   };
 
   return (
@@ -69,13 +61,6 @@ const DashboardMain = () => {
               </span>
             </p>
           </div>
-
-          <button 
-            onClick={handleLogout}
-            className="text-xs font-bold text-red-400 bg-red-500/5 border border-red-500/10 px-4 py-2.5 rounded-xl hover:bg-red-500 hover:text-white transition-all flex items-center gap-2"
-          >
-            <LogOut className="w-4 h-4" /> تسجيل الخروج
-          </button>
         </div>
 
         <div className="flex flex-col xl:flex-row gap-4 items-center justify-between">
