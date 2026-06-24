@@ -43,7 +43,6 @@ const Profile = () => {
   const [showCongrats, setShowCongrats] = useState(false);
   const [isUpgrading, setIsUpgrading] = useState(false);
 
-  // ✅ FIX: upgradeData الآن يحتوي على videoUrl بشكل صريح
   const [upgradeData, setUpgradeData] = useState({
     nationalId: '',
     position: '',
@@ -67,6 +66,10 @@ const Profile = () => {
   const isAdmin =
     user?.role === 'admin' ||
     user?.role === 'Admin' ||
+    user?.role === 'super_admin' ||
+    user?.role === 'technical_coach' ||
+    user?.role === 'camps_manager' ||
+    user?.role === 'marketing_admin' ||
     user?.isAdmin === true ||
     user?.isAdmin === 'true' ||
     user?.username?.toLowerCase().includes('admin');
@@ -75,7 +78,6 @@ const Profile = () => {
 
   const status = user?.player ? user.player.status : null;
 
-  // ✅ الحالات المدعومة للاعب: pending, approved, rejected, final_accepted, final_rejected
   const isPlayer =
     !isAdmin &&
     (user?.role === 'player' ||
@@ -200,8 +202,6 @@ const Profile = () => {
     }
   };
 
-  // ✅ FIX 1: videoUrl بيتبعت صح دلوقتي
-  // ✅ FIX 2: بعد التسجيل كلاعب، updatePlayerState بتحدث الـ context وبيتعمل re-render تلقائي
   const handleUpgradeSubmit = async (e) => {
     e.preventDefault();
     Swal.fire({
@@ -225,7 +225,7 @@ const Profile = () => {
       age: upgradeData.age,
       location: upgradeData.location,
       preferredFoot: upgradeData.preferredFoot,
-      videoUrl: upgradeData.videoUrl,   // ✅ الآن بيتبعت صح
+      videoUrl: upgradeData.videoUrl,
       currentClub: 'لاعب حر',
       height: '175',
       weight: '70',
@@ -252,8 +252,6 @@ const Profile = () => {
       });
       if (res.ok) {
         const createdPlayer = await res.json();
-        // ✅ FIX 2: updatePlayerState بتحمل الـ player الجديد في الـ context
-        // وده بيخلي الـ user object يتحدث وتتحول الصفحة من isUser ل isPendingOrRejectedPlayer
         updatePlayerState(createdPlayer);
         setIsUpgrading(false);
         Swal.fire({
@@ -288,7 +286,6 @@ const Profile = () => {
     try {
       const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
-      // ✅ لو الـ status كان rejected وغيّر الـ videoUrl، نحوّله لـ pending تلقائياً
       const videoUrlChanged = editData.videoUrl !== (user.player.videoUrl || '');
       const shouldResetToPending = status === 'rejected' && videoUrlChanged;
 
@@ -333,7 +330,6 @@ const Profile = () => {
     ? user.username.trim().substring(0, 2).toUpperCase()
     : 'AD';
 
-  // ✅ دالة مساعدة لعرض badge الحالة بشكل ديناميكي لكل الحالات
   const getStatusBadge = () => {
     if (!user.player) return null;
     const statusMap = {
@@ -351,7 +347,6 @@ const Profile = () => {
     );
   };
 
-  // ✅ دالة مساعدة لعرض الـ role label في الـ badge الذهبي
   const getRoleLabel = () => {
     if (isAdmin) return `👑 مدير المنصة (${adminType})`;
     if (isPlayer) {
@@ -366,7 +361,6 @@ const Profile = () => {
     return '👤 عضو (Member)';
   };
 
-  // ✅ دالة مساعدة لعرض بانر التنبيه العلوي حسب الحالة
   const getStatusBanner = () => {
     if (!user.player || isAdmin) return null;
 
@@ -440,10 +434,8 @@ const Profile = () => {
     >
       <div className="max-w-6xl mx-auto space-y-10">
 
-        {/* ✅ بانرات التنبيه - كل الحالات */}
         <div className="space-y-4">{getStatusBanner()}</div>
 
-        {/* الكرت الرئيسي */}
         <div className="glass-card rounded-[2.5rem] md:rounded-[3.5rem] p-8 md:p-12 border border-white/10 flex flex-col md:flex-row items-center gap-8 md:gap-12 relative overflow-visible shadow-2xl">
           <div className="relative group">
             <input
@@ -496,7 +488,6 @@ const Profile = () => {
               <span className="px-6 py-2 bg-gradient-to-r from-amber-500/30 to-yellow-500/20 border-2 border-[var(--color-gold-main)] rounded-full text-[var(--color-gold-main)] text-sm font-black uppercase tracking-widest italic shadow-[0_0_15px_rgba(212,175,55,0.3)] animate-pulse">
                 {getRoleLabel()}
               </span>
-              {/* ✅ Badge الحالة لكل الحالات */}
               {!isAdmin && getStatusBadge()}
             </div>
           </div>
@@ -509,7 +500,6 @@ const Profile = () => {
           </button>
         </div>
 
-        {/* قسم البيانات السفلي */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div className="lg:col-span-4 space-y-8">
             <div className="glass-card rounded-[2.5rem] p-10 border border-white/10 shadow-xl space-y-8">
@@ -556,9 +546,7 @@ const Profile = () => {
               </div>
 
             ) : (isPlayer || isPendingOrRejectedPlayer) ? (
-              // ✅ نفس الفورم للاعبين بكل حالاتهم (pending, approved, rejected, final_accepted, final_rejected)
               <div className="space-y-8">
-                {/* ✅ تنبيه خاص بـ final_rejected - إمكانية تحديث البيانات */}
                 {status === 'rejected' && (
                   <div className="bg-orange-500/10 border border-orange-500/20 p-5 rounded-[2rem] text-orange-400 text-sm font-bold text-center italic">
                    يمكنك تحديث فيديو المهارات الخاص بك ليتم إعادة تقييم طلبك مرة أخرى
@@ -707,7 +695,6 @@ const Profile = () => {
                       </select>
                     </div>
 
-                    {/* ✅ FIX: videoUrl بيتبعت صح دلوقتي */}
                     <UpgradeInput
                       label="لينك فيديو مهاراتك"
                       placeholder="Google Drive / YouTube"

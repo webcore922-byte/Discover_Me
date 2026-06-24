@@ -105,7 +105,13 @@ const FinalAccept = () => {
       const response = await fetch(`${API_URL}/players/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: targetStatus }), 
+        body: JSON.stringify({ 
+          status: targetStatus,
+          fieldTest: {
+            ...player.fieldTest,
+            finalStatus: decision === 'accepted' ? 'accepted' : 'rejected'
+          }
+        }), 
       });
 
       if (response.ok) {
@@ -193,7 +199,6 @@ const FinalAccept = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           
-          {/* قسم عرض التقييم الفني فقط (Read-Only) */}
           <div className="lg:col-span-7 bg-white/5 rounded-[2.5rem] p-8 md:p-10 border border-white/5 shadow-2xl">
             <h3 className="text-xl font-black text-[#D4AF37] uppercase mb-8 border-b border-white/5 pb-4 italic">
                 Technical Assessment / التقييم الفني

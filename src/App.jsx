@@ -40,7 +40,7 @@ import { ThemeProvider } from "./contexts/ThemeContext/ThemeContext.jsx";
 import { AuthProvider, useAuth } from "./contexts/AuthContext/AuthContext.jsx";
 import {StoreProvider} from "./contexts/StoreContext/StoreContext.jsx"
 import StoreLayout from "./components/StoreLayout/StoreLayout";
-import TrainingCampsForm from "./pages/Programs/TrainingCamps/TrainingCampsForm/TrainingCampsForm.jsx";
+
 import NewsDetails from "./pages/More/NewsAndUpdates/NewsDetails.jsx";
 import ProfilePrizes from "./pages/Programs/PrizesAndCompetitions/ProfilePrizes/ProfilePrizes.jsx";
 
@@ -115,7 +115,7 @@ const App = () => {
             <Route path="/field-tests" element={<FieldTests />} />
             <Route path="/prizes-and-competitions" element={<PrizesAndCompetitions />} />
             <Route path="/training-camps" element={<TrainingCamps />} />
-            <Route path="/training-camps/form" element={<TrainingCampsForm />} />
+
             <Route path="/dashboard/profile-prizes" element={<ProfilePrizes />} />
              <Route element={<StoreLayout />}>
     <Route path="/store" element={
