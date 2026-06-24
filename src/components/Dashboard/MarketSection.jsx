@@ -2,15 +2,13 @@ import React, { useState, useEffect, useMemo } from 'react';
 import {
   ShoppingBag, Plus, Pencil, Trash2, X, Save,
   Tag, Flame, ImageOff, Search, ChevronLeft, ChevronRight,
-  CheckCircle, AlertCircle, Info
 } from 'lucide-react';
 import Swal from 'sweetalert2';
 
-/**
- * MarketSection – with SweetAlert2 toasts + 8 products per page (paginated)
- */
 
-const API_BASE = `${import.meta.env.VITE_API_URL}/products`;
+
+const API_BASE      = `${import.meta.env.VITE_API_URL}/products`;
+const ORDERS_API    = `${import.meta.env.VITE_API_URL}/orders`;
 
 const CATEGORY_META = {
   'أطقم الأندية':    { emoji: '👕' },
@@ -21,16 +19,23 @@ const CATEGORY_META = {
   'اكسسوارات':       { emoji: '🧤' },
 };
 
+const STATUS_CONFIG = {
+  pending:    { label: 'قيد الانتظار',  icon: Clock,        color: 'text-yellow-400', bg: 'bg-yellow-400/10', border: 'border-yellow-400/25', dot: 'bg-yellow-400' },
+  preparing:  { label: 'جاري التحضير', icon: Package,       color: 'text-blue-400',   bg: 'bg-blue-400/10',   border: 'border-blue-400/25',   dot: 'bg-blue-400'   },
+  on_the_way: { label: 'في الطريق',    icon: Truck,         color: 'text-purple-400', bg: 'bg-purple-400/10', border: 'border-purple-400/25', dot: 'bg-purple-400' },
+  delivered:  { label: 'تم التسليم',   icon: CheckCircle2,  color: 'text-green-400',  bg: 'bg-green-400/10',  border: 'border-green-400/25',  dot: 'bg-green-400'  },
+};
+
+const STATUS_ORDER = ['pending', 'preparing', 'on_the_way', 'delivered'];
+
 const ITEMS_PER_PAGE = 8;
+const ORDERS_PER_PAGE = 6;
 
 const EMPTY_PRODUCT = {
   name: '', price: '', discount: 0, category: '',
   image: '', isBestSeller: false, salesCount: 0, description: '',
 };
 
-// ─── Sweet helpers ────────────────────────────────────────────────────────────
-
-/** Centered alert with OK button */
 const CenteredAlert = Swal.mixin({
   position: 'center',
   showConfirmButton: true,
@@ -40,59 +45,51 @@ const CenteredAlert = Swal.mixin({
   color: '#ffffff',
   backdrop: 'rgba(0,0,0,0.6)',
   allowOutsideClick: false,
-  customClass: {
-    popup:         'swal-center-toast',
-    confirmButton: 'swal-ok-custom',
-  },
+  customClass: { popup: 'swal-center-toast', confirmButton: 'swal-ok-custom' },
 });
 
 const toastSuccess = (title) => CenteredAlert.fire({ icon: 'success', title, iconColor: '#D4AF37' });
 const toastError   = (title) => CenteredAlert.fire({ icon: 'error',   title, iconColor: '#ef4444' });
 
-/** Delete confirmation dialog – centered, closable on backdrop */
 const confirmDelete = (name) =>
   Swal.fire({
     title: 'هل أنت متأكد؟',
     html: `<span style="font-size:15px;color:#ccc;direction:rtl;">سيتم حذف <b style="color:#fff">"${name}"</b> نهائياً!</span>`,
-    icon: 'warning',
-    iconColor: '#D4AF37',
-    background: '#15171a',
-    color: '#ffffff',
-    position: 'center',
-    showCancelButton: true,
-    confirmButtonText: 'نعم، احذفه',
-    cancelButtonText: 'Cancel',
-    confirmButtonColor: '#D4AF37',
-    cancelButtonColor: '#374151',
-    reverseButtons: false,
-    allowOutsideClick: true,
-    allowEscapeKey: true,
+    icon: 'warning', iconColor: '#D4AF37', background: '#15171a', color: '#ffffff',
+    position: 'center', showCancelButton: true,
+    confirmButtonText: 'نعم، احذفه', cancelButtonText: 'Cancel',
+    confirmButtonColor: '#D4AF37', cancelButtonColor: '#374151',
+    reverseButtons: false, allowOutsideClick: true, allowEscapeKey: true,
     customClass: {
-      popup:         'swal-popup-custom',
-      title:         'swal-title-custom',
-      htmlContainer: 'swal-html-custom',
-      confirmButton: 'swal-confirm-custom',
-      cancelButton:  'swal-cancel-custom',
+      popup: 'swal-popup-custom', title: 'swal-title-custom',
+      htmlContainer: 'swal-html-custom', confirmButton: 'swal-confirm-custom',
+      cancelButton: 'swal-cancel-custom',
     },
   });
 
-// ─── Main Component ───────────────────────────────────────────────────────────
-
 const MarketSection = () => {
+  // Products state
   const [products,       setProducts]       = useState([]);
   const [loading,        setLoading]        = useState(true);
   const [error,          setError]          = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
   const [search,         setSearch]         = useState('');
   const [page,           setPage]           = useState(1);
+  const [showForm,       setShowForm]       = useState(false);
+  const [editingProduct, setEditingProduct] = useState(null);
+  const [formData,       setFormData]       = useState(EMPTY_PRODUCT);
+  const [saving,         setSaving]         = useState(false);
+  const [deletingId,     setDeletingId]     = useState(null);
 
-  const [showForm,        setShowForm]        = useState(false);
-  const [editingProduct,  setEditingProduct]  = useState(null);
-  const [formData,        setFormData]        = useState(EMPTY_PRODUCT);
-  const [saving,          setSaving]          = useState(false);
-  const [deletingId,      setDeletingId]      = useState(null);
-
-  // ── Fetch ──────────────────────────────────────────────────────────────────
+  // Orders state
+  const [orders,          setOrders]         = useState([]);
+  const [ordersLoading,   setOrdersLoading]  = useState(true);
+  const [ordersError,     setOrdersError]    = useState('');
+  const [statusFilter,    setStatusFilter]   = useState('all');
+  const [orderSearch,     setOrderSearch]    = useState('');
+  const [ordersPage,      setOrdersPage]     = useState(1);
+  const [updatingOrderId, setUpdatingOrderId]= useState(null);
+  const [activeTab, setActiveTab] = useState('market');
   useEffect(() => { fetchProducts(); }, []);
 
   const fetchProducts = async () => {
@@ -108,109 +105,147 @@ const MarketSection = () => {
       setLoading(false);
     }
   };
+  useEffect(() => { fetchOrders(); }, []);
 
-  // ── Derived data ───────────────────────────────────────────────────────────
+  const fetchOrders = async () => {
+    setOrdersLoading(true); setOrdersError('');
+    try {
+      const res  = await fetch(ORDERS_API);
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      setOrders(data.orders || data || []);
+    } catch {
+      setOrdersError('حدث خطأ في تحميل الطلبات.');
+    } finally {
+      setOrdersLoading(false);
+    }
+  };
+
+  const handleStatusChange = async (order, newStatus) => {
+    if (order.status === newStatus) return;
+    setUpdatingOrderId(order.id);
+    try {
+      const res = await fetch(`${ORDERS_API}/${order.id}`, {
+        method:  'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ ...order, status: newStatus }),
+      });
+      if (!res.ok) throw new Error();
+      setOrders((prev) =>
+        prev.map((o) => (o.id === order.id ? { ...o, status: newStatus } : o))
+      );
+      toastSuccess(`تم تحديث حالة الطلب إلى "${STATUS_CONFIG[newStatus].label}" ✅`);
+    } catch {
+      toastError('فشل تحديث حالة الطلب.');
+    } finally {
+      setUpdatingOrderId(null);
+    }
+  };
+
+  // ── Derived – products ──────────────────────────────────────────────────────
   const categories = useMemo(() => {
     const s = new Set(products.map((p) => p.category).filter(Boolean));
     return Array.from(s);
   }, [products]);
 
-  const filtered = useMemo(() => {
-    return products.filter((p) => {
-      const okCat    = activeCategory === 'all' || p.category === activeCategory;
-      const okSearch = p.name?.toLowerCase().includes(search.trim().toLowerCase());
-      return okCat && okSearch;
-    });
-  }, [products, activeCategory, search]);
+  const filtered = useMemo(() => products.filter((p) => {
+    const okCat    = activeCategory === 'all' || p.category === activeCategory;
+    const okSearch = p.name?.toLowerCase().includes(search.trim().toLowerCase());
+    return okCat && okSearch;
+  }), [products, activeCategory, search]);
 
-  const totalPages   = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
-  const safePage     = Math.min(page, totalPages);
-  const paginated    = filtered.slice((safePage - 1) * ITEMS_PER_PAGE, safePage * ITEMS_PER_PAGE);
+  const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
+  const safePage   = Math.min(page, totalPages);
+  const paginated  = filtered.slice((safePage - 1) * ITEMS_PER_PAGE, safePage * ITEMS_PER_PAGE);
 
-  // reset to page 1 when filter changes
   useEffect(() => { setPage(1); }, [activeCategory, search]);
 
-  // ── Form helpers ───────────────────────────────────────────────────────────
-  const openAddForm = () => { setEditingProduct(null); setFormData(EMPTY_PRODUCT); setShowForm(true); };
+  // ── Derived – orders ────────────────────────────────────────────────────────
+  const filteredOrders = useMemo(() => orders.filter((o) => {
+    const okStatus = statusFilter === 'all' || o.status === statusFilter;
+    const term = orderSearch.trim().toLowerCase();
+    const okSearch = !term ||
+      o.name?.toLowerCase().includes(term) ||
+      o.id?.toLowerCase().includes(term) ||
+      o.phone?.includes(term);
+    return okStatus && okSearch;
+  }), [orders, statusFilter, orderSearch]);
 
+  const ordersTotalPages = Math.max(1, Math.ceil(filteredOrders.length / ORDERS_PER_PAGE));
+  const safeOrdersPage   = Math.min(ordersPage, ordersTotalPages);
+  const paginatedOrders  = filteredOrders.slice(
+    (safeOrdersPage - 1) * ORDERS_PER_PAGE, safeOrdersPage * ORDERS_PER_PAGE
+  );
+
+  useEffect(() => { setOrdersPage(1); }, [statusFilter, orderSearch]);
+
+  // Counts per status
+  const statusCounts = useMemo(() => {
+    const c = { all: orders.length };
+    STATUS_ORDER.forEach((s) => { c[s] = orders.filter((o) => o.status === s).length; });
+    return c;
+  }, [orders]);
+
+  // ── Form helpers ────────────────────────────────────────────────────────────
+  const openAddForm  = () => { setEditingProduct(null); setFormData(EMPTY_PRODUCT); setShowForm(true); };
   const openEditForm = (product) => {
     setEditingProduct(product);
     setFormData({
-      name:        product.name        || '',
-      price:       product.price       ?? '',
-      discount:    product.discount    ?? 0,
-      category:    product.category    || '',
-      image:       product.image       || '',
-      isBestSeller: !!product.isBestSeller,
-      salesCount:  product.salesCount  ?? 0,
-      description: product.description || '',
+      name: product.name || '', price: product.price ?? '',
+      discount: product.discount ?? 0, category: product.category || '',
+      image: product.image || '', isBestSeller: !!product.isBestSeller,
+      salesCount: product.salesCount ?? 0, description: product.description || '',
     });
     setShowForm(true);
   };
-
   const closeForm = () => { setShowForm(false); setEditingProduct(null); setFormData(EMPTY_PRODUCT); };
+  const handleFormChange = (field, value) => setFormData((prev) => ({ ...prev, [field]: value }));
 
-  const handleFormChange = (field, value) =>
-    setFormData((prev) => ({ ...prev, [field]: value }));
-
-  // ── Submit ─────────────────────────────────────────────────────────────────
+  // ── Submit ──────────────────────────────────────────────────────────────────
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true); setError('');
-
     const payload = {
       ...formData,
-      price:      Number(formData.price)      || 0,
-      discount:   Number(formData.discount)   || 0,
+      price: Number(formData.price) || 0,
+      discount: Number(formData.discount) || 0,
       salesCount: Number(formData.salesCount) || 0,
     };
-
     try {
       if (editingProduct) {
         const res = await fetch(`${API_BASE}/${editingProduct.id}`, {
-          method:  'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify(payload),
+          method: 'PUT', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
         });
         if (!res.ok) throw new Error();
         const updated = await res.json();
-
         setProducts((prev) =>
-          prev.map((p) =>
-            p.id === editingProduct.id ? { ...p, ...payload, ...updated } : p
-          )
+          prev.map((p) => p.id === editingProduct.id ? { ...p, ...payload, ...updated } : p)
         );
         toastSuccess('تم تعديل المنتج بنجاح ✏️');
       } else {
         const res = await fetch(API_BASE, {
-          method:  'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify(payload),
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
         });
         if (!res.ok) throw new Error();
         const created = await res.json();
-
-        setProducts((prev) => [
-          ...prev,
-          { id: created.id || Date.now().toString(), ...payload, ...created },
-        ]);
+        setProducts((prev) => [...prev, { id: created.id || Date.now().toString(), ...payload, ...created }]);
         toastSuccess('تمت إضافة المنتج بنجاح 🎉');
       }
       closeForm();
     } catch {
       const msg = editingProduct ? 'فشل تعديل المنتج.' : 'فشل إضافة المنتج.';
-      setError(msg);
-      toastError(msg);
+      setError(msg); toastError(msg);
     } finally {
       setSaving(false);
     }
   };
 
-  // ── Delete ─────────────────────────────────────────────────────────────────
+  // ── Delete ──────────────────────────────────────────────────────────────────
   const handleDelete = async (product) => {
     const result = await confirmDelete(product.name);
     if (!result.isConfirmed) return;
-
     setDeletingId(product.id);
     try {
       const res = await fetch(`${API_BASE}/${product.id}`, { method: 'DELETE' });
@@ -224,60 +259,59 @@ const MarketSection = () => {
     }
   };
 
-  // ── Render ─────────────────────────────────────────────────────────────────
+  // ── Render ──────────────────────────────────────────────────────────────────
   return (
-    <div className="space-y-8" dir="rtl">
+    <div className="space-y-10" dir="rtl">
 
-      {/* SweetAlert2 global style overrides */}
       <style>{`
-        /* centered delete popup */
-        .swal-popup-custom {
-          border-radius: 24px !important;
-          border: 1px solid rgba(255,255,255,0.10) !important;
-          padding: 32px 24px 24px !important;
-          min-width: 400px !important;
-        }
-        .swal-title-custom  { font-size: 22px !important; font-weight: 900 !important; font-family: inherit !important; direction: rtl; }
-        .swal-html-custom   { font-family: inherit !important; direction: rtl; }
-        .swal-confirm-custom {
-          border-radius: 14px !important; font-weight: 800 !important;
-          font-size: 14px !important; padding: 12px 28px !important; color: #000 !important;
-        }
-        .swal-cancel-custom {
-          border-radius: 14px !important; font-weight: 800 !important;
-          font-size: 14px !important; padding: 12px 28px !important;
-        }
-        /* centered result toasts */
-        .swal-center-toast {
-          border-radius: 20px !important;
-          border: 1px solid rgba(255,255,255,0.10) !important;
-          padding: 24px 40px !important;
-          font-size: 16px !important;
-          font-weight: 800 !important;
-          min-width: 300px !important;
-        }
-        .swal-ok-custom {
-          border-radius: 14px !important;
-          font-weight: 800 !important;
-          font-size: 14px !important;
-          padding: 10px 36px !important;
-          color: #000 !important;
-        }
-        .form-input {
-          width: 100%;
-          background: rgba(255,255,255,0.05);
-          border: 1px solid rgba(255,255,255,0.1);
-          border-radius: 14px;
-          padding: 10px 14px;
-          font-size: 13px;
-          color: white;
-          outline: none;
-        }
-        .form-input:focus { border-color: rgba(212,175,55,0.4); }
-        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .swal-popup-custom   { border-radius:24px!important;border:1px solid rgba(255,255,255,.10)!important;padding:32px 24px 24px!important;min-width:400px!important; }
+        .swal-title-custom   { font-size:22px!important;font-weight:900!important;font-family:inherit!important;direction:rtl; }
+        .swal-html-custom    { font-family:inherit!important;direction:rtl; }
+        .swal-confirm-custom { border-radius:14px!important;font-weight:800!important;font-size:14px!important;padding:12px 28px!important;color:#000!important; }
+        .swal-cancel-custom  { border-radius:14px!important;font-weight:800!important;font-size:14px!important;padding:12px 28px!important; }
+        .swal-center-toast   { border-radius:20px!important;border:1px solid rgba(255,255,255,.10)!important;padding:24px 40px!important;font-size:16px!important;font-weight:800!important;min-width:300px!important; }
+        .swal-ok-custom      { border-radius:14px!important;font-weight:800!important;font-size:14px!important;padding:10px 36px!important;color:#000!important; }
+        .form-input          { width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:10px 14px;font-size:13px;color:white;outline:none; }
+        .form-input:focus    { border-color:rgba(212,175,55,.4); }
+        .scrollbar-hide::-webkit-scrollbar { display:none; }
+        .status-select:focus { outline:none; }
       `}</style>
 
-      {/* ── Header ── */}
+      {/* ── Tab bar ── */}
+      <div className="flex items-center gap-1 bg-white/5 border border-white/10 rounded-2xl p-1.5 w-fit">
+        <button
+          onClick={() => setActiveTab('market')}
+          className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-black transition-all ${
+            activeTab === 'market' ? 'bg-[#D4AF37] text-black' : 'text-gray-400 hover:text-white'
+          }`}
+        >
+          <ShoppingBag className="w-4 h-4" />
+          المتجر
+          <span className={`text-[11px] font-black px-1.5 py-0.5 rounded-lg ${activeTab === 'market' ? 'bg-black/15' : 'bg-white/10'}`}>
+            ({products.length})
+          </span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('orders')}
+          className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-black transition-all ${
+            activeTab === 'orders' ? 'bg-[#D4AF37] text-black' : 'text-gray-400 hover:text-white'
+          }`}
+        >
+          <Package className="w-4 h-4" />
+          إدارة الطلبات
+          <span className={`text-[11px] font-black px-1.5 py-0.5 rounded-lg ${activeTab === 'orders' ? 'bg-black/15' : 'bg-white/10'}`}>
+            ({orders.length})
+          </span>
+        </button>
+      </div>
+
+      {/* ════════════════════════════════════════════════════
+          SECTION 1 – PRODUCTS
+      ════════════════════════════════════════════════════ */}
+      {activeTab === 'market' && <>
+
+      {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div className="flex items-center gap-3">
           <div className="w-11 h-11 rounded-2xl bg-[#D4AF37]/10 border border-[#D4AF37]/20 flex items-center justify-center">
@@ -296,7 +330,6 @@ const MarketSection = () => {
         </button>
       </div>
 
-      {/* ── Error banner ── */}
       {error && (
         <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-bold px-4 py-3 rounded-2xl flex items-center justify-between">
           {error}
@@ -304,35 +337,27 @@ const MarketSection = () => {
         </div>
       )}
 
-      {/* ── Categories ── */}
+      {/* Categories */}
       <div className="space-y-3">
         <h3 className="text-lg font-black text-white">الأقسام</h3>
         <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
           <CategoryCard label="الكل" emoji="🛍️" active={activeCategory === 'all'} onClick={() => setActiveCategory('all')} />
           {categories.map((cat) => (
-            <CategoryCard
-              key={cat}
-              label={cat}
-              emoji={CATEGORY_META[cat]?.emoji || '🏷️'}
-              active={activeCategory === cat}
-              onClick={() => setActiveCategory(cat)}
-            />
+            <CategoryCard key={cat} label={cat} emoji={CATEGORY_META[cat]?.emoji || '🏷️'}
+              active={activeCategory === cat} onClick={() => setActiveCategory(cat)} />
           ))}
         </div>
       </div>
 
-      {/* ── Search ── */}
+      {/* Search */}
       <div className="relative max-w-md">
         <Search className="w-4 h-4 text-gray-500 absolute right-4 top-1/2 -translate-y-1/2" />
-        <input
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
+        <input value={search} onChange={(e) => setSearch(e.target.value)}
           placeholder="بحث عن منتج..."
-          className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pr-11 pl-4 text-sm text-white placeholder-gray-500 outline-none focus:border-[#D4AF37]/40"
-        />
+          className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pr-11 pl-4 text-sm text-white placeholder-gray-500 outline-none focus:border-[#D4AF37]/40" />
       </div>
 
-      {/* ── Products grid (8 per page) ── */}
+      {/* Products grid */}
       {loading ? (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
           {Array.from({ length: 8 }).map((_, i) => (
@@ -345,49 +370,29 @@ const MarketSection = () => {
         <>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
             {paginated.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
+              <ProductCard key={product.id} product={product}
                 onEdit={() => openEditForm(product)}
                 onDelete={() => handleDelete(product)}
-                deleting={deletingId === product.id}
-              />
+                deleting={deletingId === product.id} />
             ))}
           </div>
 
-          {/* ── Pagination ── */}
           {totalPages > 1 && (
             <div className="flex items-center justify-center gap-3 pt-2">
-              <button
-                onClick={() => setPage((p) => Math.max(1, p - 1))}
-                disabled={safePage === 1}
-                className="w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 text-gray-300 hover:bg-white/10 disabled:opacity-30 transition-all"
-              >
+              <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={safePage === 1}
+                className="w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 text-gray-300 hover:bg-white/10 disabled:opacity-30 transition-all">
                 <ChevronRight className="w-4 h-4" />
               </button>
-
               {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
-                <button
-                  key={n}
-                  onClick={() => setPage(n)}
-                  className={`w-9 h-9 text-sm font-black rounded-xl transition-all ${
-                    n === safePage
-                      ? 'bg-[#D4AF37] text-black'
-                      : 'bg-white/5 border border-white/10 text-gray-400 hover:bg-white/10'
-                  }`}
-                >
+                <button key={n} onClick={() => setPage(n)}
+                  className={`w-9 h-9 text-sm font-black rounded-xl transition-all ${n === safePage ? 'bg-[#D4AF37] text-black' : 'bg-white/5 border border-white/10 text-gray-400 hover:bg-white/10'}`}>
                   {n}
                 </button>
               ))}
-
-              <button
-                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                disabled={safePage === totalPages}
-                className="w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 text-gray-300 hover:bg-white/10 disabled:opacity-30 transition-all"
-              >
+              <button onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={safePage === totalPages}
+                className="w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 text-gray-300 hover:bg-white/10 disabled:opacity-30 transition-all">
                 <ChevronLeft className="w-4 h-4" />
               </button>
-
               <span className="text-xs text-gray-500 font-bold mr-2">
                 صفحة {safePage} من {totalPages} · {filtered.length} منتج
               </span>
@@ -396,18 +401,178 @@ const MarketSection = () => {
         </>
       )}
 
-      {/* ── Form modal ── */}
+      </>}
+
+      {/* ════════════════════════════════════════════════════
+          SECTION 2 – ORDERS STATUS MANAGER
+      ════════════════════════════════════════════════════ */}
+      {activeTab === 'orders' && <div className="space-y-5">
+
+        {/* Orders header */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-11 h-11 rounded-2xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">
+              <Package className="w-5 h-5 text-purple-400" />
+            </div>
+            <div>
+              <h2 className="text-2xl font-black text-white">إدارة الطلبات</h2>
+              <p className="text-xs text-gray-400 font-bold">{orders.length} طلب إجمالي</p>
+            </div>
+          </div>
+        
+        </div>
+
+        {/* Status filter tabs */}
+        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+          {[
+            { key: 'all', label: 'الكل', icon: null },
+            ...STATUS_ORDER.map((s) => ({ key: s, ...STATUS_CONFIG[s] })),
+          ].map(({ key, label, icon: Icon, color, bg, border }) => (
+            <button key={key} onClick={() => setStatusFilter(key)}
+              className={`flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-2xl text-xs font-black border transition-all ${
+                statusFilter === key
+                  ? key === 'all'
+                    ? 'bg-white/15 border-white/20 text-white'
+                    : `${bg} ${border} ${color}`
+                  : 'bg-white/5 border-white/5 text-gray-500 hover:bg-white/8'
+              }`}>
+              {Icon && <Icon className="w-3.5 h-3.5" />}
+              {label}
+              <span className={`text-[10px] font-black px-1.5 py-0.5 rounded-lg ${
+                statusFilter === key ? 'bg-white/20' : 'bg-white/5'
+              }`}>
+                {statusCounts[key] ?? 0}
+              </span>
+            </button>
+          ))}
+        </div>
+
+        {/* Orders search */}
+        <div className="relative max-w-md">
+          <Search className="w-4 h-4 text-gray-500 absolute right-4 top-1/2 -translate-y-1/2" />
+          <input value={orderSearch} onChange={(e) => setOrderSearch(e.target.value)}
+            placeholder="بحث بالاسم أو رقم الطلب أو الهاتف..."
+            className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pr-11 pl-4 text-sm text-white placeholder-gray-500 outline-none focus:border-purple-400/40" />
+        </div>
+
+        {ordersError && (
+          <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-bold px-4 py-3 rounded-2xl flex items-center justify-between">
+            {ordersError}
+            <button onClick={() => setOrdersError('')}><X className="w-4 h-4" /></button>
+          </div>
+        )}
+
+        {/* Orders list */}
+        {ordersLoading ? (
+          <div className="space-y-3">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="h-20 rounded-2xl bg-white/5 animate-pulse" />
+            ))}
+          </div>
+        ) : filteredOrders.length === 0 ? (
+          <div className="text-center py-12 text-gray-500 font-bold">لا توجد طلبات مطابقة</div>
+        ) : (
+          <>
+            <div className="space-y-3">
+              {paginatedOrders.map((order) => (
+                <OrderRow key={order.id} order={order}
+                  onStatusChange={(newStatus) => handleStatusChange(order, newStatus)}
+                  updating={updatingOrderId === order.id} />
+              ))}
+            </div>
+
+            {ordersTotalPages > 1 && (
+              <div className="flex items-center justify-center gap-3 pt-2">
+                <button onClick={() => setOrdersPage((p) => Math.max(1, p - 1))} disabled={safeOrdersPage === 1}
+                  className="w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 text-gray-300 hover:bg-white/10 disabled:opacity-30 transition-all">
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+                {Array.from({ length: ordersTotalPages }, (_, i) => i + 1).map((n) => (
+                  <button key={n} onClick={() => setOrdersPage(n)}
+                    className={`w-9 h-9 text-sm font-black rounded-xl transition-all ${n === safeOrdersPage ? 'bg-purple-500 text-white' : 'bg-white/5 border border-white/10 text-gray-400 hover:bg-white/10'}`}>
+                    {n}
+                  </button>
+                ))}
+                <button onClick={() => setOrdersPage((p) => Math.min(ordersTotalPages, p + 1))} disabled={safeOrdersPage === ordersTotalPages}
+                  className="w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 text-gray-300 hover:bg-white/10 disabled:opacity-30 transition-all">
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <span className="text-xs text-gray-500 font-bold mr-2">
+                  صفحة {safeOrdersPage} من {ordersTotalPages} · {filteredOrders.length} طلب
+                </span>
+              </div>
+            )}
+          </>
+        )}
+      </div>}
+
+      {/* Form modal – always available regardless of active tab */}
       {showForm && (
-        <ProductFormModal
-          formData={formData}
-          editingProduct={editingProduct}
-          onChange={handleFormChange}
-          onSubmit={handleSubmit}
-          onClose={closeForm}
-          saving={saving}
-          categories={categories}
-        />
+        <ProductFormModal formData={formData} editingProduct={editingProduct}
+          onChange={handleFormChange} onSubmit={handleSubmit} onClose={closeForm}
+          saving={saving} categories={categories} />
       )}
+    </div>
+  );
+};
+
+// ═══════════════════════════════════════════════════════════
+//  OrderRow
+// ═══════════════════════════════════════════════════════════
+const OrderRow = ({ order, onStatusChange, updating }) => {
+  const cfg     = STATUS_CONFIG[order.status] || STATUS_CONFIG.pending;
+  const Icon    = cfg.icon;
+  const dateStr = order.date ? new Date(order.date).toLocaleDateString('ar-EG', {
+    year: 'numeric', month: 'short', day: 'numeric',
+  }) : '—';
+
+  return (
+    <div className={`flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-white/10 transition-all ${updating ? 'opacity-60 pointer-events-none' : ''}`}>
+
+      {/* Status badge */}
+      <div className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border ${cfg.bg} ${cfg.border} flex-shrink-0`}>
+        <span className={`w-2 h-2 rounded-full ${cfg.dot} ${updating ? 'animate-pulse' : ''}`} />
+        <Icon className={`w-3.5 h-3.5 ${cfg.color}`} />
+        <span className={`text-[11px] font-black ${cfg.color}`}>{cfg.label}</span>
+      </div>
+
+      {/* Order info */}
+      <div className="flex-1 min-w-0 space-y-0.5">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-sm font-black text-white truncate">{order.name || 'عميل'}</span>
+          <span className="text-[10px] text-gray-500 font-bold bg-white/5 px-2 py-0.5 rounded-lg">#{order.id?.slice(-6)}</span>
+        </div>
+        <div className="flex items-center gap-3 flex-wrap">
+          <span className="text-xs text-gray-400">{order.phone || '—'}</span>
+          <span className="text-xs text-gray-600">·</span>
+          <span className="text-xs text-gray-400">{dateStr}</span>
+          <span className="text-xs text-gray-600">·</span>
+          <span className="text-xs font-black text-[#D4AF37]">{order.total} ج.م</span>
+        </div>
+        {order.items?.length > 0 && (
+          <p className="text-[11px] text-gray-500 truncate">
+            {order.items.map((i) => i.name).join(' · ')}
+          </p>
+        )}
+      </div>
+
+      {/* Status changer */}
+      <div className="relative flex-shrink-0">
+        <select
+          value={order.status || 'pending'}
+          onChange={(e) => onStatusChange(e.target.value)}
+          disabled={updating}
+          className={`status-select appearance-none pr-4 pl-8 py-2.5 rounded-xl text-xs font-black border cursor-pointer transition-all ${cfg.bg} ${cfg.border} ${cfg.color} bg-[#15171a]`}
+          style={{ backgroundImage: 'none' }}
+        >
+          {STATUS_ORDER.map((s) => (
+            <option key={s} value={s} style={{ background: '#15171a', color: '#fff' }}>
+              {STATUS_CONFIG[s].label}
+            </option>
+          ))}
+        </select>
+        <ChevronDown className={`w-3 h-3 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none ${cfg.color}`} />
+      </div>
     </div>
   );
 };
@@ -416,14 +581,10 @@ const MarketSection = () => {
 //  CategoryCard
 // ═══════════════════════════════════════════════════════════
 const CategoryCard = ({ label, emoji, active, onClick }) => (
-  <button
-    onClick={onClick}
+  <button onClick={onClick}
     className={`flex-shrink-0 flex flex-col items-center justify-center gap-2 w-36 h-36 rounded-3xl border transition-all ${
-      active
-        ? 'bg-[#D4AF37] border-[#D4AF37] text-black'
-        : 'bg-white/5 border-white/5 text-white hover:border-[#D4AF37]/30'
-    }`}
-  >
+      active ? 'bg-[#D4AF37] border-[#D4AF37] text-black' : 'bg-white/5 border-white/5 text-white hover:border-[#D4AF37]/30'
+    }`}>
     <span className="text-4xl">{emoji}</span>
     <span className="text-xs font-black text-center px-2">{label}</span>
   </button>
@@ -439,16 +600,11 @@ const ProductCard = ({ product, onEdit, onDelete, deleting }) => {
     <div className="bg-white/5 border border-white/5 rounded-3xl overflow-hidden flex flex-col group hover:border-[#D4AF37]/20 transition-all">
       <div className="relative aspect-square bg-black/30 flex items-center justify-center overflow-hidden">
         {product.image ? (
-          <img
-            src={product.image}
-            alt={product.name}
-            className="w-full h-full object-cover"
-            onError={(e) => { e.target.style.display = 'none'; }}
-          />
+          <img src={product.image} alt={product.name} className="w-full h-full object-cover"
+            onError={(e) => { e.target.style.display = 'none'; }} />
         ) : (
           <ImageOff className="w-8 h-8 text-gray-600" />
         )}
-
         {product.isBestSeller && (
           <span className="absolute top-2 right-2 bg-[#D4AF37] text-black text-[10px] font-black px-2 py-1 rounded-lg flex items-center gap-1">
             <Flame className="w-3 h-3" /> الأكثر مبيعاً
@@ -466,26 +622,19 @@ const ProductCard = ({ product, onEdit, onDelete, deleting }) => {
           <Tag className="w-3 h-3" /> {product.category}
         </span>
         <h4 className="text-sm font-black text-white leading-tight line-clamp-2">{product.name}</h4>
-
         <div className="flex items-baseline gap-2 mt-auto">
           <span className="text-[#D4AF37] font-black text-base">{finalPrice} ج.م</span>
           {product.discount > 0 && (
             <span className="text-gray-500 text-xs line-through">{product.price} ج.م</span>
           )}
         </div>
-
         <div className="flex gap-2 mt-2">
-          <button
-            onClick={onEdit}
-            className="flex-1 flex items-center justify-center gap-1 bg-sky-500/10 text-sky-400 border border-sky-500/20 text-xs font-black py-2 rounded-xl hover:bg-sky-500 hover:text-white transition-all"
-          >
+          <button onClick={onEdit}
+            className="flex-1 flex items-center justify-center gap-1 bg-sky-500/10 text-sky-400 border border-sky-500/20 text-xs font-black py-2 rounded-xl hover:bg-sky-500 hover:text-white transition-all">
             <Pencil className="w-3.5 h-3.5" /> تعديل
           </button>
-          <button
-            onClick={onDelete}
-            disabled={deleting}
-            className="flex-1 flex items-center justify-center gap-1 bg-red-500/10 text-red-400 border border-red-500/20 text-xs font-black py-2 rounded-xl hover:bg-red-500 hover:text-white transition-all disabled:opacity-50"
-          >
+          <button onClick={onDelete} disabled={deleting}
+            className="flex-1 flex items-center justify-center gap-1 bg-red-500/10 text-red-400 border border-red-500/20 text-xs font-black py-2 rounded-xl hover:bg-red-500 hover:text-white transition-all disabled:opacity-50">
             <Trash2 className="w-3.5 h-3.5" /> {deleting ? '...' : 'حذف'}
           </button>
         </div>
@@ -499,10 +648,8 @@ const ProductCard = ({ product, onEdit, onDelete, deleting }) => {
 // ═══════════════════════════════════════════════════════════
 const ProductFormModal = ({ formData, editingProduct, onChange, onSubmit, onClose, saving, categories }) => (
   <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={onClose}>
-    <div
-      className="bg-[#15171a] border border-white/10 rounded-3xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
-      onClick={(e) => e.stopPropagation()}
-    >
+    <div className="bg-[#15171a] border border-white/10 rounded-3xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
+      onClick={(e) => e.stopPropagation()}>
       <div className="flex items-center justify-between p-5 border-b border-white/5 sticky top-0 bg-[#15171a]">
         <h3 className="font-black text-white text-lg">
           {editingProduct ? 'تعديل المنتج' : 'إضافة منتج جديد'}
@@ -515,7 +662,6 @@ const ProductFormModal = ({ formData, editingProduct, onChange, onSubmit, onClos
           <input required value={formData.name} onChange={(e) => onChange('name', e.target.value)}
             className="form-input" placeholder="مثال: طقم ريال مدريد 23/24" />
         </Field>
-
         <div className="grid grid-cols-2 gap-3">
           <Field label="السعر (ج.م)">
             <input required type="number" min="0" value={formData.price}
@@ -526,7 +672,6 @@ const ProductFormModal = ({ formData, editingProduct, onChange, onSubmit, onClos
               onChange={(e) => onChange('discount', e.target.value)} className="form-input" />
           </Field>
         </div>
-
         <Field label="القسم">
           <input required list="category-options" value={formData.category}
             onChange={(e) => onChange('category', e.target.value)}
@@ -535,18 +680,15 @@ const ProductFormModal = ({ formData, editingProduct, onChange, onSubmit, onClos
             {categories.map((c) => <option key={c} value={c} />)}
           </datalist>
         </Field>
-
         <Field label="رابط الصورة">
           <input value={formData.image} onChange={(e) => onChange('image', e.target.value)}
             className="form-input" placeholder="./real_madrid.jpg" />
         </Field>
-
         <Field label="الوصف">
           <textarea rows={4} value={formData.description}
             onChange={(e) => onChange('description', e.target.value)}
             className="form-input resize-none" placeholder="وصف تفصيلي للمنتج..." />
         </Field>
-
         <div className="grid grid-cols-2 gap-3">
           <Field label="عدد المبيعات">
             <input type="number" min="0" value={formData.salesCount}
@@ -559,7 +701,6 @@ const ProductFormModal = ({ formData, editingProduct, onChange, onSubmit, onClos
             <span className="text-xs font-bold text-gray-300">الأكثر مبيعاً</span>
           </label>
         </div>
-
         <div className="flex gap-3 pt-2">
           <button type="button" onClick={onClose}
             className="flex-1 py-3 rounded-2xl font-black text-sm text-gray-300 bg-white/5 hover:bg-white/10 transition-all">
