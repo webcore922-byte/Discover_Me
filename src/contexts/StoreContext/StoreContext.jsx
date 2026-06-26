@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { useAuth } from '../AuthContext/AuthContext'; // ← عدّل المسار لو مختلف
+import { useAuth } from '../AuthContext/AuthContext'; 
 
 const Context = createContext();
 
@@ -50,17 +50,16 @@ export const StoreProvider = ({ children }) => {
     setLoad(false);
   };
 
-  // ✅ حمّل سلة اليوزر لما يسجل دخول أو يتغير
   useEffect(() => {
     if (cartKey) {
       const savedCart = localStorage.getItem(cartKey);
       setCart(savedCart ? JSON.parse(savedCart) : []);
     } else {
-      setCart([]); // لو مفيش يوزر، سلة فاضية
+      setCart([]); 
     }
   }, [cartKey]);
 
-  // ✅ احفظ السلة بمفتاح خاص باليوزر
+ ر
   useEffect(() => {
     if (cartKey) {
       localStorage.setItem(cartKey, JSON.stringify(cart));
