@@ -22,10 +22,10 @@ const InputField = ({ label, name, placeholder, type = "text", className, value,
     <label className="block text-[var(--color-gold-main)] text-sm md:text-lg font-black uppercase tracking-widest mr-2 text-right">
       {label}
     </label>
-    <input 
-      type={type} 
+    <input
+      type={type}
       name={name}
-      value={value || ''} 
+      value={value}
       placeholder={placeholder}
       className="w-full bg-white/5 border border-white/10 rounded-xl md:rounded-2xl px-5 py-4 text-white focus:border-[var(--color-gold-main)] outline-none transition-all text-sm md:text-base text-right"
       onChange={onChange}
@@ -35,7 +35,19 @@ const InputField = ({ label, name, placeholder, type = "text", className, value,
 
 const Register = () => {
   const [isPlayer, setIsPlayer] = useState(false);
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({
+    username: '',
+    password: '',
+    email: '',
+    phone: '',
+    fullName: '',
+    nationalId: '',
+    age: '',
+    position: '',
+    location: '',
+    preferredFoot: '',
+    videoUrl: '',
+  });
   const { register } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -51,7 +63,6 @@ const Register = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // تنبيه احترافي للحقول المفقودة
   const showValidationError = (message) => {
     Swal.fire({
       title: 'مطلوب إدخال بيانات',
@@ -70,16 +81,76 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    // فحص الحقول الأساسية لجميع الحسابات
-    if (!formData.username?.trim()) return showValidationError('يرجى إدخال اسم المستخدم لإتمام التسجيل.');
-    if (!formData.password?.trim()) return showValidationError('يرجى تعيين كلمة المرور الخاصة بحسابك.');
-    if (!formData.email?.trim()) return showValidationError('يرجى إدخال البريد الإلكتروني للتواصل.');
-    if (!formData.phone?.trim()) return showValidationError('يرجى إدخال رقم الهاتف المحمول.');
+    const username = formData.username?.trim();
+    const password = formData.password?.trim();
+    const email = formData.email?.trim().toLowerCase();
+    const phone = formData.phone?.trim();
 
-    // فحص حقول اللاعب الإضافية
+    // فحص الحقول الفاضية
+    if (!username) return showValidationError('يرجى إدخال اسم المستخدم لإتمام التسجيل.');
+    if (!password) return showValidationError('يرجى تعيين كلمة المرور الخاصة بحسابك.');
+    if (!email) return showValidationError('يرجى إدخال البريد الإلكتروني للتواصل.');
+    if (!phone) return showValidationError('يرجى إدخال رقم الهاتف المحمول.');
+
+    // فحص الإيميل
+    const emailRegex = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email)) {
+      return Swal.fire({
+        title: 'بريد إلكتروني غير صالح',
+        text: 'يرجى إدخال بريد إلكتروني صحيح بالصيغة: example@mail.com',
+        icon: 'error',
+        background: '#1a1a1a',
+        color: '#fff',
+        confirmButtonColor: '#D4AF37',
+      });
+    }
+
+    // فحص الباسورد - كل شرط لوحده
+    if (password.length < 8) {
+      return Swal.fire({
+        title: 'كلمة المرور قصيرة',
+        text: 'يجب أن تكون كلمة المرور 8 أحرف على الأقل.',
+        icon: 'warning',
+        background: '#1a1a1a',
+        color: '#fff',
+        confirmButtonColor: '#D4AF37',
+      });
+    }
+    if (!/[A-Z]/.test(password)) {
+      return Swal.fire({
+        title: 'كلمة المرور ضعيفة',
+        text: 'يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل (A-Z).',
+        icon: 'warning',
+        background: '#1a1a1a',
+        color: '#fff',
+        confirmButtonColor: '#D4AF37',
+      });
+    }
+    if (!/[0-9]/.test(password)) {
+      return Swal.fire({
+        title: 'كلمة المرور ضعيفة',
+        text: 'يجب أن تحتوي كلمة المرور على رقم واحد على الأقل.',
+        icon: 'warning',
+        background: '#1a1a1a',
+        color: '#fff',
+        confirmButtonColor: '#D4AF37',
+      });
+    }
+
+    // فحص حقول اللاعب
     if (isPlayer) {
       if (!formData.fullName?.trim()) return showValidationError('يرجى إدخال الاسم بالكامل كما هو مسجل في الأوراق الرسمية.');
       if (!formData.nationalId?.trim()) return showValidationError('يرجى إدخال الرقم القومي المكون من 14 رقمًا.');
+      if (!/^\d{14}$/.test(formData.nationalId.trim())) {
+        return Swal.fire({
+          title: 'رقم قومي غير صحيح',
+          text: 'الرقم القومي يجب أن يكون 14 رقمًا بالظبط.',
+          icon: 'error',
+          background: '#1a1a1a',
+          color: '#fff',
+          confirmButtonColor: '#D4AF37',
+        });
+      }
       if (!formData.age?.trim()) return showValidationError('يرجى تحديد السن الحالي للاعب.');
       if (!formData.position) return showValidationError('يرجى اختيار مركز اللعب الرئيسي.');
       if (!formData.location?.trim()) return showValidationError('يرجى تحديد محافظة الإقامة الحالية.');
@@ -87,30 +158,40 @@ const Register = () => {
       if (!formData.videoUrl?.trim()) return showValidationError('يرجى إدراج رابط فيديو يوضح المهارات الكروية الخاصة بك.');
     }
 
-    const email = formData.email || "";
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      Swal.fire({ title: 'صيغة غير صالحة', text: 'يرجى إدخال بريد إلكتروني صحيح', icon: 'error', background: '#1a1a1a', color: '#fff', confirmButtonColor: '#D4AF37' });
-      return;
-    }
-    
-    const password = formData.password || "";
-    if (password.length < 8 || !/[A-Z]/.test(password) || !/[0-9]/.test(password)) {
-      Swal.fire({ title: 'كلمة المرور غير مطابقة للمواصفات', html: `<div style="text-align: right; direction: rtl;">يجب أن تتكون من 8 أحرف على الأقل، وتتضمن حرفًا كبيرًا ورقمًا واحدًا.</div>`, icon: 'warning', background: '#1a1a1a', color: '#fff', confirmButtonColor: '#D4AF37' });
-      return; 
-    }
+    // بعت البيانات بعد الـ trim
+    const cleanedData = {
+      ...formData,
+      username,
+      password,
+      email,
+      phone,
+    };
 
-    Swal.fire({ title: 'جاري إنشاء الحساب', text: 'يرجى الانتظار ثوانٍ معدودة...', background: '#1a1a1a', color: '#fff', didOpen: () => { Swal.showLoading(); } });
+    Swal.fire({
+      title: 'جاري إنشاء الحساب',
+      text: 'يرجى الانتظار ثوانٍ معدودة...',
+      background: '#1a1a1a',
+      color: '#fff',
+      didOpen: () => Swal.showLoading(),
+    });
+
     try {
-      const res = await register(formData, isPlayer);
+      const res = await register(cleanedData, isPlayer);
       Swal.close();
       if (res.success) {
-        Swal.fire({ title: 'تم التسجيل بنجاح', text: 'تم إنشاء حسابك في المنصة بنجاح.', icon: 'success', timer: 1500, showConfirmButton: false, background: '#1a1a1a' });
+        Swal.fire({
+          title: 'تم التسجيل بنجاح',
+          text: 'تم إنشاء حسابك في المنصة بنجاح.',
+          icon: 'success',
+          timer: 1500,
+          showConfirmButton: false,
+          background: '#1a1a1a',
+        });
         setTimeout(() => navigate('/profile'), 1500);
       } else {
         Swal.fire({ title: 'فشل التسجيل', text: res.message, icon: 'error', background: '#1a1a1a' });
       }
-    } catch (error) {
+    } catch {
       Swal.close();
       Swal.fire({ title: 'خطأ في النظام', text: 'حدث خطأ تقني، يرجى المحاولة لاحقاً.', icon: 'error', background: '#1a1a1a' });
     }
@@ -130,7 +211,8 @@ const Register = () => {
               <InputField label="البريد الإلكتروني" name="email" type="email" placeholder="example@mail.com" value={formData.email} onChange={handleChange} />
               <InputField label="رقم الموبايل" name="phone" placeholder="01xxxxxxxxx" value={formData.phone} onChange={handleChange} />
             </div>
-            <div 
+
+            <div
               className={`flex items-center justify-center gap-4 p-5 rounded-2xl border-2 transition-all cursor-pointer ${isPlayer ? 'border-[var(--color-gold-main)] bg-[var(--color-gold-main)]/10' : 'border-white/10 bg-white/5'}`}
               onClick={() => setIsPlayer(!isPlayer)}
             >
@@ -138,6 +220,7 @@ const Register = () => {
                 {isPlayer ? '✓ نمط التسجيل الحالي: حساب لاعب محترف' : 'هل ترغب في التسجيل كلاعب؟ (اضغط هنا)'}
               </span>
             </div>
+
             {isPlayer && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 border-t border-white/5 pt-10">
                 <InputField label="الاسم بالكامل" name="fullName" placeholder="الاسم ثلاثي" className="md:col-span-2 lg:col-span-2" value={formData.fullName} onChange={handleChange} />
@@ -145,7 +228,12 @@ const Register = () => {
                 <InputField label="السن" name="age" placeholder="19" value={formData.age} onChange={handleChange} />
                 <div className="space-y-3">
                   <label className="block text-[var(--color-gold-main)] text-sm md:text-lg font-black uppercase tracking-widest mr-2 text-right">المركز</label>
-                  <select name="position" className="w-full bg-[#1e1e1e] border border-white/10 rounded-xl md:rounded-2xl px-5 py-4 text-white focus:border-[var(--color-gold-main)] outline-none transition-all text-sm md:text-base text-right appearance-none cursor-pointer" onChange={handleChange} value={formData.position || ''}>
+                  <select
+                    name="position"
+                    className="w-full bg-[#1e1e1e] border border-white/10 rounded-xl md:rounded-2xl px-5 py-4 text-white focus:border-[var(--color-gold-main)] outline-none transition-all text-sm md:text-base text-right appearance-none cursor-pointer"
+                    onChange={handleChange}
+                    value={formData.position}
+                  >
                     <option value="">اختر مركزك</option>
                     {POSITION_OPTIONS.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
                   </select>
@@ -153,7 +241,12 @@ const Register = () => {
                 <InputField label="المحافظة" name="location" placeholder="القاهرة" value={formData.location} onChange={handleChange} />
                 <div className="space-y-3">
                   <label className="block text-[var(--color-gold-main)] text-sm md:text-lg font-black uppercase tracking-widest mr-2 text-right">القدم المفضلة</label>
-                  <select name="preferredFoot" className="w-full bg-[#1e1e1e] border border-white/10 rounded-xl md:rounded-2xl px-5 py-4 text-white focus:border-[var(--color-gold-main)] outline-none transition-all text-sm md:text-base text-right appearance-none cursor-pointer" onChange={handleChange} value={formData.preferredFoot || ''}>
+                  <select
+                    name="preferredFoot"
+                    className="w-full bg-[#1e1e1e] border border-white/10 rounded-xl md:rounded-2xl px-5 py-4 text-white focus:border-[var(--color-gold-main)] outline-none transition-all text-sm md:text-base text-right appearance-none cursor-pointer"
+                    onChange={handleChange}
+                    value={formData.preferredFoot}
+                  >
                     <option value="">اختر القدم</option>
                     <option value="يمين">يمين</option>
                     <option value="يسار">يسار</option>
@@ -163,7 +256,11 @@ const Register = () => {
                 <InputField label="لينك فيديو مهاراتك" name="videoUrl" placeholder="Google Drive Link" className="md:col-span-2 lg:col-span-3" value={formData.videoUrl} onChange={handleChange} />
               </div>
             )}
-            <button type="submit" className="w-full bg-[var(--gold-gradient)] text-black font-black py-5 md:py-6 rounded-xl md:rounded-2xl shadow-[var(--gold-glow)] hover:scale-[1.01] active:scale-95 transition-all text-xl md:text-2xl uppercase italic">
+
+            <button
+              type="submit"
+              className="w-full bg-[var(--gold-gradient)] text-black font-black py-5 md:py-6 rounded-xl md:rounded-2xl shadow-[var(--gold-glow)] hover:scale-[1.01] active:scale-95 transition-all text-xl md:text-2xl uppercase italic"
+            >
               {isPlayer ? 'تأكيد بروفايل اللاعب' : 'تأكيد الحساب الجديد'}
             </button>
           </form>
