@@ -126,10 +126,7 @@ const Cart = () => {
                   <span>عدد المنتجات</span>
                   <span className="text-white font-bold">{cart.reduce((acc, i) => acc + i.count, 0)}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span>الشحن</span>
-                  <span className="text-gray-500 font-bold">يحدد عند الطلب</span>
-                </div>
+               
               </div>
 
               <div className="border-t border-[var(--color-border)] pt-4 flex justify-between items-center">
