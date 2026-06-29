@@ -364,16 +364,16 @@ const TrainingCamps = () => {
   return (
     <section
       dir="rtl"
-      className="min-h-screen text-white py-16 px-4 sm:px-6 lg:px-8 relative bg-cover bg-center bg-no-repeat bg-fixed overflow-hidden"
-      style={{ backgroundImage: `url('bg_prizes_and_competitions.jpeg')` }}
+      className="min-h-screen text-white py-16 px-4 sm:px-6 lg:px-8 relative bg-cover bg-center bg-no-repeat bg-fixed overflow-hidden
+      dark:bg-[url('/bg_prizes_and_competitions.jpeg')] bg-[url('/bg-prizesLight.png')] "
     >
-      <div className="absolute inset-0 bg-black/75 pointer-events-none z-0" />
+      <div className="absolute inset-0 dark:bg-black/60 pointer-events-none z-0" />
 
       {/* الهيدر */}
       <div className="max-w-7xl mx-auto mb-16 text-center relative z-10">
         <div className="inline-block relative">
           <span className="absolute -top-6 -right-8 text-xl text-[#d4af37] opacity-70">✨</span>
-          <h2 className="text-3xl md:text-5xl font-extrabold mb-3 tracking-wide text-white">
+          <h2 className="text-3xl md:text-5xl font-extrabold mb-3 tracking-wide dark:text-white text-[--color-gold-main]">
             المعسكرات التدريبية
           </h2>
           <span className="absolute -bottom-2 -left-8 text-xl text-[#d4af37] opacity-70">✨</span>

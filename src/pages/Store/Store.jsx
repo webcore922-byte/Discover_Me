@@ -35,7 +35,7 @@ const Store = () => {
         <CategoriesSection />
 
         <section className="px-8 py-12">
-          <h2 className="text-3xl font-bold text-white mb-8 border-r-4 border-[var(--color-gold-main)] pr-4">
+          <h2 className="text-3xl font-bold dark:text-white text-[var(--color-gold-main)] mb-8 border-r-4 border-[var(--color-gold-main)] pr-4">
             الأكثر مبيعاً
           </h2>
           <BestSeller />

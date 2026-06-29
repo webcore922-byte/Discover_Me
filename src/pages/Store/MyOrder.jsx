@@ -62,20 +62,20 @@ const MyOrders = () => {
     );
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg-main)] py-12 px-4 md:px-12 text-white">
+    <div className="min-h-screen bg-[var(--color-bg-main)] py-12 px-4 md:px-12 dark:text-white text-[var(--color-text-gray)]">
       {error ? (
         <Error message={error} onRetry={fetchOrders} />
       ) : (
         <div className="max-w-4xl mx-auto">
           <div className="mb-10 border-b border-[var(--color-border)] pb-4">
             <h1 className="text-3xl font-black text-[var(--color-gold-main)]">طلباتي</h1>
-            <p className="text-gray-500 text-sm mt-1">{orders.length} طلب</p>
+            <p className="dark:text-gray-500 text-sm mt-1">{orders.length} طلب</p>
           </div>
 
           {orders.length === 0 ? (
             <div className="text-center py-20 flex flex-col items-center gap-4">
               <div className="text-6xl">📦</div>
-              <p className="text-gray-400 text-lg">لا توجد طلبات حالياً</p>
+              <p className="dark:text-gray-400 text-lg">لا توجد طلبات حالياً</p>
             </div>
           ) : (
             orders.map((order) => {
@@ -88,8 +88,8 @@ const MyOrders = () => {
                   {/* Header */}
                   <div className="flex justify-between items-start mb-5">
                     <div>
-                      <p className="font-black text-white text-lg">طلب #{order.id.slice(-6)}</p>
-                      <p className="text-xs text-gray-500 mt-0.5">
+                      <p className="font-black dark:text-white text-lg">طلب #{order.id.slice(-6)}</p>
+                      <p className="text-xs dark:text-gray-500 mt-0.5">
                         {new Date(order.date).toLocaleDateString("ar-EG", {
                           year: "numeric", month: "long", day: "numeric",
                         })}
@@ -97,7 +97,7 @@ const MyOrders = () => {
                     </div>
                     <div className="text-right">
                       <p className="text-[var(--color-gold-main)] font-black text-xl">{order.total} EGP</p>
-                      <p className="text-xs text-gray-500 mt-0.5">شحن: {order.shippingCost} EGP</p>
+                      <p className="text-xs dark:text-gray-500 mt-0.5">شحن: {order.shippingCost} EGP</p>
                     </div>
                   </div>
 
@@ -105,18 +105,18 @@ const MyOrders = () => {
                   <div className="flex flex-col gap-2 mb-5">
                     {order.items?.map((item, i) => (
                       <div key={i} className="flex justify-between text-sm bg-[var(--color-bg-main)] px-3 py-2 rounded-lg">
-                        <span className="text-gray-300">{item.name} <span className="text-gray-600">× {item.count}</span></span>
-                        <span className="text-white font-bold">{item.price * item.count} EGP</span>
+                        <span className="dark:text-gray-300">{item.name} <span className="text-gray-600">× {item.count}</span></span>
+                        <span className="dark:text-white font-bold">{item.price * item.count} EGP</span>
                       </div>
                     ))}
                   </div>
 
                   {/* Info Row */}
                   <div className="flex flex-wrap gap-3 mb-5 text-xs">
-                    <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-gray-400">
+                    <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 dark:text-gray-400">
                       📍 {order.city}
                     </span>
-                    <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-gray-400">
+                    <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 dark:text-gray-400">
                       💳 {PAYMENT_LABELS[order.paymentMethod] || order.paymentMethod}
                     </span>
                   </div>
@@ -124,7 +124,7 @@ const MyOrders = () => {
                   {/* Progress */}
                   <div>
                     <div className="flex justify-between mb-2 text-sm">
-                      <span className="text-gray-400">حالة الطلب</span>
+                      <span className="dark:text-gray-400">حالة الطلب</span>
                       <span className={`font-black text-sm ${
                         order.status === "delivered" ? "text-green-400" :
                         order.status === "on_the_way" ? "text-purple-400" :

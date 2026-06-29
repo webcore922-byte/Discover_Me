@@ -162,22 +162,22 @@ const CampRegistrationsSection = () => {
     <div className="space-y-6 animate-fadeIn" dir="rtl">
 
       {/* إحصائيات */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 bg-[var(--bg-color-card)] dark:bg-white/5 p-4 rounded-[2rem] border border-white/10 shadow-2xl">
         {[
-          { key: 'all',      label: 'إجمالي الطلبات', color: 'text-white',       border: 'border-white/10' },
-          { key: 'pending',  label: 'قيد المراجعة',   color: 'text-yellow-400',  border: 'border-yellow-500/20' },
-          { key: 'accepted', label: 'مقبولين',         color: 'text-emerald-400', border: 'border-emerald-500/20' },
-          { key: 'rejected', label: 'مرفوضين',         color: 'text-red-400',     border: 'border-red-500/20' },
+          { key: 'all',      label: 'إجمالي الطلبات', color: 'dark:text-white',       border: 'dark:border-white/10 border-[var(--color-border)]' },
+          { key: 'pending',  label: 'قيد المراجعة',   color: 'text-yellow-400',  border: 'dark:border-yellow-500/20 border-[var(--color-border)]' },
+          { key: 'accepted', label: 'مقبولين',         color: 'text-emerald-400', border: 'dark:border-emerald-500/20 border-[var(--color-border)]' },
+          { key: 'rejected', label: 'مرفوضين',         color: 'text-red-400',     border: 'border-red-500/20 ' },
         ].map(s => (
           <div key={s.key} className={`bg-white/5 rounded-2xl border ${s.border} p-4 text-center`}>
-            <p className="text-[10px] text-gray-400 mb-1 font-bold">{s.label}</p>
+            <p className="text-[10px] dark:text-gray-400 mb-1 font-bold">{s.label}</p>
             <p className={`text-2xl font-black italic ${s.color}`}>{counts[s.key]}</p>
           </div>
         ))}
       </div>
 
       {/* فلتر */}
-      <div className="flex flex-wrap gap-2 bg-white/5 p-1.5 rounded-2xl border border-white/5 w-fit">
+      <div className="flex flex-wrap gap-2 bg-white/5 p-1.5 rounded-2xl border border-[var(--color-border)] dark:border-white/5 w-fit">
         {[
           { key: 'all',      label: '📋 الكل' },
           { key: 'pending',  label: '⏳ قيد المراجعة' },
@@ -188,7 +188,7 @@ const CampRegistrationsSection = () => {
             key={f.key}
             onClick={() => setFilterStatus(f.key)}
             className={`px-4 py-2 rounded-xl text-xs font-black transition-all ${
-              filterStatus === f.key ? 'bg-[#D4AF37] text-black' : 'text-gray-400 hover:text-white'
+              filterStatus === f.key ? 'bg-[#D4AF37] text-black' : 'dark:text-gray-400 text-[var(--text-color-gray)] dark:hover:text-white'
             }`}
           >
             {f.label}
@@ -197,11 +197,11 @@ const CampRegistrationsSection = () => {
       </div>
 
       {/* الجدول */}
-      <div className="bg-white/5 rounded-[2rem] border border-white/10 overflow-hidden shadow-2xl">
+      <div className="dark:bg-white/5 text-[var(--text-color-gray)] bg-[var(--bg-color-card)] rounded-[2rem] border border-white/10 overflow-hidden shadow-2xl">
         <div className="overflow-x-auto">
           <table className="w-full text-right">
             <thead>
-              <tr className="bg-white/5 text-sky-400 text-xs font-black">
+              <tr className="bg-white/5 text-sky-400 text-xs font-black border-b border-[var(--color-border)]">
                 <th className="p-5">اللاعب</th>
                 <th className="p-5">التواصل</th>
                 <th className="p-5">المعسكر</th>
@@ -213,30 +213,30 @@ const CampRegistrationsSection = () => {
             <tbody className="divide-y divide-white/5">
               {filtered.length === 0 ? (
                 <tr>
-                  <td colSpan="6" className="p-10 text-center text-sm text-gray-500 font-bold">
+                  <td colSpan="6" className="p-10 text-center text-sm dark:text-gray-500 font-bold">
                     لا توجد طلبات في هذا القسم حالياً.
                   </td>
                 </tr>
               ) : (
                 filtered.map(reg => (
-                  <tr key={reg.id} className="hover:bg-white/[0.03] transition-all">
+                  <tr key={reg.id} className="dark:hover:bg-white/[0.03] transition-all">
 
                     <td className="p-5">
                       <div className="flex items-center gap-3">
                         <div className="w-9 h-9 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37]/20 flex items-center justify-center flex-shrink-0">
                           <Users className="w-4 h-4 text-[#D4AF37]" />
                         </div>
-                        <p className="font-bold text-sm text-white">{reg.playerName}</p>
+                        <p className="font-bold text-sm dark:text-white">{reg.playerName}</p>
                       </div>
                     </td>
 
                     <td className="p-5">
                       <div className="space-y-1">
-                        <p className="text-xs text-gray-300 flex items-center gap-1.5">
-                          <Mail className="w-3 h-3 text-gray-500" /> {reg.playerEmail}
+                        <p className="text-xs dark:text-gray-300 flex items-center gap-1.5">
+                          <Mail className="w-3 h-3 dark:text-gray-500" /> {reg.playerEmail}
                         </p>
-                        <p className="text-xs text-gray-400 flex items-center gap-1.5">
-                          <Phone className="w-3 h-3 text-gray-500" /> {reg.playerPhone}
+                        <p className="text-xs dark:text-gray-400 flex items-center gap-1.5">
+                          <Phone className="w-3 h-3 dark:text-gray-500" /> {reg.playerPhone}
                         </p>
                       </div>
                     </td>
@@ -247,7 +247,7 @@ const CampRegistrationsSection = () => {
                       </span>
                     </td>
 
-                    <td className="p-5 text-xs text-gray-400">
+                    <td className="p-5 text-xs dark:text-gray-400">
                       {reg.registeredAt
                         ? new Date(reg.registeredAt).toLocaleDateString('ar-EG', {
                             year: 'numeric', month: 'short', day: 'numeric'
@@ -264,7 +264,7 @@ const CampRegistrationsSection = () => {
                         {reg.status !== 'accepted' && (
                           <button
                             onClick={() => updateStatus(reg, 'accepted')}
-                            className="px-3 py-1.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-lg text-xs font-bold hover:bg-emerald-600 hover:text-white hover:border-emerald-600 transition-all"
+                            className="px-3 py-1.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-lg text-xs font-bold hover:bg-emerald-600 dark:hover:text-white hover:border-emerald-600 transition-all"
                           >
                             ✅ قبول
                           </button>
@@ -272,13 +272,13 @@ const CampRegistrationsSection = () => {
                         {reg.status !== 'rejected' && (
                           <button
                             onClick={() => updateStatus(reg, 'rejected')}
-                            className="px-3 py-1.5 bg-red-500/10 text-red-400 border border-red-500/20 rounded-lg text-xs font-bold hover:bg-red-600 hover:text-white hover:border-red-600 transition-all"
+                            className="px-3 py-1.5 bg-red-500/10 text-red-400 border border-red-500/20 rounded-lg text-xs font-bold hover:bg-red-600 dark:hover:text-white hover:border-red-600 transition-all"
                           >
                             ❌ رفض
                           </button>
                         )}
                         {reg.status === 'accepted' && reg.status !== 'rejected' && (
-                          <span className="text-[10px] text-gray-600 font-bold">تم القبول</span>
+                          <span className="text-[10px] dark:text-gray-600 font-bold">تم القبول</span>
                         )}
                       </div>
                     </td>

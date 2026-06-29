@@ -126,10 +126,10 @@ const PlayerDetails = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#0e1011] text-white flex flex-col items-center justify-center gap-4 font-sans" dir="rtl">
+    <div className="min-h-screen dark:bg-[#0e1011] bg-[var(--color-bg-main)] dark:text-white text-[var(--color-text-gray)] flex flex-col items-center justify-center gap-4 font-sans" dir="rtl">
       <h2 className="text-2xl font-black text-[#D4AF37]">تم معالجة طلب اللاعب بنجاح 🎉</h2>
-      <p className="text-gray-400 font-bold">الحالة الحالية للاعب في النظام هي: 
-        <span className="text-white mr-2 bg-white/10 px-3 py-1 rounded-lg">
+      <p className="dark:text-gray-400 font-bold">الحالة الحالية للاعب في النظام هي: 
+        <span className="dark:text-white mr-2 bg-white/10 px-3 py-1 rounded-lg">
           {player.status === 'final_accepted' ? 'قبول نهائي' : player.status === 'final_rejected' ? 'رفض نهائي' : player.status}
         </span>
       </p>
