@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Save, X, Gift, Calendar, Award, MapPin, Target, List, Trophy, Ban, Crown, User, Check } from 'lucide-react';
-import UseContestsLogic from './UsecontestsLogic';
 
 const ContestsSection = () => {
   const navigate = useNavigate();
@@ -9,23 +8,23 @@ const ContestsSection = () => {
   const [submissionFilter, setSubmissionFilter] = useState('pending'); 
   const [annualFilter, setAnnualFilter] = useState('pending'); 
 
-  const {
-    contests,
-    submissions,
-    annualSubmissions,
-    loading,
-    editingContestId,
-    contestForm,
-    handleInputChange,
-    handleSaveContest,
-    handleEditClick,
-    handleDeleteContest,
-    resetForm,
-    handleWinNormalSubmission,
-    handleRejectNormalSubmission,
-    handleRejectAnnualSubmission,
-    handleAcceptAnnualSubmission
-  } = UseContestsLogic();
+  // const {
+  //   contests,
+  //   submissions,
+  //   annualSubmissions,
+  //   loading,
+  //   editingContestId,
+  //   contestForm,
+  //   handleInputChange,
+  //   handleSaveContest,
+  //   handleEditClick,
+  //   handleDeleteContest,
+  //   resetForm,
+  //   handleWinNormalSubmission,
+  //   handleRejectNormalSubmission,
+  //   handleRejectAnnualSubmission,
+  //   handleAcceptAnnualSubmission
+  // } = UseContestsLogic();
 
   const getSubmissionStatusBadge = (status) => {
     switch (status) {
