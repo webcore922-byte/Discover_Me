@@ -64,7 +64,7 @@ export const confirmDelete = (name) =>
     },
   });
 
-export const useMarketLogic = () => {
+export default function UseMarketLogic() {
   const [products,       setProducts]       = useState([]);
   const [loading,        setLoading]        = useState(true);
   const [error,          setError]          = useState('');

@@ -4,10 +4,7 @@ import {
   Tag, Flame, ImageOff, Search, ChevronLeft, ChevronRight,
   Package, ChevronDown,
 } from 'lucide-react';
-import {
-  useMarketLogic, CATEGORY_META, STATUS_CONFIG, STATUS_ORDER,
-} from './useMarketLogic';
-
+import UseMarketLogic , { CATEGORY_META, STATUS_CONFIG, STATUS_ORDER } from './UseMarketLogic.jsx';
 const MarketSection = () => {
   const [activeTab, setActiveTab] = React.useState('market');
   const {
@@ -26,7 +23,7 @@ const MarketSection = () => {
     updatingOrderId, handleStatusChange,
     filteredOrders, ordersTotalPages, safeOrdersPage, paginatedOrders,
     statusCounts,
-  } = useMarketLogic();
+  } = UseMarketLogic();
 
   return (
     <div className="space-y-10" >
