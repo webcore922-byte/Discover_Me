@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Save, X, Gift, Calendar, Award, MapPin, Target, List, Trophy, Ban, Crown, User, Check } from 'lucide-react';
-import useContestsLogic from './UseContestsLogic';
+import UseContestsLogic from './UseContestsLogic';
 
 const ContestsSection = () => {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ const ContestsSection = () => {
     handleRejectNormalSubmission,
     handleRejectAnnualSubmission,
     handleAcceptAnnualSubmission
-  } = useContestsLogic();
+  } = UseContestsLogic();
 
   const getSubmissionStatusBadge = (status) => {
     switch (status) {
