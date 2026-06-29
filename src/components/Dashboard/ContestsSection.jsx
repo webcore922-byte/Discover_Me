@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Save, X, Gift, Calendar, Award, MapPin, Target, List, Trophy, Ban, Crown, User, Check } from 'lucide-react';
-import { useContestsLogic } from './useContestsLogic';
+import  {useContestsLogic}  from './useContestsLogic.jsx';
 
 const ContestsSection = () => {
   const navigate = useNavigate();
