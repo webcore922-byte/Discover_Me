@@ -191,18 +191,18 @@ const NewsSection = () => {
   if (loading) return <div className="text-center py-20 text-purple-400 font-bold animate-pulse text-lg">جاري تحميل مستودع الأخبار الحصري...</div>;
 
   return (
-    <div className="space-y-8 animate-fadeIn">
+    <div className="space-y-8 animate-fadeIn dark:text-white text-[var(--color-text-gray)]">
       
       {/* 📊 كارت الإحصائيات الخاص بالأخبار فقط (تطبيقاً لفكرتك) */}
-      <div className="flex justify-start">
-        <div className="bg-white/5 px-6 py-4 rounded-2xl border border-white/5 text-center min-w-[160px]">
-          <p className="text-[10px] text-gray-400 mb-1 font-bold">المقالات والأخبار المنشورة</p>
+      <div className="flex justify-start ">
+        <div className="dark:bg-white/5 bg-[var(--color-bg-card)] px-6 py-4 rounded-2xl border border-white/5 text-center min-w-[160px]">
+          <p className="text-[10px] dark:text-gray-400 mb-1 font-bold">المقالات والأخبار المنشورة</p>
           <p className="text-2xl font-black italic text-purple-400">{news.length}</p>
         </div>
       </div>
 
       {/* الـ Form الخاص بإضافة وتعديل الأخبار */}
-      <div className="bg-white/5 rounded-[2rem] border border-white/10 p-6 shadow-2xl relative overflow-hidden">
+      <div className="dark:bg-white/5 bg-[var(--color-bg-card)] rounded-[2rem] border dark:border-white/10 border-[var(--color-border)] p-6 shadow-2xl relative overflow-hidden">
         <div className="absolute top-0 right-0 h-[4px] w-full bg-gradient-to-r from-purple-600 to-indigo-500" />
         
         <div className="flex justify-between items-center mb-6">
@@ -220,32 +220,32 @@ const NewsSection = () => {
         <form onSubmit={handleSaveNews} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="text-xs text-gray-400 block mb-1">الوسم / التاج (مثال: تحديثات المنصة 🚀)</label>
-              <input type="text" name="tag" value={newsForm.tag} onChange={handleNewsInputChange} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-purple-500" placeholder="اكتب التاج..." required />
+              <label className="text-xs dark:text-gray-400 block mb-1">الوسم / التاج (مثال: تحديثات المنصة 🚀)</label>
+              <input type="text" name="tag" value={newsForm.tag} onChange={handleNewsInputChange} className="w-full dark:bg-white/5 bg-[var(--color-bg-main)] border border-white/10 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-purple-500" placeholder="اكتب التاج..." required />
             </div>
             <div>
-              <label className="text-xs text-gray-400 block mb-1">الجهة الناشرة / الكاتب</label>
-              <input type="text" name="author" value={newsForm.author} onChange={handleNewsInputChange} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-purple-500" required />
+              <label className="text-xs dark:text-gray-400 block mb-1">الجهة الناشرة / الكاتب</label>
+              <input type="text" name="author" value={newsForm.author} onChange={handleNewsInputChange} className="w-full dark:bg-white/5 bg-[var(--color-bg-main)] border border-white/10 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-purple-500" required />
             </div>
             <div>
-              <label className="text-xs text-gray-400 block mb-1">رابط صورة الغلاف الأساسية (URL)</label>
-              <input type="url" name="image" value={newsForm.image} onChange={handleNewsInputChange} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-purple-500" placeholder="https://example.com/cover.jpg" required />
+              <label className="text-xs dark:text-gray-400 block mb-1">رابط صورة الغلاف الأساسية (URL)</label>
+              <input type="url" name="image" value={newsForm.image} onChange={handleNewsInputChange} className="w-full dark:bg-white/5 bg-[var(--color-bg-main)] border border-white/10 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-purple-500" placeholder="https://example.com/cover.jpg" required />
             </div>
           </div>
 
           <div className="space-y-4">
             <div>
-              <label className="text-xs text-gray-400 block mb-1">عنوان الخبر الرئيسي</label>
-              <input type="text" name="title" value={newsForm.title} onChange={handleNewsInputChange} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm font-bold outline-none focus:border-purple-500" placeholder="اكتب العنوان هنا..." required />
+              <label className="text-xs dark:text-gray-400 block mb-1">عنوان الخبر الرئيسي</label>
+              <input type="text" name="title" value={newsForm.title} onChange={handleNewsInputChange} className="w-full dark:bg-white/5 bg-[var(--color-bg-main)] border border-white/10 rounded-xl px-4 py-2.5 text-sm font-bold outline-none focus:border-purple-500" placeholder="اكتب العنوان هنا..." required />
             </div>
             <div>
-              <label className="text-xs text-gray-400 block mb-1">ملخص الخبر القصير (يظهر في الكارت الخارجي)</label>
-              <textarea name="summary" rows="2" value={newsForm.summary} onChange={handleNewsInputChange} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-xs outline-none focus:border-purple-500 resize-none" placeholder="اكتب خلاصة الخبر في سطرين..." required />
+              <label className="text-xs dark:text-gray-400 block mb-1">ملخص الخبر القصير (يظهر في الكارت الخارجي)</label>
+              <textarea name="summary" rows="2" value={newsForm.summary} onChange={handleNewsInputChange} className="w-full dark:bg-white/5 bg-[var(--color-bg-main)] border border-white/10 rounded-xl px-4 py-2 text-xs outline-none focus:border-purple-500 resize-none" placeholder="اكتب خلاصة الخبر في سطرين..." required />
             </div>
           </div>
 
           {/* السكاشن والفقرات الديناميكية */}
-          <div className="border-t border-white/5 pt-4 space-y-4">
+          <div className="border-t dark:border-white/5 border-var[--color-border] pt-4 space-y-4">
             <div className="flex justify-between items-center">
               <label className="text-xs font-bold text-purple-400 border-r-2 border-purple-500 pr-2">محتوى الخبر وفقراته بالتفصيل:</label>
               <button type="button" onClick={addNewsSection} className="px-4 py-2 bg-purple-600/20 text-purple-400 border border-purple-500/30 rounded-xl text-xs font-black flex items-center gap-1 hover:bg-purple-600 hover:text-white transition-all">
@@ -255,13 +255,13 @@ const NewsSection = () => {
 
             <div className="space-y-4">
               {newsSections.map((section, index) => (
-                <div key={index} className="bg-white/[0.02] border border-white/5 rounded-2xl p-4 space-y-3 relative">
+                <div key={index} className="bg-white/[0.02] border dark:border-white/5 border-var[--color-border] rounded-2xl p-4 space-y-3 relative">
                   <div className="flex justify-between items-center border-b border-white/5 pb-2 flex-wrap gap-2">
-                    <span className="text-xs text-gray-400 font-bold bg-white/5 px-2 py-0.5 rounded">الفقرة #{index + 1}</span>
+                    <span className="text-xs dark:text-gray-400 font-bold dark:bg-white/5 bg-[var(--color-bg-main)] px-2 py-0.5 rounded">الفقرة #{index + 1}</span>
                     <div className="flex items-center gap-4">
                       <div className="flex items-center gap-1.5">
                         <input type="checkbox" id={`news-hasImage-${index}`} checked={section.hasImage} onChange={() => toggleNewsSectionImage(index)} className="w-3.5 h-3.5 accent-purple-500 cursor-pointer" />
-                        <label htmlFor={`news-hasImage-${index}`} className="text-xs text-gray-400 cursor-pointer hover:text-white transition-colors font-bold">إضافة صورة لهذه الفقرة</label>
+                        <label htmlFor={`news-hasImage-${index}`} className="text-xs dark:text-gray-400 cursor-pointer hover:text-white transition-colors font-bold">إضافة صورة لهذه الفقرة</label>
                       </div>
                       <button type="button" onClick={() => removeNewsSection(index)} className="text-gray-500 hover:text-red-400 transition-all">
                         <Trash2 className="w-4 h-4"/>
@@ -270,23 +270,23 @@ const NewsSection = () => {
                   </div>
 
                   <div>
-                    <label className="text-[11px] text-gray-400 block mb-1">عنوان الفقرة الفرعي</label>
-                    <input type="text" value={section.heading} onChange={e => handleNewsSectionChange(index, 'heading', e.target.value)} className="w-full bg-black/20 border border-white/5 rounded-xl px-3 py-2 text-xs outline-none focus:border-purple-500" placeholder="مثال: أولاً: شروط التقديم" required />
+                    <label className="text-[11px] dark:text-gray-400 block mb-1">عنوان الفقرة الفرعي</label>
+                    <input type="text" value={section.heading} onChange={e => handleNewsSectionChange(index, 'heading', e.target.value)} className="w-full dark:bg-white/5 bg-[var(--color-bg-main)] border border-white/10 rounded-xl px-3 py-2 text-xs outline-none focus:border-purple-500" placeholder="مثال: أولاً: شروط التقديم" required />
                   </div>
 
                   <div>
-                    <label className="text-[11px] text-gray-400 block mb-1">محتوى الفقرة والشرح المفصل</label>
-                    <textarea rows="3" value={section.content} onChange={e => handleNewsSectionChange(index, 'content', e.target.value)} className="w-full bg-black/20 border border-white/5 rounded-xl px-3 py-2 text-xs outline-none focus:border-purple-500 leading-relaxed" placeholder="اكتب تفاصيل الفقرة الكروية هنا..." required />
+                    <label className="text-[11px] dark:text-gray-400 block mb-1">محتوى الفقرة والشرح المفصل</label>
+                    <textarea rows="3" value={section.content} onChange={e => handleNewsSectionChange(index, 'content', e.target.value)} className="w-full dark:bg-white/5 bg-[var(--color-bg-main)] border border-white/10  rounded-xl px-3 py-2 text-xs outline-none focus:border-purple-500 leading-relaxed" placeholder="اكتب تفاصيل الفقرة الكروية هنا..." required />
                   </div>
 
                   {section.hasImage && (
-                    <div className="bg-black/40 border border-white/5 p-3 rounded-xl space-y-1.5 animate-fadeIn">
+                    <div className="dark:bg-black/40 bg-[var(--color-bg-main)] border border-white/5 p-3 rounded-xl space-y-1.5 animate-fadeIn">
                       <label className="text-[11px] text-purple-400 flex items-center gap-1 font-bold">
                         <ImageIcon className="w-3 h-3"/> رابط صورة الفقرة (URL)
                       </label>
                       <div className="relative">
-                        <input type="url" value={section.sectionImage} onChange={e => handleNewsSectionChange(index, 'sectionImage', e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-lg pr-3 pl-8 py-2 text-xs text-white outline-none focus:border-purple-500" placeholder="https://example.com/section.jpg" required />
-                        <Link2 className="w-3.5 h-3.5 text-gray-600 absolute left-2.5 top-2.5"/>
+                        <input type="url" value={section.sectionImage} onChange={e => handleNewsSectionChange(index, 'sectionImage', e.target.value)} className="w-full dark:bg-white/5 bg-[var(--color-bg-card)] border border-white/10 rounded-lg pr-3 pl-8 py-2 text-xs text-white outline-none focus:border-purple-500" placeholder="https://example.com/section.jpg" required />
+                        <Link2 className="w-3.5 h-3.5 dark:text-gray-600 absolute left-2.5 top-2.5"/>
                       </div>
                     </div>
                   )}
@@ -303,7 +303,7 @@ const NewsSection = () => {
       </div>
 
       {/* الجدول المعزول لعرض الأخبار */}
-      <div className="bg-white/5 rounded-[2rem] border border-white/10 overflow-hidden shadow-2xl">
+      <div className="dark:bg-white/5 bg-[var(--color-bg-card)] rounded-[2rem] border dark:border-white/10 border-var[--color-border] overflow-hidden shadow-2xl">
         <div className="overflow-x-auto">
           <table className="w-full text-right">
             <thead>
@@ -315,21 +315,21 @@ const NewsSection = () => {
                 <th className="p-6 text-center">الإجراءات</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y dark:divide-white/5 divide-var[--color-border]">
               {news.map(item => (
                 <tr key={item.id} className="hover:bg-white/5 transition-all">
                   <td className="p-6">
                     <div className="flex items-center gap-4">
-                      <img src={item.image} className="w-16 h-12 rounded-xl object-cover border border-white/10" alt="" onError={(e)=>{e.target.src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=500"}} />
+                      <img src={item.image} className="w-16 h-12 rounded-xl object-cover border dark:border-white/10 border-var[--color-border]" alt="" onError={(e)=>{e.target.src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=500"}} />
                       <div>
-                        <p className="font-bold text-base text-white">{item.title}</p>
+                        <p className="font-bold text-base dark:text-white">{item.title}</p>
                         <p className="text-[11px] text-purple-400">🏷️ {item.tag}</p>
                       </div>
                     </div>
                   </td>
-                  <td className="p-6 text-sm text-gray-300">✍️ {item.author}</td>
-                  <td className="p-6 text-sm text-gray-400">📅 {item.date}</td>
-                  <td className="p-6 text-center text-xs text-gray-300 font-bold">{item.sections ? item.sections.length : 0} فقرات</td>
+                  <td className="p-6 text-sm dark:text-gray-300">✍️ {item.author}</td>
+                  <td className="p-6 text-sm dark:text-gray-400">📅 {item.date}</td>
+                  <td className="p-6 text-center text-xs dark:text-gray-300 font-bold">{item.sections ? item.sections.length : 0} فقرات</td>
                   <td className="p-6">
                     <div className="flex gap-2 justify-center">
                       <button onClick={() => handleEditNewsClick(item)} className="px-3 py-1.5 bg-blue-600/20 text-blue-400 border border-blue-500/20 rounded-lg text-xs font-bold hover:bg-blue-600 hover:text-white transition-all">تعديل</button>

@@ -274,11 +274,11 @@ const PrizesAndCompetitions = () => {
 
   return (
     <div 
-      className="min-h-screen bg-[#0e1011] text-white py-12 px-4 md:px-8 lg:px-16 font-sans relative overflow-hidden bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: "url('/bg_prizes_and_competitions (2).jpeg')" }}
-      dir="rtl"
+      className="min-h-screen  text-white py-12 px-4 md:px-8 lg:px-16 font-sans relative overflow-hidden bg-cover bg-center bg-no-repeat
+     dark:bg-[url('/bg_prizes_and_competitions.jpeg')] bg-[url('/bg-prizesLight.png')] "
+               
     >
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] pointer-events-none z-0" />
+      <div className="absolute inset-0 dark:bg-black/40  bg-black/5 backdrop-blur-[2px] pointer-events-none z-0" />
 
       <div className="max-w-[1400px] mx-auto space-y-10 relative z-10">
         
@@ -286,12 +286,12 @@ const PrizesAndCompetitions = () => {
         <div className="text-center space-y-2 max-w-3xl mx-auto pt-4">
           <div className="flex items-center justify-center gap-2">
             <span className="text-[#D4AF37] text-xl">✨</span>
-            <h1 className="text-3xl md:text-5xl font-black tracking-wide text-white drop-shadow-md">
+            <h1 className="text-3xl md:text-5xl font-black tracking-wide dark:text-white text-[var(--color-gold-main)] drop-shadow-md">
               الجوائز والمسابقات
             </h1>
             <span className="text-[#D4AF37] text-xl">✨</span>
           </div>
-          <p className="text-gray-300 text-xs md:text-sm leading-relaxed font-light">
+          <p className="dark:text-gray-300 text-[var(--color-text-gray)] text-xs md:text-sm leading-relaxed font-light">
             نقدم بشكل دوري مسابقات وتحديات تهدف إلى تحفيز المستخدمين على تقديم أفضل ما لديهم، تتيح هذه المسابقات فرصاً للفوز بجوائز مميزة...
           </p>
         </div>
@@ -306,19 +306,19 @@ const PrizesAndCompetitions = () => {
               key={banner.bannerId}
               className={`rounded-2xl p-4 border flex items-center justify-between gap-3 shadow-lg ${
                 banner.status === 'won'
-                  ? 'bg-emerald-500/10 border-emerald-500/30'
+                  ? 'bg-emerald-500/10 dark:border-emerald-500/30 border-[var(--color-text-gray)]'
                   : 'bg-red-500/10 border-red-500/30'
               }`}
             >
               <div className="flex items-center gap-3">
-                <StatusIcon className={`w-6 h-6 shrink-0 ${banner.status === 'won' ? 'text-emerald-400' : 'text-red-400'}`} />
-                <p className={`text-sm font-bold ${banner.status === 'won' ? 'text-emerald-300' : 'text-red-300'}`}>
+                <StatusIcon className={`w-6 h-6 shrink-0 ${banner.status === 'won' ? 'dark:text-emerald-300 text-[var(--color-text-main)]' : 'text-red-400'}`} />
+                <p className={`text-sm font-bold ${banner.status === 'won' ? 'dark:text-emerald-300 text-[var(--color-text-main)]' : 'text-red-300'}`}>
                   {banner.message}
                 </p>
               </div>
               <button
                 onClick={() => handleDismissBanner(banner.bannerId)}
-                className="text-gray-400 hover:text-white shrink-0"
+                className="dark:text-gray-400 text-[var(--color-text-gray)] dark:hover:text-white shrink-0"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -331,7 +331,7 @@ const PrizesAndCompetitions = () => {
           {/* 1. شبكة المسابقات العادية (Normal) */}
           {normalContests.length > 0 && (
             <div className="space-y-4">
-              <h2 className="text-lg font-black text-white border-r-4 border-[#D4AF37] pr-2">⚽ التحديات الحالية ومسابقات المهارة</h2>
+              <h2 className="text-lg font-black dark:text-white text-[var(--color-gold-main)] border-r-4 border-[#D4AF37] pr-2">⚽ التحديات الحالية ومسابقات المهارة</h2>
               
               <div className="flex flex-row overflow-x-auto pb-4 pt-1 gap-5 scrollbar-thin scrollbar-thumb-[#D4AF37]/30 lg:grid lg:grid-cols-3 xl:grid-cols-4 lg:overflow-x-visible lg:w-full">
                 {normalContests.map(item => (
@@ -395,7 +395,7 @@ const PrizesAndCompetitions = () => {
 
 {annualLeagues.length > 0 && (
   <div className="space-y-4 pt-2">
-    <h2 className="text-lg font-black text-white border-r-4 border-amber-500 pr-2">🏆 الدوري السنوي العام</h2>
+    <h2 className="text-lg font-black dark:text-white text-[var(--color-gold-main)] border-r-4 border-amber-500 pr-2">🏆 الدوري السنوي العام</h2>
     {annualLeagues.map(annual => (
       <div key={String(annual.id)} className="bg-[#16191b]/80 border border-[#D4AF37]/20 rounded-2xl p-5 flex flex-col gap-5 shadow-xl backdrop-blur-md">
         
@@ -460,7 +460,7 @@ const PrizesAndCompetitions = () => {
           {/* 3. قسم الجوائز الشهرية الثابتة (Monthly) */}
           {monthlyPrizes.length > 0 && (
             <div className="space-y-4 pt-2">
-              <h2 className="text-lg font-black text-white border-r-4 border-purple-500 pr-2">⭐ تكريمات الجوائز الشهرية</h2>
+              <h2 className="text-lg font-black dark:text-white text-[var(--color-gold-main)] border-r-4 border-purple-500 pr-2">⭐ تكريمات الجوائز الشهرية</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {monthlyPrizes.map(monthly => (
                   <div key={String(monthly.id)} className="bg-[#16191b]/80 border border-[#D4AF37]/20 rounded-2xl p-5 shadow-xl backdrop-blur-md flex flex-col justify-between gap-4">
@@ -509,7 +509,7 @@ const PrizesAndCompetitions = () => {
         </div>
 
         {/* فوتر المنصة */}
-        <div className="text-center pt-6 border-t border-white/10 text-[11px] text-gray-400 font-light">
+        <div className="text-center pt-6 border-t border-white/10 text-[11px] dark:text-gray-400  text-[var(--color-text-gray)] font-light">
           منصة اكتشفني تضمن تكافؤ الفرص لجميع المواهب الناشئة بمصر 🇪🇬
         </div>
 

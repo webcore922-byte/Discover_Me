@@ -25,7 +25,7 @@
 }
 
 [data-theme="light"] {
---color-bg-main: #f7f7f5;
+--color-bg-main: #f0f0d6ec;
 --color-bg-card: #ffffff; 
   --color-gold-main: #caa74a;
   --color-btn-start: #e6c76a;
@@ -60,7 +60,12 @@
   border: 1px solid rgba(166, 137, 70, 0.2);
   box-shadow: var(--card-shadow);
 }
-
+.light-card {
+  background: rgba(36, 40, 41, 0.8); /* هذا اللون يتغير حسب المتغيرات */
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(166, 137, 70, 0.2);
+  /* ... */
+}
 
 .gold-glow-border {
   border: 1px solid var(--color-border);

@@ -18,14 +18,14 @@ const ProductDetails = () => {
 
   if (!product) {
     return (
-      <div className="text-white text-center py-20 min-h-screen bg-[var(--color-bg-main)]">
+      <div className="dark:text-white text-[var(--color-text-gray)] text-center py-20 min-h-screen bg-[var(--color-bg-main)]">
         جاري تحميل تفاصيل المنتج...
       </div>
     );
   }
 
   return (
-    <section className="py-16 px-8 min-h-screen bg-[var(--color-bg-main)] text-white">
+    <section className="py-16 px-8 min-h-screen bg-[var(--color-bg-main)] dark:text-white text-[var(--color-text-gray)]">
       <div className="mx-auto container grid place-items-center grid-cols-1 md:grid-cols-2 gap-12">
         <div className="w-full max-w-[400px] aspect-square flex items-center justify-center bg-[var(--color-bg-card)] rounded-xl border border-[var(--color-border)] p-4 overflow-hidden">
   <img
@@ -35,7 +35,7 @@ const ProductDetails = () => {
   />
 </div>
         <div className="space-y-6">
-         <h2 className="text-2xl md:text-4xl font-bold text-white leading-tight"> {product?.name}</h2>
+         <h2 className="text-2xl md:text-4xl font-bold dark:text-white leading-tight"> {product?.name}</h2>
 
 <div className="flex items-center gap-4 flex-wrap">
  <h3 className="text-2xl md:text-4xl font-bold text-[var(--color-gold-main)]">
@@ -53,12 +53,12 @@ const ProductDetails = () => {
   )}
 </div>
           <div className="space-y-3">
-            <p className="text-gray-400 font-bold text-lg">
-              القسم: <span className="text-white font-normal">{product?.category}</span> </p>
+            <p className="dark:text-gray-400 font-bold text-lg">
+              القسم: <span className="dark:text-white text-[var(--color-text-gray)] font-normal">{product?.category}</span> </p>
   
 <div className="border-t border-[var(--color-border)] pt-6 mt-6">
-  <h4 className="text-xl font-bold text-white mb-2">وصف المنتج</h4>
-  <p className="text-gray-400 leading-relaxed">
+  <h4 className="text-xl font-bold dark:text-white text-[var(--color-text-gray)] mb-2">وصف المنتج</h4>
+  <p className="dark:text-gray-400 leading-relaxed">
     {product?.description || "لا يوجد وصف متاح لهذا المنتج حالياً."}
   </p>
 </div>   

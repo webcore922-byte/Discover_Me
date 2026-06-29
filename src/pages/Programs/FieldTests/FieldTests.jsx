@@ -84,14 +84,9 @@ const[setIsUpgrading] = useState(false);
             style={{ backgroundColor: 'var(--color-bg-main)', color: 'var(--color-text-white)' }}
         >
             <div 
-                className="absolute inset-0 z-0 pointer-events-none"
-                style={{
-                    backgroundImage: `url(${bgImg})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
-                    filter: 'contrast(1.15) brightness(1.05) saturate(1.2)'
-                }}
+                className="absolute inset-0 z-0 pointer-events-none dark:bg-[url('/bg_Field_tests.jpeg')]
+                 bg-[url('/bg_Field_tests_Light.png')] bg-cover bg-center bg-no-repeat filter contrast-[1.15] brightness-[1.05] saturate-[1.2]"
+               
             ></div>
             <div className="absolute inset-0 bg-black/10 z-0 pointer-events-none"></div>
 
@@ -174,7 +169,7 @@ const[setIsUpgrading] = useState(false);
                         </div>
                     )}
                     {isPendingPlayer && (
-                        <div className="glass-card hover-gold-card card-shine rounded-[2rem] p-5 shadow-2xl text-center relative z-30">
+                        <div className="glass-card  hover-gold-card card-shine rounded-[2rem] p-5 shadow-2xl text-center relative z-30">
                           <div className="rounded-[1.5rem] overflow-hidden mb-4 h-[180px]">
                                 <img src={actionImg} alt="Action" className="w-full h-full object-cover" />
                             </div>

@@ -125,7 +125,7 @@ const CoachesContent = () => {
                   <p className="text-[var(--color-gold-main)] text-[10px] font-black">{f.specialty}</p>
                 </div>
               </div>
-              <p className="text-[var(--color-text-gray)] text-[11px] leading-relaxed mb-4">{f.bio}</p>
+              <p className="dark:text-[var(--color-text-gray)] text-[11px] leading-relaxed mb-4 text-[--color-bg-main]">{f.bio}</p>
               <div className="flex flex-wrap gap-2">
                 {f.tags.map(t => <span key={t} className="text-[9px] text-[var(--color-gold-main)] border border-[var(--color-border)]/30 px-3 py-1 rounded-full">{t}</span>)}
               </div>

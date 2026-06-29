@@ -141,7 +141,7 @@ const Checkout = () => {
 
           {/* Form */}
           <div className="bg-[var(--color-bg-card)] p-8 rounded-2xl border border-[var(--color-border)]">
-            <h2 className="text-xl font-black text-white mb-6">تفاصيل الشحن</h2>
+            <h2 className="text-xl font-black dark:text-white text-[var(--color-text-gray)] mb-6">تفاصيل الشحن</h2>
             <form onSubmit={handleSubmitClick} className="flex flex-col gap-5">
 
               {/* Name */}
@@ -149,7 +149,7 @@ const Checkout = () => {
                 <Input
                   label="الاسم بالكامل"
                   color="amber"
-                  className="text-white"
+                  className="dark:text-white text-[var(--color-text-gray)]"
                   error={!!errors.name}
                   onChange={(e) => {
                     setFormData({ ...formData, name: e.target.value });
@@ -164,7 +164,7 @@ const Checkout = () => {
                 <Input
                   label="رقم الهاتف"
                   color="amber"
-                  className="text-white"
+                  className="dark:text-white text-[var(--color-text-gray)]"
                   error={!!errors.phone}
                   onChange={(e) => {
                     setFormData({ ...formData, phone: e.target.value });
@@ -179,11 +179,11 @@ const Checkout = () => {
                 <select
                   onChange={handleCityChange}
                   defaultValue=""
-                  className={`w-full bg-transparent border ${errors.city ? "border-red-500" : "border-[var(--color-border)]"} text-white rounded-lg px-4 py-3 text-sm outline-none focus:border-[var(--color-gold-main)] transition`}
+                  className={`w-full bg-transparent border ${errors.city ? "border-red-500" : "border-[var(--color-border)]"} dark:text-white text-[var(--color-text-gray)] rounded-lg px-4 py-3 text-sm outline-none focus:border-[var(--color-gold-main)] transition`}
                 >
                   <option value="" disabled className="bg-[var(--color-bg-card)] text-gray-400">اختر المحافظة</option>
                   {shippingRates.map((r) => (
-                    <option key={r.id} value={r.id} className="bg-[var(--color-bg-card)] text-white">
+                    <option key={r.id} value={r.id} className="bg-[var(--color-bg-card)] dark:text-white text-[var(--color-text-gray)]">
                       {r.city} — {r.cost} EGP
                     </option>
                   ))}
@@ -196,7 +196,7 @@ const Checkout = () => {
                 <Input
                   label="العنوان بالتفصيل"
                   color="amber"
-                  className="text-white"
+                  className="dark:text-white text-[var(--color-text-gray)]"
                   error={!!errors.address}
                   onChange={(e) => {
                     setFormData({ ...formData, address: e.target.value });
@@ -208,7 +208,7 @@ const Checkout = () => {
 
               {/* Payment Methods */}
               <div className="flex flex-col gap-3 mt-1">
-                <p className="text-white font-bold text-sm">طريقة الدفع:</p>
+                <p className="dark:text-white text-[var(--color-text-gray)] font-bold text-sm">طريقة الدفع:</p>
                 <div className="flex flex-col gap-2">
                   {PAYMENT_METHODS.map((method) => (
                     <label
@@ -229,7 +229,7 @@ const Checkout = () => {
                       />
                       <span className="text-[var(--color-gold-main)]">{method.icon}</span>
                       <div>
-                        <p className="text-white text-sm font-bold">{method.label}</p>
+                        <p className="dark:text-white text-sm font-bold">{method.label}</p>
                         <p className="text-gray-500 text-xs">{method.description}</p>
                       </div>
                     </label>
@@ -239,7 +239,7 @@ const Checkout = () => {
                 {/* Payment Details */}
                 {selectedPayment?.details && (
                   <div className="bg-[var(--color-gold-main)]/5 border border-[var(--color-gold-main)]/30 rounded-xl p-4 flex flex-col gap-2 mt-1">
-                    <p className="text-gray-400 text-xs">اسم الحساب: <span className="text-white font-bold">{selectedPayment.details.name}</span></p>
+                    <p className="text-gray-400 text-xs">اسم الحساب: <span className="dark:text-white text-[var(--color-text-gray)] font-bold">{selectedPayment.details.name}</span></p>
                     <p className="text-gray-400 text-xs">الرقم:
                       <span className="text-[var(--color-gold-main)] font-black text-sm mr-1 tracking-widest">
                         {selectedPayment.details.number}
@@ -272,12 +272,12 @@ const Checkout = () => {
 
           {/* Order Summary */}
           <div className="bg-[var(--color-bg-card)] p-8 rounded-2xl border border-[var(--color-border)] h-fit sticky top-24">
-            <h2 className="text-xl font-black text-white mb-6">ملخص الطلب</h2>
+            <h2 className="text-xl text-[var(--color-text-gray)] dark:text-white mb-6">ملخص الطلب</h2>
 
             <div className="flex flex-col gap-3 mb-6">
               {cart.map((item) => (
                 <div key={item.id} className="flex justify-between items-center text-sm border-b border-[var(--color-border)] pb-3">
-                  <span className="text-white font-medium">
+                  <span className="dark:text-white text-[var(--color-text-gray)] font-medium">
                     {item.name}
                     <span className="text-gray-500 mr-1">× {item.count}</span>
                   </span>
@@ -286,21 +286,21 @@ const Checkout = () => {
               ))}
             </div>
 
-            <div className="flex flex-col gap-2 text-sm text-gray-400 mb-4">
+            <div className="flex flex-col gap-2 text-sm dark:text-gray-400 text-[var(--color-text-gray)] mb-4">
               <div className="flex justify-between">
                 <span>المنتجات</span>
-                <span className="text-white font-bold">{total} EGP</span>
+                <span className="dark:text-white text-[var(--color-text-gray)] font-bold">{total} EGP</span>
               </div>
               <div className="flex justify-between">
                 <span>الشحن</span>
-                <span className={`font-bold ${selectedCity ? "text-white" : "text-gray-600"}`}>
+                <span className={`font-bold ${selectedCity ? "dark:text-white text-[var(--color-text-gray)]" : "text-gray-600"}`}>
                   {selectedCity ? `${shippingCost} EGP` : "اختر المحافظة أولاً"}
                 </span>
               </div>
             </div>
 
             <div className="border-t border-[var(--color-border)] pt-4 flex justify-between items-center">
-              <span className="text-white font-black text-lg">الإجمالي</span>
+              <span className="dark:text-white text-[var(--color-text-gray)] font-black text-lg">الإجمالي</span>
               <span className="text-[var(--color-gold-main)] font-black text-2xl">{grandTotal} EGP</span>
             </div>
           </div>

@@ -33,7 +33,7 @@ const CategoriesSection = () => {
   return (
     <div>
       <section className="px-12 py-6 relative">
-        <h2 className="text-2xl font-bold mb-6">الأقسام</h2>
+        <h2 className="text-2xl font-bold mb-6 dark:text-white text-[var(--color-gold-main)]">الأقسام</h2>
 
         <div className="swiper-button-prev !text-[var(--color-gold-main)] !w-8 !h-8 !scale-75"></div>
         <div className="swiper-button-next !text-[var(--color-gold-main)] !w-8 !h-8 !scale-75"></div>

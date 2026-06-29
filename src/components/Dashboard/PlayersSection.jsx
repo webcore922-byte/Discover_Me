@@ -141,21 +141,21 @@ const PlayersSection = ({ activeTab }) => {
 
   // مكون فرعي مرن لرسم الجداول
   const RenderPlayersTable = ({ playersList, emptyMessage, showActionType }) => (
-    <div className="bg-white/5 rounded-[2rem] border border-white/10 overflow-hidden shadow-2xl">
+    <div className="bg-white/5 rounded-[2rem] border dark:border-white/10 border-[var(--color-border)] overflow-hidden shadow-2xl">
       <div className="overflow-x-auto">
         <table className="w-full text-right">
           <thead>
-            <tr className="bg-white/5 text-gray-400 text-xs font-black uppercase tracking-wider">
+            <tr className="bg-white/5 dark:text-gray-400  text-[var(--color-text-gray)] text-xs font-black uppercase tracking-wider">
               <th className="p-6">اللاعب والمركز</th>
               <th className="p-6">المحافظة / النادي والسن</th>
               <th className="p-6">بيانات الاتصال وتفاصيل الموعد</th>
               <th className="p-6 text-center">القرار الفني والتفاصيل</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-white/5">
+          <tbody className="divide-y dark:divide-white/5 divide-[var(--color-border)]">
             {playersList.length === 0 ? (
               <tr>
-                <td colSpan="4" className="p-10 text-center text-sm text-gray-500 font-bold">{emptyMessage}</td>
+                <td colSpan="4" className="p-10 text-center text-sm dark:text-gray-400 text-[var(--color-text-gray)] font-bold">{emptyMessage}</td>
               </tr>
             ) : (
               playersList.map(player => {
@@ -163,34 +163,34 @@ const PlayersSection = ({ activeTab }) => {
                 const countdown = hasSchedule ? getCountdownStatus(player.fieldTest.date) : null;
 
                 return (
-                  <tr key={player.id} className="hover:bg-white/[0.02] transition-all group">
+                  <tr key={player.id} className="dark:hover:bg-white/[0.02] transition-all group">
                     <td className="p-6">
                       <div className="flex items-center gap-4">
                         {player.image ? (
                           <img 
                             src={player.image} 
                             alt="" 
-                            className="w-12 h-12 rounded-full object-cover border border-white/10"
+                            className="w-12 h-12 rounded-full object-cover border dark:border-white/10 border-[var(--color-border)] "
                             onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
                           />
                         ) : null}
-                        <div className="w-12 h-12 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37]/20 flex items-center justify-center font-black text-[#D4AF37]" style={{display: player.image ? 'none' : 'flex'}}>
+                        <div className="w-12 h-12 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37]/20 flex items-center justify-center  text-[#D4AF37]" style={{display: player.image ? 'none' : 'flex'}}>
                           {player.name?.charAt(0)}
                         </div>
                         <div>
-                          <p className="font-bold text-base text-white group-hover:text-[#D4AF37] transition-colors">{player.name}</p>
-                          <p className="text-xs text-gray-400 font-medium mt-0.5">🏃 المركز: <span className="text-gray-300 font-bold">{player.position}</span></p>
+                          <p className="font-bold text-base text-[var(--color-gold-main)] group-hover:text-[#D4AF37] transition-colors">{player.name}</p>
+                          <p className="text-xs dark:text-gray-400 text-[var(--color-text-gray)] font-medium mt-0.5">🏃 المركز: <span className="dark:text-gray-300 text-[var(--color-text-gray)] font-bold">{player.position}</span></p>
                         </div>
                       </div>
                     </td>
                     <td className="p-6 text-sm">
-                      <p className="text-gray-300 flex items-center gap-1"><MapPin className="w-3.5 h-3.5 text-gray-500" /> {player.location === "20" ? "القاهرة" : player.location} - {player.currentClub || 'لاعب حر'}</p>
-                      <p className="text-[11px] text-gray-500 font-bold mt-1">📅 العمر: {player.age} سنة | 👟 القدم: {player.preferredFoot || 'يمين'}</p>
+                      <p className="dark:text-gray-300 text-[var(--color-text-gray)] flex items-center gap-1"><MapPin className="w-3.5 h-3.5 text-gray-500" /> {player.location === "20" ? "القاهرة" : player.location} - {player.currentClub || 'لاعب حر'}</p>
+                      <p className="text-[11px] dark:text-gray-500 text-[var(--color-text-gray)] font-bold mt-1">📅 العمر: {player.age} سنة | 👟 القدم: {player.preferredFoot || 'يمين'}</p>
                     </td>
                     <td className="p-6 text-xs">
                       <div className="space-y-1">
-                        <p className="text-gray-400 flex items-center gap-1.5 truncate max-w-[200px]">
-                          <Mail className="w-3 h-3 text-gray-600"/> {player.userEmail}
+                        <p className="dark:text-gray-400 text-[var(--color-text-gray)] flex items-center gap-1.5 truncate max-w-[200px]">
+                          <Mail className="w-3 h-3 dark:text-gray-600 text-[var(--color-text-gray)]"/> {player.userEmail}
                         </p>
                         <div className="flex flex-col gap-1 mt-1">
                           {player.fieldTest?.isDone ? (
@@ -214,14 +214,14 @@ const PlayersSection = ({ activeTab }) => {
                                     </span>
                                   )}
                                 </div>
-                                <p className="text-[10px] text-gray-300 font-bold truncate">📍 {player.fieldTest.location}</p>
-                                <p className="text-[10px] text-gray-400">⏱️ {player.fieldTest.date}</p>
+                                <p className="text-[10px] dark:text-gray-300 text-[var(--color-text-gray)] font-bold truncate">📍 {player.fieldTest.location}</p>
+                                <p className="text-[10px] dark:text-gray-400 text-[var(--color-text-gray)]">⏱️ {player.fieldTest.date}</p>
                               </div>
                             ) : (
                               <span className="text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-md flex items-center gap-1 font-bold w-fit"><Clock className="w-3 h-3"/> معلق (بانتظار تحديد موعد)</span>
                             )
                           ) : (
-                            <span className="text-yellow-400 bg-yellow-500/10 px-2 py-0.5 rounded-md flex items-center gap-1 font-bold w-fit"><Clock className="w-3 h-3"/> تحت المراجعة الأولي</span>
+                            <span className="text-[var(--color-gold-main)] bg-yellow-500/10 px-2 py-0.5 rounded-md flex items-center gap-1 font-bold w-fit"><Clock className="w-3 h-3"/> تحت المراجعة الأولي</span>
                           )}
                         </div>
                       </div>
@@ -242,7 +242,7 @@ const PlayersSection = ({ activeTab }) => {
                         {showActionType === 'go_evaluate' && (
                           <button 
                             onClick={() => navigate(`/dashboard/player/${player.id}`)}
-                            className="px-4 py-2 bg-purple-500/20 text-purple-300 border border-purple-500/30 rounded-xl text-xs font-black hover:bg-purple-500 hover:text-white transition-all flex items-center gap-1.5 shadow-lg"
+                            className="px-4 py-2 bg-purple-500/20 text-purple-300 border border-purple-500/30 rounded-xl text-xs font-black hover:bg-purple-500 dark:hover:text-white transition-all flex items-center gap-1.5 shadow-lg"
                           >
                             <Award className="w-4 h-4 text-purple-400" /> رصد الدرجات والتقييم النهائي 📝
                           </button>
@@ -269,7 +269,7 @@ const PlayersSection = ({ activeTab }) => {
   );
 
   return (
-    <div className="space-y-8 animate-fadeIn" dir="rtl">
+    <div className="space-y-8 animate-fadeIn dark:text-white text-[var(--color-text-gray)]" dir="rtl">
 
       {/* شريط البحث الموحد */}
       <div className="relative max-w-md w-full">
@@ -278,9 +278,9 @@ const PlayersSection = ({ activeTab }) => {
           placeholder="ابحث باسم اللاعب، المركز، أو المحافظة..." 
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full bg-white/5 border border-white/10 rounded-2xl pr-12 pl-4 py-3 text-sm outline-none focus:border-[#D4AF37] transition-all text-white placeholder-gray-500"
+          className="w-full bg-white/5 border dark:border-white/10 border-[var(--color-border)] rounded-2xl pr-12 pl-4 py-3 text-sm outline-none focus:border-[#D4AF37] transition-all dark:text-white dark:placeholder-gray-500 placeholder-[var(--color-text-gray)]"
         />
-        <Search className="w-5 h-5 text-gray-500 absolute right-4 top-3.5" />
+        <Search className="w-5 h-5 dark:text-gray-500 absolute right-4 top-3.5" />
       </div>
 
       {/* التبويب النشط للمقبولين مبدئياً */}
@@ -291,7 +291,7 @@ const PlayersSection = ({ activeTab }) => {
           <div className="space-y-3">
             <div className="flex items-center gap-2 px-2">
               <Award className="w-5 h-5 text-purple-400" />
-              <h3 className="text-lg font-black text-white">لاعبين انتهى اختبارهم الميداني <span className="text-purple-300 font-bold text-sm bg-purple-500/10 px-2 py-1 rounded-lg mr-2">({playersTestedWaitingDecision.length} لاعبين بانتظار التقييم والقرار النهائي)</span></h3>
+              <h3 className="text-lg font-black dark:text-white">لاعبين انتهى اختبارهم الميداني <span className="text-purple-300 font-bold text-sm bg-purple-500/10 px-2 py-1 rounded-lg mr-2">({playersTestedWaitingDecision.length} لاعبين بانتظار التقييم والقرار النهائي)</span></h3>
             </div>
             <RenderPlayersTable 
               playersList={playersTestedWaitingDecision} 
@@ -304,7 +304,7 @@ const PlayersSection = ({ activeTab }) => {
           <div className="space-y-3">
             <div className="flex items-center gap-2 px-2">
               <CalendarDays className="w-5 h-5 text-sky-400" />
-              <h3 className="text-lg font-black text-white">لاعبين جاهزين للاختبار الميداني <span className="text-sky-400 font-bold text-sm bg-sky-500/10 px-2 py-1 rounded-lg mr-2">({playersWithSchedule.length} لاعبين تم جدولتها)</span></h3>
+              <h3 className="text-lg font-black dark:text-white">لاعبين جاهزين للاختبار الميداني <span className="text-sky-400 font-bold text-sm bg-sky-500/10 px-2 py-1 rounded-lg mr-2">({playersWithSchedule.length} لاعبين تم جدولتها)</span></h3>
             </div>
             <RenderPlayersTable 
               playersList={playersWithSchedule} 
@@ -317,7 +317,7 @@ const PlayersSection = ({ activeTab }) => {
           <div className="space-y-3">
             <div className="flex items-center gap-2 px-2">
               <Clock className="w-5 h-5 text-amber-500" />
-              <h3 className="text-lg font-black text-white">لاعبين مقبولين مبدئياً <span className="text-amber-400 font-bold text-sm bg-amber-500/10 px-2 py-1 rounded-lg mr-2">({playersWithoutSchedule.length} لاعبين بانتظار تحديد موعد)</span></h3>
+              <h3 className="text-lg font-black dark:text-white">لاعبين مقبولين مبدئياً <span className="text-amber-400 font-bold text-sm bg-amber-500/10 px-2 py-1 rounded-lg mr-2">({playersWithoutSchedule.length} لاعبين بانتظار تحديد موعد)</span></h3>
             </div>
             <RenderPlayersTable 
               playersList={playersWithoutSchedule} 
@@ -332,7 +332,7 @@ const PlayersSection = ({ activeTab }) => {
         <div className="space-y-3">
           <div className="flex items-center gap-2 px-2">
             <UserCheck className="w-5 h-5 text-[#D4AF37]" />
-            <h3 className="text-lg font-black text-white">
+            <h3 className="text-lg font-black dark:text-white">
               {activeTab === 'pending' && 'طلبات المراجعة بانتظار الكابتن'}
               {activeTab === 'final_accepted' && 'كشف اللاعبين المقبولين نهائياً'}
               {activeTab === 'final_rejected' && 'كشف طلبات اللاعبين المستبعدة'}

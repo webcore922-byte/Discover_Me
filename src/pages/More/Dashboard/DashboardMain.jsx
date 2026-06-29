@@ -44,13 +44,13 @@ const DashboardMain = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0e1011] text-white p-4 md:p-10" dir="rtl">
+    <div className="min-h-screen dark:bg-[#0e1011] bg-[var(--color-bg-main)] dark:text-white text-[var(--color-text-gray)] p-4 md:p-10">
       <div className="max-w-7xl mx-auto space-y-10">
         
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-white/5 pb-10">
           <div className="space-y-2">
             <h1 className="text-4xl md:text-5xl font-black text-[#D4AF37] italic uppercase tracking-wider">لوحة التحكم الإدارية</h1>
-            <p className="text-xs text-gray-400 flex items-center gap-1.5 font-bold">
+            <p className="text-xs dark:text-gray-400 flex items-center gap-1.5 font-bold">
               <ShieldCheck className="w-4 h-4 text-[#D4AF37]" />
               صلاحية الحساب الحالية: 
               <span className="text-[#D4AF37] bg-[#D4AF37]/5 px-2 py-0.5 rounded border border-[#D4AF37]/10 font-black">
@@ -64,22 +64,22 @@ const DashboardMain = () => {
         </div>
 
         <div className="flex flex-col xl:flex-row gap-4 items-center justify-between">
-          <div className="flex flex-wrap bg-white/5 p-1.5 rounded-3xl border border-white/5 w-full">
+          <div className="flex flex-wrap dark:bg-white/5 bg-white p-1.5 rounded-3xl border border-white/5 w-full">
             {hasPermission('pending') && (
               <>
-                <button onClick={() => setActiveTab('pending')} className={`flex-1 min-w-[120px] py-3 rounded-2xl text-xs font-black transition-all ${activeTab === 'pending' ? 'bg-[#F2D472] text-black' : 'text-white'}`}>طلبات MGR</button>
-                <button onClick={() => setActiveTab('approved_waiting')} className={`flex-1 min-w-[120px] py-3 rounded-2xl text-xs font-black transition-all ${activeTab === 'approved_waiting' ? 'bg-sky-400 text-black' : 'text-white'}`}>بانتظار الميدان</button>
-                <button onClick={() => setActiveTab('final_accepted')} className={`flex-1 min-w-[120px] py-3 rounded-2xl text-xs font-black transition-all ${activeTab === 'final_accepted' ? 'bg-emerald-400 text-black' : 'text-white'}`}>المقبولين نهائياً</button>
-                <button onClick={() => setActiveTab('final_rejected')} className={`flex-1 min-w-[120px] py-3 rounded-2xl text-xs font-black transition-all ${activeTab === 'final_rejected' ? 'bg-red-500 text-white' : 'text-white'}`}>المستبعدين</button>
+                <button onClick={() => setActiveTab('pending')} className={`flex-1 min-w-[120px] py-3 rounded-2xl text-xs font-black transition-all ${activeTab === 'pending' ? 'bg-[#F2D472] text-black' : 'dark:text-white text-[var(--color-text-gray)]'}`}>طلبات MGR</button>
+                <button onClick={() => setActiveTab('approved_waiting')} className={`flex-1 min-w-[120px] py-3 rounded-2xl text-xs font-black transition-all ${activeTab === 'approved_waiting' ? 'bg-sky-400 text-black' : 'dark:text-white text-[var(--color-text-gray)]'}`}>بانتظار الميدان</button>
+                <button onClick={() => setActiveTab('final_accepted')} className={`flex-1 min-w-[120px] py-3 rounded-2xl text-xs font-black transition-all ${activeTab === 'final_accepted' ? 'bg-emerald-400 text-black' : 'dark:text-white text-[var(--color-text-gray)]'}`}>المقبولين نهائياً</button>
+                <button onClick={() => setActiveTab('final_rejected')} className={`flex-1 min-w-[120px] py-3 rounded-2xl text-xs font-black transition-all ${activeTab === 'final_rejected' ? 'bg-red-500 text-white' : 'dark:text-white text-[var(--color-text-gray)]'}`}>المستبعدين</button>
               </>
             )}
             
             {hasPermission('manage_camps') && (
-              <button onClick={() => setActiveTab('manage_camps')} className={`flex-1 min-w-[140px] py-3 rounded-2xl text-xs font-black ${activeTab === 'manage_camps' ? 'bg-sky-500 text-black' : 'text-gray-300'}`}>🏟️ المعسكرات</button>
+              <button onClick={() => setActiveTab('manage_camps')} className={`flex-1 min-w-[140px] py-3 rounded-2xl text-xs font-black ${activeTab === 'manage_camps' ? 'bg-sky-500 text-black' : 'dark:text-gray-300'}`}>🏟️ المعسكرات</button>
             )}
 
             {hasPermission('manage_contests') && (
-              <button onClick={() => setActiveTab('manage_contests')} className={`flex-1 min-w-[140px] py-3 rounded-2xl text-xs font-black ${activeTab === 'manage_contests' ? 'bg-[#D4AF37] text-black' : 'text-white'}`}>🏆 المسابقات</button>
+              <button onClick={() => setActiveTab('manage_contests')} className={`flex-1 min-w-[140px] py-3 rounded-2xl text-xs font-black ${activeTab === 'manage_contests' ? 'bg-[#D4AF37] text-black' : 'dark:text-white text-[var(--color-text-gray)]'}`}>🏆 المسابقات</button>
             )}
 
             {hasPermission('manage_news') && (
@@ -87,7 +87,7 @@ const DashboardMain = () => {
             )}
  
              {hasPermission('manage_market') && (
-              <button onClick={() => setActiveTab('manage_market')} className={`flex-1 min-w-[140px] py-3 rounded-2xl text-xs font-black ${activeTab === 'manage_market' ? 'bg-yellow-500 text-black' : 'text-yellow-400'}`}>🛒المنتجر</button>
+              <button onClick={() => setActiveTab('manage_market')} className={`flex-1 min-w-[140px] py-3 rounded-2xl text-xs font-black ${activeTab === 'manage_market' ? 'bg-yellow-500 text-black' : 'dark:text-yellow-400'}`}>🛒المنتجر</button>
             )}
             {hasPermission('manage_contact') && (
               <button onClick={() => setActiveTab('manage_contact')} className={`flex-1 min-w-[140px] py-3 rounded-2xl text-xs font-black ${activeTab === 'manage_contact' ? 'bg-teal-500 text-black' : 'text-teal-400'}`}>✉️ التواصل</button>

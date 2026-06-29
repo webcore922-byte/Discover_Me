@@ -21,11 +21,12 @@ const NavStore = () => {
           type="text"
           placeholder="ابحث..."
           onChange={(e) => setSearch(e.target.value)}
-          className="bg-[var(--color-bg-main)] border border-[var(--color-border)] px-3 py-1.5 rounded-full text-xs w-20 md:w-40 focus:outline-none text-[var(--color-text-white)] shrink-0"
+          className="bg-[var(--color-bg-main)] border border-[var(--color-border)] px-3 py-1.5 rounded-full text-xs w-20 md:w-40 focus:outline-none dark:text-[var(--color-text-white)] text-[var(--color-text-gray)] shrink-0"
         />
       </div>
 
-      <div className={`${isOpen ? 'flex' : 'hidden'} md:flex absolute md:static top-[70px] left-0 w-full md:w-auto bg-[var(--color-bg-card)] flex-col md:flex-row gap-4 p-4 md:p-0 border-b md:border-0 border-[var(--color-border)] text-[var(--color-text-white)] text-sm shadow-xl md:shadow-none z-50`}>
+      <div className={`${isOpen ? 'flex' : 'hidden'} md:flex absolute md:static top-[70px] left-0 w-full md:w-auto bg-[var(--color-bg-card)] flex-col md:flex-row gap-4 p-4 md:p-0 border-b md:border-0 border-[var(--color-border)] dark:text-[var(--color-text-white)]
+        text-[var(--color-text-gray)] text-sm shadow-xl md:shadow-none z-50`}>
         <Link to="/store" onClick={() => setIsOpen(false)} className="cursor-pointer hover:text-[var(--color-gold-main)] transition">الرئيسية</Link>
         <Link to="/products" className="cursor-pointer hover:text-[var(--color-gold-main)] transition" onClick={() => { setSelectcategory("أطقم الأندية"); setIsOpen(false); }}>أطقم الأندية</Link>
         <Link to="/products" className="cursor-pointer hover:text-[var(--color-gold-main)] transition" onClick={() => { setSelectcategory("أحذية كرة القدم"); setIsOpen(false); }}>أحذية</Link>

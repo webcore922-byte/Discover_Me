@@ -75,7 +75,7 @@ const ContactUs = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg-main)] text-white p-6 md:p-12 font-sans" dir="rtl">
+    <div className="min-h-screen bg-[var(--color-bg-main)] dark:text-white text-[var(--color-text-gray)] p-6 md:p-12 font-sans" dir="rtl">
       <div className="max-w-6xl mx-auto">
 
         {/* Header */}
@@ -83,7 +83,7 @@ const ContactUs = () => {
           <h1 className="text-5xl md:text-7xl font-black italic uppercase tracking-tighter mb-4 text-[var(--color-gold-main)]">
             تواصل معنا
           </h1>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+          <p className="dark:text-gray-400 text-lg max-w-2xl mx-auto">
             هل لديك استفسار أو مشكلة؟ نحن هنا لمساعدتك.
           </p>
         </div>
@@ -133,7 +133,7 @@ const ContactUs = () => {
 
                 {/* نوع المشكلة */}
                 <div className="flex flex-col gap-2">
-                  <label className="text-xs text-gray-500 uppercase tracking-widest">نوع المشكلة</label>
+                  <label className="text-xs dark:text-gray-400 uppercase tracking-widest">نوع المشكلة</label>
                   <div className="flex gap-3">
                     {PROBLEM_TYPES.map((type) => (
                       <label
@@ -141,7 +141,7 @@ const ContactUs = () => {
                         className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-xl border cursor-pointer transition-all text-sm font-bold ${
                           formData.type === type.id
                             ? "border-[var(--color-gold-main)] bg-[var(--color-gold-main)]/10 text-[var(--color-gold-main)]"
-                            : "border-[var(--color-border)] text-gray-400 hover:border-[var(--color-gold-main)]/40"
+                            : "border-[var(--color-border)] dark:text-gray-400 hover:border-[var(--color-gold-main)]/40"
                         }`}
                       >
                         <input
@@ -161,23 +161,23 @@ const ContactUs = () => {
                 {/* الاسم والإيميل */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
-                    <label className="text-xs text-gray-500 uppercase tracking-widest block mb-2">الاسم الكامل</label>
+                    <label className="text-xs dark:text-gray-400 uppercase tracking-widest block mb-2">الاسم الكامل</label>
                     <input
                       type="text"
                       value={formData.name}
                       onChange={(e) => handleChange("name", e.target.value)}
-                      className={`w-full bg-[var(--color-bg-main)] border ${errors.name ? "border-red-500" : "border-[var(--color-border)]"} rounded-xl p-3 text-white text-sm outline-none focus:border-[var(--color-gold-main)] transition`}
+                      className={`w-full bg-[var(--color-bg-main)] border ${errors.name ? "border-red-500" : "border-[var(--color-border)]"} rounded-xl p-3 dark:text-white text-sm outline-none focus:border-[var(--color-gold-main)] transition`}
                       placeholder="أدخل اسمك..."
                     />
                     {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name}</p>}
                   </div>
                   <div>
-                    <label className="text-xs text-gray-500 uppercase tracking-widest block mb-2">البريد الإلكتروني</label>
+                    <label className="text-xs dark:text-gray-400 uppercase tracking-widest block mb-2">البريد الإلكتروني</label>
                     <input
                       type="email"
                       value={formData.email}
                       onChange={(e) => handleChange("email", e.target.value)}
-                      className={`w-full bg-[var(--color-bg-main)] border ${errors.email ? "border-red-500" : "border-[var(--color-border)]"} rounded-xl p-3 text-white text-sm outline-none focus:border-[var(--color-gold-main)] transition text-left`}
+                      className={`w-full bg-[var(--color-bg-main)] border ${errors.email ? "border-red-500" : "border-[var(--color-border)]"} rounded-xl p-3 dark:text-white text-sm outline-none focus:border-[var(--color-gold-main)] transition text-left`}
                       placeholder="email@example.com"
                     />
                     {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email}</p>}
@@ -186,12 +186,12 @@ const ContactUs = () => {
 
                 {/* الموضوع */}
                 <div>
-                  <label className="text-xs text-gray-500 uppercase tracking-widest block mb-2">الموضوع</label>
+                  <label className="text-xs dark:text-gray-400 uppercase tracking-widest block mb-2">الموضوع</label>
                   <input
                     type="text"
                     value={formData.subject}
                     onChange={(e) => handleChange("subject", e.target.value)}
-                    className={`w-full bg-[var(--color-bg-main)] border ${errors.subject ? "border-red-500" : "border-[var(--color-border)]"} rounded-xl p-3 text-white text-sm outline-none focus:border-[var(--color-gold-main)] transition`}
+                    className={`w-full bg-[var(--color-bg-main)] border ${errors.subject ? "border-red-500" : "border-[var(--color-border)]"} rounded-xl p-3 dark:text-white text-sm outline-none focus:border-[var(--color-gold-main)] transition`}
                     placeholder="سبب التواصل..."
                   />
                   {errors.subject && <p className="text-red-400 text-xs mt-1">{errors.subject}</p>}
@@ -199,12 +199,12 @@ const ContactUs = () => {
 
                 {/* الرسالة */}
                 <div>
-                  <label className="text-xs text-gray-500 uppercase tracking-widest block mb-2">تفاصيل المشكلة</label>
+                  <label className="text-xs dark:text-gray-400 uppercase tracking-widest block mb-2">تفاصيل المشكلة</label>
                   <textarea
                     rows="5"
                     value={formData.message}
                     onChange={(e) => handleChange("message", e.target.value)}
-                    className={`w-full bg-[var(--color-bg-main)] border ${errors.message ? "border-red-500" : "border-[var(--color-border)]"} rounded-xl p-3 text-white text-sm outline-none focus:border-[var(--color-gold-main)] transition resize-none`}
+                    className={`w-full bg-[var(--color-bg-main)] border ${errors.message ? "border-red-500" : "border-[var(--color-border)]"} rounded-xl p-3 dark:text-white text-sm outline-none focus:border-[var(--color-gold-main)] transition resize-none`}
                     placeholder="اكتب تفاصيل مشكلتك هنا..."
                   />
                   {errors.message && <p className="text-red-400 text-xs mt-1">{errors.message}</p>}
@@ -239,7 +239,7 @@ const ContactUs = () => {
         <DialogBody className="text-center p-8">
           <div className="text-5xl mb-4">✅</div>
           <h3 className="text-[var(--color-gold-main)] text-2xl font-black mb-3">تم استلام مشكلتك!</h3>
-          <p className="text-white">شكراً لتواصلك، فريق الدعم سيرد عليك في أقرب وقت.</p>
+          <p className="dark:text-white text-[var(--color-text-gray)]">شكراً لتواصلك، فريق الدعم سيرد عليك في أقرب وقت.</p>
         </DialogBody>
         <DialogFooter className="justify-center pb-6">
           <button

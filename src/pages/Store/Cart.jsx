@@ -9,12 +9,12 @@ const Cart = () => {
   if (cart.length === 0) {
     return (
       <div className="min-h-screen bg-[var(--color-bg-main)] flex flex-col items-center justify-center text-white gap-6">
-        <div className="w-28 h-28 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
+        <div className="w-28 h-28 rounded-full dark:bg-white/5 bg-gray-300 border border-white/10 flex items-center justify-center">
           <FaShoppingCart className="text-5xl text-gray-600" />
         </div>
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-2">سلتك فارغة</h2>
-          <p className="text-gray-500 text-sm">أضف منتجات وارجع هنا لإتمام طلبك</p>
+          <h2 className="text-2xl font-bold dark:text-white text-[var(--color-text-gray)] mb-2">سلتك فارغة</h2>
+          <p className="dark:text-gray-400 text-[var(--color-text-gray)] text-sm">أضف منتجات وارجع هنا لإتمام طلبك</p>
         </div>
         <Link
           to="/products"
@@ -63,7 +63,7 @@ const Cart = () => {
 
                 {/* Info */}
                 <div className="flex-1 text-center sm:text-right">
-                  <p className="font-bold text-white text-base line-clamp-2 mb-1">{name}</p>
+                  <p className="font-bold dark:text-white text-[var(--color-text-gray)] line-clamp-2 mb-1">{name}</p>
                   <p className="text-[var(--color-gold-main)] font-black text-lg">{price} EGP</p>
                 </div>
 
@@ -88,7 +88,7 @@ const Cart = () => {
                       const val = parseInt(e.target.value);
                       if (isNaN(val) || val < 1) updateQuantity(id, 1);
                     }}
-                    className="w-12 bg-transparent text-white text-center font-bold text-sm outline-none
+                    className="w-12 bg-transparent dark:text-white text-[var(--color-text-gray)] text-center font-bold text-sm outline-none
                       [appearance:textfield]
                       [&::-webkit-outer-spin-button]:appearance-none
                       [&::-webkit-inner-spin-button]:appearance-none"
@@ -104,7 +104,7 @@ const Cart = () => {
 
                 {/* Subtotal + Delete */}
                 <div className="flex flex-col items-center gap-2 min-w-[70px]">
-                  <p className="text-white font-bold text-sm">{(price * count).toLocaleString()} EGP</p>
+                  <p className="dark:text-white text-[var(--color-text-gray)] font-bold text-sm">{(price * count).toLocaleString()} EGP</p>
                   <button
                     onClick={() => del(id)}
                     className="text-gray-600 hover:text-red-500 transition p-1"
@@ -119,21 +119,21 @@ const Cart = () => {
           {/* Order Summary */}
           <div className="lg:col-span-1">
             <div className="sticky top-24 bg-[var(--color-bg-card)] border border-[var(--color-gold-main)]/30 rounded-2xl p-6 flex flex-col gap-5">
-              <h3 className="text-xl font-black text-white">ملخص الطلب</h3>
+              <h3 className="text-xl font-black dark:text-white text-[var(--color-text-gray)]">ملخص الطلب</h3>
 
               <div className="flex flex-col gap-3 text-sm text-gray-400">
                 <div className="flex justify-between">
                   <span>عدد المنتجات</span>
-                  <span className="text-white font-bold">{cart.reduce((acc, i) => acc + i.count, 0)}</span>
+                  <span className="dark:text-white text-[var(--color-text-gray)] font-bold">{cart.reduce((acc, i) => acc + i.count, 0)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>الشحن</span>
-                  <span className="text-gray-500 font-bold">يحدد عند الطلب</span>
+                  <span className="dark:text-gray-500 text-[var(--color-text-gray)] font-bold">يحدد عند الطلب</span>
                 </div>
               </div>
 
               <div className="border-t border-[var(--color-border)] pt-4 flex justify-between items-center">
-                <span className="text-gray-300 font-bold">الإجمالي</span>
+                <span className="dark:text-gray-300 text-[var(--color-text-gray)] font-bold">الإجمالي</span>
                 <span className="text-[var(--color-gold-main)] font-black text-2xl">{total.toLocaleString()} EGP</span>
               </div>
 

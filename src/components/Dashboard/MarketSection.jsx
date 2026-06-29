@@ -1,268 +1,35 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React from 'react';
 import {
   ShoppingBag, Plus, Pencil, Trash2, X, Save,
   Tag, Flame, ImageOff, Search, ChevronLeft, ChevronRight,
-  Package, Clock, Truck, CheckCircle2, RefreshCw, ChevronDown,
+  Package, ChevronDown,
 } from 'lucide-react';
-import Swal from 'sweetalert2';
-
-
-
-const API_BASE      = `${import.meta.env.VITE_API_URL}/products`;
-const ORDERS_API    = `${import.meta.env.VITE_API_URL}/orders`;
-
-const CATEGORY_META = {
-  'أطقم الأندية':    { emoji: '👕' },
-  'أطقم المنتخبات': { emoji: '🏆' },
-  'أحذية كرة القدم': { emoji: '👟' },
-  'كرات القدم':      { emoji: '⚽' },
-  'معدات التدريب':  { emoji: '🏋️' },
-  'اكسسوارات':       { emoji: '🧤' },
-};
-
-const STATUS_CONFIG = {
-  pending:    { label: 'قيد الانتظار',  icon: Clock,        color: 'text-yellow-400', bg: 'bg-yellow-400/10', border: 'border-yellow-400/25', dot: 'bg-yellow-400' },
-  preparing:  { label: 'جاري التحضير', icon: Package,       color: 'text-blue-400',   bg: 'bg-blue-400/10',   border: 'border-blue-400/25',   dot: 'bg-blue-400'   },
-  on_the_way: { label: 'في الطريق',    icon: Truck,         color: 'text-purple-400', bg: 'bg-purple-400/10', border: 'border-purple-400/25', dot: 'bg-purple-400' },
-  delivered:  { label: 'تم التسليم',   icon: CheckCircle2,  color: 'text-green-400',  bg: 'bg-green-400/10',  border: 'border-green-400/25',  dot: 'bg-green-400'  },
-};
-
-const STATUS_ORDER = ['pending', 'preparing', 'on_the_way', 'delivered'];
-
-const ITEMS_PER_PAGE = 8;
-const ORDERS_PER_PAGE = 6;
-
-const EMPTY_PRODUCT = {
-  name: '', price: '', discount: 0, category: '',
-  image: '', isBestSeller: false, salesCount: 0, description: '',
-};
-
-const CenteredAlert = Swal.mixin({
-  position: 'center',
-  showConfirmButton: true,
-  confirmButtonText: 'OK',
-  confirmButtonColor: '#D4AF37',
-  background: '#15171a',
-  color: '#ffffff',
-  backdrop: 'rgba(0,0,0,0.6)',
-  allowOutsideClick: false,
-  customClass: { popup: 'swal-center-toast', confirmButton: 'swal-ok-custom' },
-});
-
-const toastSuccess = (title) => CenteredAlert.fire({ icon: 'success', title, iconColor: '#D4AF37' });
-const toastError   = (title) => CenteredAlert.fire({ icon: 'error',   title, iconColor: '#ef4444' });
-
-const confirmDelete = (name) =>
-  Swal.fire({
-    title: 'هل أنت متأكد؟',
-    html: `<span style="font-size:15px;color:#ccc;direction:rtl;">سيتم حذف <b style="color:#fff">"${name}"</b> نهائياً!</span>`,
-    icon: 'warning', iconColor: '#D4AF37', background: '#15171a', color: '#ffffff',
-    position: 'center', showCancelButton: true,
-    confirmButtonText: 'نعم، احذفه', cancelButtonText: 'Cancel',
-    confirmButtonColor: '#D4AF37', cancelButtonColor: '#374151',
-    reverseButtons: false, allowOutsideClick: true, allowEscapeKey: true,
-    customClass: {
-      popup: 'swal-popup-custom', title: 'swal-title-custom',
-      htmlContainer: 'swal-html-custom', confirmButton: 'swal-confirm-custom',
-      cancelButton: 'swal-cancel-custom',
-    },
-  });
+import {
+  useMarketLogic, CATEGORY_META, STATUS_CONFIG, STATUS_ORDER,
+} from './useMarketLogic';
 
 const MarketSection = () => {
-  // Products state
-  const [products,       setProducts]       = useState([]);
-  const [loading,        setLoading]        = useState(true);
-  const [error,          setError]          = useState('');
-  const [activeCategory, setActiveCategory] = useState('all');
-  const [search,         setSearch]         = useState('');
-  const [page,           setPage]           = useState(1);
-  const [showForm,       setShowForm]       = useState(false);
-  const [editingProduct, setEditingProduct] = useState(null);
-  const [formData,       setFormData]       = useState(EMPTY_PRODUCT);
-  const [saving,         setSaving]         = useState(false);
-  const [deletingId,     setDeletingId]     = useState(null);
+  const [activeTab, setActiveTab] = React.useState('market');
+  const {
+    products, loading, error, setError,
+    activeCategory, setActiveCategory,
+    search, setSearch,
+    page, setPage,
+    showForm, editingProduct, formData, saving, deletingId,
+    categories, filtered, totalPages, safePage, paginated,
+    openAddForm, openEditForm, closeForm, handleFormChange,
+    handleSubmit, handleDelete,
+    orders, ordersLoading, ordersError, setOrdersError,
+    statusFilter, setStatusFilter,
+    orderSearch, setOrderSearch,
+    ordersPage, setOrdersPage,
+    updatingOrderId, handleStatusChange,
+    filteredOrders, ordersTotalPages, safeOrdersPage, paginatedOrders,
+    statusCounts,
+  } = useMarketLogic();
 
-  // Orders state
-  const [orders,          setOrders]         = useState([]);
-  const [ordersLoading,   setOrdersLoading]  = useState(true);
-  const [ordersError,     setOrdersError]    = useState('');
-  const [statusFilter,    setStatusFilter]   = useState('all');
-  const [orderSearch,     setOrderSearch]    = useState('');
-  const [ordersPage,      setOrdersPage]     = useState(1);
-  const [updatingOrderId, setUpdatingOrderId]= useState(null);
-  const [activeTab, setActiveTab] = useState('market');
-  useEffect(() => { fetchProducts(); }, []);
-
-  const fetchProducts = async () => {
-    setLoading(true); setError('');
-    try {
-      const res  = await fetch(API_BASE);
-      if (!res.ok) throw new Error();
-      const data = await res.json();
-      setProducts(data.products || data || []);
-    } catch {
-      setError('حدث خطأ في تحميل المنتجات، تأكد من الاتصال بالسيرفر.');
-    } finally {
-      setLoading(false);
-    }
-  };
-  useEffect(() => { fetchOrders(); }, []);
-
-  const fetchOrders = async () => {
-    setOrdersLoading(true); setOrdersError('');
-    try {
-      const res  = await fetch(ORDERS_API);
-      if (!res.ok) throw new Error();
-      const data = await res.json();
-      setOrders(data.orders || data || []);
-    } catch {
-      setOrdersError('حدث خطأ في تحميل الطلبات.');
-    } finally {
-      setOrdersLoading(false);
-    }
-  };
-
-  const handleStatusChange = async (order, newStatus) => {
-    if (order.status === newStatus) return;
-    setUpdatingOrderId(order.id);
-    try {
-      const res = await fetch(`${ORDERS_API}/${order.id}`, {
-        method:  'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ ...order, status: newStatus }),
-      });
-      if (!res.ok) throw new Error();
-      setOrders((prev) =>
-        prev.map((o) => (o.id === order.id ? { ...o, status: newStatus } : o))
-      );
-      toastSuccess(`تم تحديث حالة الطلب إلى "${STATUS_CONFIG[newStatus].label}" ✅`);
-    } catch {
-      toastError('فشل تحديث حالة الطلب.');
-    } finally {
-      setUpdatingOrderId(null);
-    }
-  };
-
-  // ── Derived – products ──────────────────────────────────────────────────────
-  const categories = useMemo(() => {
-    const s = new Set(products.map((p) => p.category).filter(Boolean));
-    return Array.from(s);
-  }, [products]);
-
-  const filtered = useMemo(() => products.filter((p) => {
-    const okCat    = activeCategory === 'all' || p.category === activeCategory;
-    const okSearch = p.name?.toLowerCase().includes(search.trim().toLowerCase());
-    return okCat && okSearch;
-  }), [products, activeCategory, search]);
-
-  const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
-  const safePage   = Math.min(page, totalPages);
-  const paginated  = filtered.slice((safePage - 1) * ITEMS_PER_PAGE, safePage * ITEMS_PER_PAGE);
-
-  useEffect(() => { setPage(1); }, [activeCategory, search]);
-
-  // ── Derived – orders ────────────────────────────────────────────────────────
-  const filteredOrders = useMemo(() => orders.filter((o) => {
-    const okStatus = statusFilter === 'all' || o.status === statusFilter;
-    const term = orderSearch.trim().toLowerCase();
-    const okSearch = !term ||
-      o.name?.toLowerCase().includes(term) ||
-      o.id?.toLowerCase().includes(term) ||
-      o.phone?.includes(term);
-    return okStatus && okSearch;
-  }), [orders, statusFilter, orderSearch]);
-
-  const ordersTotalPages = Math.max(1, Math.ceil(filteredOrders.length / ORDERS_PER_PAGE));
-  const safeOrdersPage   = Math.min(ordersPage, ordersTotalPages);
-  const paginatedOrders  = filteredOrders.slice(
-    (safeOrdersPage - 1) * ORDERS_PER_PAGE, safeOrdersPage * ORDERS_PER_PAGE
-  );
-
-  useEffect(() => { setOrdersPage(1); }, [statusFilter, orderSearch]);
-
-  // Counts per status
-  const statusCounts = useMemo(() => {
-    const c = { all: orders.length };
-    STATUS_ORDER.forEach((s) => { c[s] = orders.filter((o) => o.status === s).length; });
-    return c;
-  }, [orders]);
-
-  // ── Form helpers ────────────────────────────────────────────────────────────
-  const openAddForm  = () => { setEditingProduct(null); setFormData(EMPTY_PRODUCT); setShowForm(true); };
-  const openEditForm = (product) => {
-    setEditingProduct(product);
-    setFormData({
-      name: product.name || '', price: product.price ?? '',
-      discount: product.discount ?? 0, category: product.category || '',
-      image: product.image || '', isBestSeller: !!product.isBestSeller,
-      salesCount: product.salesCount ?? 0, description: product.description || '',
-    });
-    setShowForm(true);
-  };
-  const closeForm = () => { setShowForm(false); setEditingProduct(null); setFormData(EMPTY_PRODUCT); };
-  const handleFormChange = (field, value) => setFormData((prev) => ({ ...prev, [field]: value }));
-
-  // ── Submit ──────────────────────────────────────────────────────────────────
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSaving(true); setError('');
-    const payload = {
-      ...formData,
-      price: Number(formData.price) || 0,
-      discount: Number(formData.discount) || 0,
-      salesCount: Number(formData.salesCount) || 0,
-    };
-    try {
-      if (editingProduct) {
-        const res = await fetch(`${API_BASE}/${editingProduct.id}`, {
-          method: 'PUT', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-        if (!res.ok) throw new Error();
-        const updated = await res.json();
-        setProducts((prev) =>
-          prev.map((p) => p.id === editingProduct.id ? { ...p, ...payload, ...updated } : p)
-        );
-        toastSuccess('تم تعديل المنتج بنجاح ✏️');
-      } else {
-        const res = await fetch(API_BASE, {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-        if (!res.ok) throw new Error();
-        const created = await res.json();
-        setProducts((prev) => [...prev, { id: created.id || Date.now().toString(), ...payload, ...created }]);
-        toastSuccess('تمت إضافة المنتج بنجاح 🎉');
-      }
-      closeForm();
-    } catch {
-      const msg = editingProduct ? 'فشل تعديل المنتج.' : 'فشل إضافة المنتج.';
-      setError(msg); toastError(msg);
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  // ── Delete ──────────────────────────────────────────────────────────────────
-  const handleDelete = async (product) => {
-    const result = await confirmDelete(product.name);
-    if (!result.isConfirmed) return;
-    setDeletingId(product.id);
-    try {
-      const res = await fetch(`${API_BASE}/${product.id}`, { method: 'DELETE' });
-      if (!res.ok) throw new Error();
-      setProducts((prev) => prev.filter((p) => p.id !== product.id));
-      toastSuccess('تم حذف المنتج بنجاح 🗑️');
-    } catch {
-      toastError('فشل حذف المنتج.');
-    } finally {
-      setDeletingId(null);
-    }
-  };
-
-  // ── Render ──────────────────────────────────────────────────────────────────
   return (
-    <div className="space-y-10" dir="rtl">
+    <div className="space-y-10" >
 
       <style>{`
         .swal-popup-custom   { border-radius:24px!important;border:1px solid rgba(255,255,255,.10)!important;padding:32px 24px 24px!important;min-width:400px!important; }
@@ -277,8 +44,6 @@ const MarketSection = () => {
         .scrollbar-hide::-webkit-scrollbar { display:none; }
         .status-select:focus { outline:none; }
       `}</style>
-
-      {/* ── Tab bar ── */}
       <div className="flex items-center gap-1 bg-white/5 border border-white/10 rounded-2xl p-1.5 w-fit">
         <button
           onClick={() => setActiveTab('market')}
@@ -306,13 +71,7 @@ const MarketSection = () => {
           </span>
         </button>
       </div>
-
-      {/* ════════════════════════════════════════════════════
-          SECTION 1 – PRODUCTS
-      ════════════════════════════════════════════════════ */}
       {activeTab === 'market' && <>
-
-      {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div className="flex items-center gap-3">
           <div className="w-11 h-11 rounded-2xl bg-[#D4AF37]/10 border border-[#D4AF37]/20 flex items-center justify-center">
@@ -337,8 +96,6 @@ const MarketSection = () => {
           <button onClick={() => setError('')}><X className="w-4 h-4" /></button>
         </div>
       )}
-
-      {/* Categories */}
       <div className="space-y-3">
         <h3 className="text-lg font-black text-white">الأقسام</h3>
         <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
@@ -350,7 +107,6 @@ const MarketSection = () => {
         </div>
       </div>
 
-      {/* Search */}
       <div className="relative max-w-md">
         <Search className="w-4 h-4 text-gray-500 absolute right-4 top-1/2 -translate-y-1/2" />
         <input value={search} onChange={(e) => setSearch(e.target.value)}
@@ -358,7 +114,6 @@ const MarketSection = () => {
           className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pr-11 pl-4 text-sm text-white placeholder-gray-500 outline-none focus:border-[#D4AF37]/40" />
       </div>
 
-      {/* Products grid */}
       {loading ? (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
           {Array.from({ length: 8 }).map((_, i) => (
@@ -403,13 +158,8 @@ const MarketSection = () => {
       )}
 
       </>}
-
-      {/* ════════════════════════════════════════════════════
-          SECTION 2 – ORDERS STATUS MANAGER
-      ════════════════════════════════════════════════════ */}
       {activeTab === 'orders' && <div className="space-y-5">
 
-        {/* Orders header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div className="flex items-center gap-3">
             <div className="w-11 h-11 rounded-2xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">
@@ -420,10 +170,8 @@ const MarketSection = () => {
               <p className="text-xs text-gray-400 font-bold">{orders.length} طلب إجمالي</p>
             </div>
           </div>
-        
-        </div>
 
-        {/* Status filter tabs */}
+        </div>
         <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
           {[
             { key: 'all', label: 'الكل', icon: null },
@@ -447,8 +195,6 @@ const MarketSection = () => {
             </button>
           ))}
         </div>
-
-        {/* Orders search */}
         <div className="relative max-w-md">
           <Search className="w-4 h-4 text-gray-500 absolute right-4 top-1/2 -translate-y-1/2" />
           <input value={orderSearch} onChange={(e) => setOrderSearch(e.target.value)}
@@ -462,8 +208,6 @@ const MarketSection = () => {
             <button onClick={() => setOrdersError('')}><X className="w-4 h-4" /></button>
           </div>
         )}
-
-        {/* Orders list */}
         {ordersLoading ? (
           <div className="space-y-3">
             {Array.from({ length: 4 }).map((_, i) => (
@@ -506,8 +250,6 @@ const MarketSection = () => {
           </>
         )}
       </div>}
-
-      {/* Form modal – always available regardless of active tab */}
       {showForm && (
         <ProductFormModal formData={formData} editingProduct={editingProduct}
           onChange={handleFormChange} onSubmit={handleSubmit} onClose={closeForm}
@@ -517,9 +259,6 @@ const MarketSection = () => {
   );
 };
 
-// ═══════════════════════════════════════════════════════════
-//  OrderRow
-// ═══════════════════════════════════════════════════════════
 const OrderRow = ({ order, onStatusChange, updating }) => {
   const cfg     = STATUS_CONFIG[order.status] || STATUS_CONFIG.pending;
   const Icon    = cfg.icon;
@@ -529,15 +268,12 @@ const OrderRow = ({ order, onStatusChange, updating }) => {
 
   return (
     <div className={`flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-white/10 transition-all ${updating ? 'opacity-60 pointer-events-none' : ''}`}>
-
-      {/* Status badge */}
       <div className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border ${cfg.bg} ${cfg.border} flex-shrink-0`}>
         <span className={`w-2 h-2 rounded-full ${cfg.dot} ${updating ? 'animate-pulse' : ''}`} />
         <Icon className={`w-3.5 h-3.5 ${cfg.color}`} />
         <span className={`text-[11px] font-black ${cfg.color}`}>{cfg.label}</span>
       </div>
 
-      {/* Order info */}
       <div className="flex-1 min-w-0 space-y-0.5">
         <div className="flex items-center gap-2 flex-wrap">
           <span className="text-sm font-black text-white truncate">{order.name || 'عميل'}</span>
@@ -556,8 +292,6 @@ const OrderRow = ({ order, onStatusChange, updating }) => {
           </p>
         )}
       </div>
-
-      {/* Status changer */}
       <div className="relative flex-shrink-0">
         <select
           value={order.status || 'pending'}
@@ -578,9 +312,6 @@ const OrderRow = ({ order, onStatusChange, updating }) => {
   );
 };
 
-// ═══════════════════════════════════════════════════════════
-//  CategoryCard
-// ═══════════════════════════════════════════════════════════
 const CategoryCard = ({ label, emoji, active, onClick }) => (
   <button onClick={onClick}
     className={`flex-shrink-0 flex flex-col items-center justify-center gap-2 w-36 h-36 rounded-3xl border transition-all ${
@@ -591,9 +322,6 @@ const CategoryCard = ({ label, emoji, active, onClick }) => (
   </button>
 );
 
-// ═══════════════════════════════════════════════════════════
-//  ProductCard
-// ═══════════════════════════════════════════════════════════
 const ProductCard = ({ product, onEdit, onDelete, deleting }) => {
   const finalPrice = product.discount > 0 ? product.price - product.discount : product.price;
 
@@ -644,9 +372,6 @@ const ProductCard = ({ product, onEdit, onDelete, deleting }) => {
   );
 };
 
-// ═══════════════════════════════════════════════════════════
-//  ProductFormModal
-// ═══════════════════════════════════════════════════════════
 const ProductFormModal = ({ formData, editingProduct, onChange, onSubmit, onClose, saving, categories }) => (
   <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={onClose}>
     <div className="bg-[#15171a] border border-white/10 rounded-3xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
