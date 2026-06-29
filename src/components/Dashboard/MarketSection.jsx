@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import 
   UseMarketLogic
-from './UseMarketLogic';
+from '../../../src/components/Dashboard/UseMarketLogic.jsx';
 import { CATEGORY_META, STATUS_CONFIG, STATUS_ORDER } from './UseMarketLogic';
 const MarketSection = () => {
   const [activeTab, setActiveTab] = React.useState('market');
