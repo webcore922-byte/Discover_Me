@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import { Plus, Trash2, Edit3, Save, X, Trophy, MapPin, Calendar, Clock, User, ClipboardList } from 'lucide-react';
-import CampRegistrationsSection from './CampRegistrationsSection';
+import CampRegistrationsSection from './CampRegistrationsSection.jsx';
 
 const CampsSection = () => {
   const [activeTab, setActiveTab]       = useState('manage');   // 'manage' | 'registrations'
