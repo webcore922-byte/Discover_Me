@@ -70,8 +70,10 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
+      const normalizedEmail = email.toLowerCase();
+
       // 1. البحث في جدول الأدمنز
-      const adminRes = await fetch(`${API_URL}/admins?email=${email}&password=${password}`);
+      const adminRes = await fetch(`${API_URL}/admins?email=${normalizedEmail}&password=${password}`);
       const admins = await adminRes.json();
 
       if (admins.length > 0) {
@@ -82,7 +84,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       // 2. البحث في جدول المستخدمين
-      const userRes = await fetch(`${API_URL}/users?email=${email}&password=${password}`);
+      const userRes = await fetch(`${API_URL}/users?email=${normalizedEmail}&password=${password}`);
       const users = await userRes.json();
 
       if (users.length > 0) {
@@ -114,10 +116,13 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData, isPlayer) => {
     try {
+      const normalizedEmail = userData.email.toLowerCase();
+
       const allUsersRes = await fetch(`${API_URL}/users`);
       const allUsers = await allUsersRes.json();
 
-      if (allUsers.some(u => u.email === userData.email))
+      // ✅ المقارنة بـ toLowerCase عشان منتقبلش إيميل مكرر بكابيتال مختلف
+      if (allUsers.some(u => u.email.toLowerCase() === normalizedEmail))
         return { success: false, message: 'الإيميل مكرر' };
 
       const sharedImage = `https://api.dicebear.com/7.x/avataaars/svg?seed=${userData.username}`;
@@ -127,7 +132,7 @@ export const AuthProvider = ({ children }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           username: userData.username,
-          email: userData.email,
+          email: normalizedEmail,
           password: userData.password,
           phone: userData.phone,
           image: sharedImage,
@@ -142,7 +147,7 @@ export const AuthProvider = ({ children }) => {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            userEmail: newUser.email,
+            userEmail: normalizedEmail,
             name: userData.fullName,
             nationalId: userData.nationalId,
             position: userData.position,
@@ -162,7 +167,8 @@ export const AuthProvider = ({ children }) => {
         });
       }
 
-      await login(userData.email, userData.password);
+      // ✅ بنبعت الإيميل بـ toLowerCase عشان يتطابق مع اللي اتخزن في الـ DB
+      await login(normalizedEmail, userData.password);
       return { success: true };
     } catch (err) {
       return { success: false, message: 'خطأ أثناء إنشاء الحساب' };

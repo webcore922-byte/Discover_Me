@@ -130,6 +130,7 @@ const Cart = () => {
                   <span>الشحن</span>
                   <span className="dark:text-gray-500 text-[var(--color-text-gray)] font-bold">يحدد عند الطلب</span>
                 </div>
+               
               </div>
 
               <div className="border-t border-[var(--color-border)] pt-4 flex justify-between items-center">

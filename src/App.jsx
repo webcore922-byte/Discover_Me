@@ -20,6 +20,7 @@ import Products from "./pages/Store/Products.jsx";
 import ProductDetails from "./pages/Store/ProductDetails.jsx";
 import Cart from "./pages/Store/Cart.jsx";
 import Checkout from "./pages/Store/Checkout.jsx";
+
 import MyOrder from "./pages/Store/MyOrder.jsx";
 import SuccessStories from "./pages/SuccessStories/SuccessStories.jsx";
 import SuccessStoriesCr from "./pages/SuccessStories/SuccessStoriesCr/SuccessStoriesCr.jsx";
@@ -126,6 +127,7 @@ const App = () => {
      <Route path="/productDetails/:id" element={<ProductDetails />} />
      <Route path="/cart" element={<Cart />} />
      <Route path="/checkout" element={<Checkout />} />
+
      <Route path="/myorder" element={<MyOrder />} />
    </Route>
             <Route path="/success-stories" element={<SuccessStories />} />
