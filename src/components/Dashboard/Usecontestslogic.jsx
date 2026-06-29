@@ -10,7 +10,7 @@ export const PRIZE_LABELS = {
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-export const useContestsLogic = () => {
+export default function useContestsLogic () {
   const [contests, setContests] = useState([]);
   const [submissions, setSubmissions] = useState([]);
   const [annualSubmissions, setAnnualSubmissions] = useState([]);
@@ -332,4 +332,3 @@ export const useContestsLogic = () => {
   };
 };
 
-export default useContestsLogic;
