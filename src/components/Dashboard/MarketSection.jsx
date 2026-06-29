@@ -4,7 +4,7 @@ import {
   Tag, Flame, ImageOff, Search, ChevronLeft, ChevronRight,
   Package, ChevronDown,
 } from 'lucide-react';
-import UseMarketLogic , { CATEGORY_META, STATUS_CONFIG, STATUS_ORDER } from './UseMarketLogic.jsx';
+import UseMarketLogic , { CATEGORY_META, STATUS_CONFIG, STATUS_ORDER } from './UseMarketLogic';
 const MarketSection = () => {
   const [activeTab, setActiveTab] = React.useState('market');
   const {
