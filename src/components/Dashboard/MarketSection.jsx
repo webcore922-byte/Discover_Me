@@ -4,26 +4,26 @@ import {
   Tag, Flame, ImageOff, Search, ChevronLeft, ChevronRight,
   Package, ChevronDown,
 } from 'lucide-react';
-// import UseMarketLogic , { CATEGORY_META, STATUS_CONFIG, STATUS_ORDER } from './UseMarketLogic';
+import UseMarketLogic , { CATEGORY_META, STATUS_CONFIG, STATUS_ORDER } from './UseMarketLogic';
 const MarketSection = () => {
   const [activeTab, setActiveTab] = React.useState('market');
-  // const {
-  //   products, loading, error, setError,
-  //   activeCategory, setActiveCategory,
-  //   search, setSearch,
-  //   page, setPage,
-  //   showForm, editingProduct, formData, saving, deletingId,
-  //   categories, filtered, totalPages, safePage, paginated,
-  //   openAddForm, openEditForm, closeForm, handleFormChange,
-  //   handleSubmit, handleDelete,
-  //   orders, ordersLoading, ordersError, setOrdersError,
-  //   statusFilter, setStatusFilter,
-  //   orderSearch, setOrderSearch,
-  //   ordersPage, setOrdersPage,
-  //   updatingOrderId, handleStatusChange,
-  //   filteredOrders, ordersTotalPages, safeOrdersPage, paginatedOrders,
-  //   statusCounts,
-  // } = UseMarketLogic();
+  const {
+    products, loading, error, setError,
+    activeCategory, setActiveCategory,
+    search, setSearch,
+    page, setPage,
+    showForm, editingProduct, formData, saving, deletingId,
+    categories, filtered, totalPages, safePage, paginated,
+    openAddForm, openEditForm, closeForm, handleFormChange,
+    handleSubmit, handleDelete,
+    orders, ordersLoading, ordersError, setOrdersError,
+    statusFilter, setStatusFilter,
+    orderSearch, setOrderSearch,
+    ordersPage, setOrdersPage,
+    updatingOrderId, handleStatusChange,
+    filteredOrders, ordersTotalPages, safeOrdersPage, paginatedOrders,
+    statusCounts,
+  } = UseMarketLogic();
 
   return (
     <div className="space-y-10" >
