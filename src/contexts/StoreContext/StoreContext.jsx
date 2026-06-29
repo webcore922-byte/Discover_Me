@@ -59,7 +59,7 @@ export const StoreProvider = ({ children }) => {
     }
   }, [cartKey]);
 
- ر
+ 
   useEffect(() => {
     if (cartKey) {
       localStorage.setItem(cartKey, JSON.stringify(cart));
