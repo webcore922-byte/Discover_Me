@@ -331,3 +331,5 @@ export const useContestsLogic = () => {
     handleAcceptAnnualSubmission
   };
 };
+
+export default useContestsLogic;
