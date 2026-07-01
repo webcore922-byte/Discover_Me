@@ -8,6 +8,7 @@ import Coaches from "./pages/About/Coaches/Coaches.jsx";
 import Login from "./pages/Login/Login.jsx";
 import Register from "./pages/Register/Register.jsx"; 
 import Blog from "./pages/More/Blog/Blog.jsx";
+
 import DashboardMain from "./pages/More/Dashboard/DashboardMain.jsx";
 import PlayerDetails from "./pages/More/Dashboard/PlayerDetails/PlayerDetails.jsx";
 import NewsAndUpdates from "./pages/More/NewsAndUpdates/NewsAndUpdates.jsx";
@@ -51,6 +52,12 @@ const StoreLoader = () => (
 );
 
 
+import TrainingCampsForm from "./pages/Programs/TrainingCamps/TrainingCampsForm/TrainingCampsForm.jsx";
+import NewsDetails from "./pages/More/NewsAndUpdates/NewsDetails.jsx";
+
+
+
+
 const ProtectedAdminRoute = ({ children }) => {
   const { currentUser, loading } = useAuth();
 
@@ -79,6 +86,67 @@ const App = () => {
         <StoreProvider>
       <div className="app-container">
         <Header />
+
+
+        <Routes>
+          <Route path="/" element={ <Home /> } />
+          <Route path="/about-the-platform" element={<AboutThePlatform />} />
+          <Route path="/coaches" element={<Coaches />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route 
+            path="/dashboard" 
+            element={
+              <ProtectedAdminRoute>
+                <DashboardMain />
+              </ProtectedAdminRoute>
+            } 
+          />
+          <Route 
+            path="/dashboard/player/:id" 
+            element={
+              <ProtectedAdminRoute>
+                <PlayerDetails />
+              </ProtectedAdminRoute>
+            } 
+          />
+          <Route path="/news-and-updates" element={<NewsAndUpdates />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/field-tests" element={<FieldTests />} />
+          <Route path="/prizes-and-competitions" element={<PrizesAndCompetitions />} />
+          <Route path="/training-camps" element={<TrainingCamps />} />
+          <Route element={<StoreLayout />}>
+    <Route path="/store" element={
+      <Suspense fallback={<StoreLoader />}>
+        <Store />
+      </Suspense>
+    } />
+     <Route path="/products" element={<Products />} />
+     <Route path="/productDetails/:id" element={<ProductDetails />} />
+     <Route path="/cart" element={<Cart />} />
+     <Route path="/checkout" element={<Checkout />} />
+     <Route path="/contactStore" element={<ContactStore />} />
+     <Route path="/myorder" element={<MyOrder />} />
+   </Route>
+          <Route path="/success-stories" element={<SuccessStories />} />
+          <Route path="/success-stories-cr" element={<SuccessStoriesCr />} />
+          <Route path="/success-stories-mo" element={<SuccessStoriesMo />} />
+          <Route path="/success-stories-leo" element={<SuccessStoriesLeo />} />
+          <Route path="/acceptable-talent" element={<AcceptableTalent />} />
+          <Route path="/decision-making-skills" element={<DecisionMakingSkills />} />
+          <Route path="/fitness" element={<Fitness />} />
+          <Route path="/injury-prevention" element={<InjuryPrevention />} />
+          <Route path="/professionalism-and-personal-marketing" element={<ProfessionalismAndPersonalMarketing />} />
+          <Route path="/proper-nutrition" element={<ProperNutrition />} />
+          <Route path="/sports-psychology" element={<SportsPsychology />} />
+          <Route path="/contact-us" element={<ContactUs />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+
+        
+
         <Suspense fallback={
           <div className="min-h-screen bg-black flex items-center justify-center text-[var(--color-gold-main)] animate-pulse font-bold">
             LOADING PAGE...
@@ -91,7 +159,13 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/blog" element={<Blog />} />
+
+            
+         
+            <Route 
+
                         <Route 
+
               path="/dashboard" 
               element={
                 <ProtectedAdminRoute>
