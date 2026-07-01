@@ -9,7 +9,6 @@ import Login from "./pages/Login/Login.jsx";
 import Register from "./pages/Register/Register.jsx"; 
 import Blog from "./pages/More/Blog/Blog.jsx";
 
-// 🚀 التعديل الجوهري: استيراد الداش بورد الرئيسي المطور من مساره الجديد في الـ pages
 import DashboardMain from "./pages/More/Dashboard/DashboardMain.jsx";
 
 import PlayerDetails from "./pages/More/Dashboard/PlayerDetails/PlayerDetails.jsx";
@@ -54,7 +53,7 @@ const StoreLoader = () => (
 import TrainingCampsForm from "./pages/Programs/TrainingCamps/TrainingCampsForm/TrainingCampsForm.jsx";
 import NewsDetails from "./pages/More/NewsAndUpdates/NewsDetails.jsx";
 
-// 🛡️ تحديث حماية مسار الإدارة ليتوافق مع الأدوار المتعددة للوحة التحكم
+
 
 const ProtectedAdminRoute = ({ children }) => {
   const { currentUser, loading } = useAuth();
@@ -67,7 +66,6 @@ const ProtectedAdminRoute = ({ children }) => {
     );
   }
 
-  // السماح بالدخول لأي مستخدم يمتلك دور إداري أو تدريبي تم تعيينه في الحسابات الجديدة
   const allowedRoles = ['super_admin', 'technical_coach', 'camps_manager', 'marketing_admin', 'admin'];
   const hasAccess = currentUser && allowedRoles.includes(currentUser.role);
 
@@ -97,7 +95,7 @@ const App = () => {
             path="/dashboard" 
             element={
               <ProtectedAdminRoute>
-                <Dashboard />
+                <DashboardMain />
               </ProtectedAdminRoute>
             } 
           />
@@ -144,7 +142,7 @@ const App = () => {
         </Routes>
 
         
-        {/* أضفنا Suspense لدعم الـ lazy loading الخاص بـ AcceptableTalent بدون مشاكل */}
+  
         <Suspense fallback={
           <div className="min-h-screen bg-black flex items-center justify-center text-[var(--color-gold-main)] animate-pulse font-bold">
             LOADING PAGE...
@@ -158,7 +156,7 @@ const App = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/blog" element={<Blog />} />
             
-            {/* 🎯 ربط لوحة التحكم الرئيسية بالـ Component المطور والمقسم الجديد */}
+         
             <Route 
               path="/dashboard" 
               element={
