@@ -84,7 +84,7 @@ const NewsAndUpdates = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0e1011] flex items-center justify-center text-[#D4AF37] font-bold">
+      <div className="min-h-screen dark:bg-[#0e1011] bg:[var(--color-bg-main)] flex items-center justify-center text-[#D4AF37] font-bold">
         جاري تحميل آخر الأخبار والتحديثات...
       </div>
     );
@@ -92,7 +92,7 @@ const NewsAndUpdates = () => {
 
   return (
     <div 
-      className="min-h-screen bg-[#0e1011] text-white py-12 px-4 md:px-8 lg:px-16 font-sans relative overflow-hidden bg-cover bg-center bg-no-repeat bg-fixed"
+      className="min-h-screen dark:bg-[#0e1011] bg:[var(--color-bg-main)] dark:text-white text:[var(--color-text-gray)] py-12 px-4 md:px-8 lg:px-16 font-sans relative overflow-hidden bg-cover bg-center bg-no-repeat bg-fixed"
       style={{ backgroundImage: "url('/bg_prizes_and_competitions (2).jpeg')" }}
       dir="rtl"
     >
@@ -104,12 +104,12 @@ const NewsAndUpdates = () => {
         <div className="text-center space-y-2 max-w-2xl mx-auto pt-4">
           <div className="flex items-center justify-center gap-2">
             <span className="text-[#D4AF37] text-xl">✨</span>
-            <h1 className="text-3xl md:text-5xl font-black tracking-wide text-white drop-shadow-md">
+            <h1 className="text-3xl md:text-5xl font-black tracking-wide dark:text-white drop-shadow-md">
               الأخبار والتحديثات
             </h1>
             <span className="text-[#D4AF37] text-xl">✨</span>
           </div>
-          <p className="text-gray-400 text-xs md:text-sm font-light leading-relaxed">
+          <p className="dark:text-gray-400 text-xs md:text-sm font-light leading-relaxed">
             تابع أولاً بأول كواليس تصفية المواهب، قرارات اللجنة الفنية، وآخر المفاجآت والاتفاقيات الحصرية لمنصة اكتشفني.
           </p>
         </div>
@@ -136,7 +136,7 @@ const NewsAndUpdates = () => {
                   </div>
 
                   <div className="p-5 space-y-3">
-                    <div className="flex items-center gap-4 text-[11px] text-gray-400 font-light">
+                    <div className="flex items-center gap-4 text-[11px] dark:text-gray-400 font-light">
                       <span className="flex items-center gap-1.5">
                         <Calendar className="w-3.5 h-3.5 text-[#D4AF37]" /> {news.date}
                       </span>
@@ -149,7 +149,7 @@ const NewsAndUpdates = () => {
                       {news.title}
                     </h3>
 
-                    <p className="text-gray-300 text-xs font-light leading-relaxed line-clamp-3">
+                    <p className="dark:text-gray-300 text-xs font-light leading-relaxed line-clamp-3">
                       {news.summary}
                     </p>
                   </div>
@@ -172,14 +172,14 @@ const NewsAndUpdates = () => {
           </div>
         ) : (
           /* واجهة احتياطية هادئة في حال انقطاع البيانات */
-          <div className="text-center py-20 text-gray-500 text-sm font-light">
+          <div className="text-center py-20 dark:text-gray-500 text-sm font-light">
             لا توجد بيانات متاحة لعرضها حالياً.
           </div>
         )}
 
       </div>
 
-      <div className="text-center pt-16 text-[11px] text-gray-500 font-light relative z-10">
+      <div className="text-center pt-16 text-[11px] dark:text-gray-500 font-light relative z-10">
         منصة اكتشفني تضمن تكافؤ الفرص لجميع المواهب الناشئة بمصر 🇪🇬
       </div>
     </div>

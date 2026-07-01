@@ -10,7 +10,6 @@ import Register from "./pages/Register/Register.jsx";
 import Blog from "./pages/More/Blog/Blog.jsx";
 
 import DashboardMain from "./pages/More/Dashboard/DashboardMain.jsx";
-
 import PlayerDetails from "./pages/More/Dashboard/PlayerDetails/PlayerDetails.jsx";
 import NewsAndUpdates from "./pages/More/NewsAndUpdates/NewsAndUpdates.jsx";
 import Profile from "./pages/Profile/Profile.jsx";
@@ -22,7 +21,7 @@ import Products from "./pages/Store/Products.jsx";
 import ProductDetails from "./pages/Store/ProductDetails.jsx";
 import Cart from "./pages/Store/Cart.jsx";
 import Checkout from "./pages/Store/Checkout.jsx";
-import ContactStore from "./pages/Store/ContactStore.jsx";
+
 import MyOrder from "./pages/Store/MyOrder.jsx";
 import SuccessStories from "./pages/SuccessStories/SuccessStories.jsx";
 import SuccessStoriesCr from "./pages/SuccessStories/SuccessStoriesCr/SuccessStoriesCr.jsx";
@@ -40,9 +39,11 @@ import ContactUs from "./pages/ContactUs/ContactUs.jsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy.jsx";
 import { ThemeProvider } from "./contexts/ThemeContext/ThemeContext.jsx";
 import { AuthProvider, useAuth } from "./contexts/AuthContext/AuthContext.jsx";
-
 import {StoreProvider} from "./contexts/StoreContext/StoreContext.jsx"
 import StoreLayout from "./components/StoreLayout/StoreLayout";
+
+import NewsDetails from "./pages/More/NewsAndUpdates/NewsDetails.jsx";
+import ProfilePrizes from "./pages/Programs/PrizesAndCompetitions/ProfilePrizes/ProfilePrizes.jsx";
 
 const StoreLoader = () => (
   <div className="flex h-[60vh] w-full items-center justify-center">
@@ -50,8 +51,10 @@ const StoreLoader = () => (
   </div>
 );
 
+
 import TrainingCampsForm from "./pages/Programs/TrainingCamps/TrainingCampsForm/TrainingCampsForm.jsx";
 import NewsDetails from "./pages/More/NewsAndUpdates/NewsDetails.jsx";
+
 
 
 
@@ -83,6 +86,7 @@ const App = () => {
         <StoreProvider>
       <div className="app-container">
         <Header />
+
 
         <Routes>
           <Route path="/" element={ <Home /> } />
@@ -142,7 +146,7 @@ const App = () => {
         </Routes>
 
         
-  
+
         <Suspense fallback={
           <div className="min-h-screen bg-black flex items-center justify-center text-[var(--color-gold-main)] animate-pulse font-bold">
             LOADING PAGE...
@@ -155,9 +159,13 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/blog" element={<Blog />} />
+
             
          
             <Route 
+
+                        <Route 
+
               path="/dashboard" 
               element={
                 <ProtectedAdminRoute>
@@ -181,8 +189,21 @@ const App = () => {
             <Route path="/field-tests" element={<FieldTests />} />
             <Route path="/prizes-and-competitions" element={<PrizesAndCompetitions />} />
             <Route path="/training-camps" element={<TrainingCamps />} />
-            <Route path="/training-camps/form" element={<TrainingCampsForm />} />
-            <Route path="/store" element={<Store />} />
+
+            <Route path="/dashboard/profile-prizes" element={<ProfilePrizes />} />
+             <Route element={<StoreLayout />}>
+    <Route path="/store" element={
+      <Suspense fallback={<StoreLoader />}>
+        <Store />
+      </Suspense>
+    } />
+     <Route path="/products" element={<Products />} />
+     <Route path="/productDetails/:id" element={<ProductDetails />} />
+     <Route path="/cart" element={<Cart />} />
+     <Route path="/checkout" element={<Checkout />} />
+
+     <Route path="/myorder" element={<MyOrder />} />
+   </Route>
             <Route path="/success-stories" element={<SuccessStories />} />
             <Route path="/success-stories-cr" element={<SuccessStoriesCr />} />
             <Route path="/success-stories-mo" element={<SuccessStoriesMo />} />

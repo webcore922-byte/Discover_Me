@@ -18,55 +18,54 @@ const CategoryCard = ({ title, image }) => (
     </div>
   </div>
 );
+
 const categories = [
   { title: "أطقم الأندية", image: "/اطقم الاندية.jpg" },
   { title: "أحذية كرة القدم", image: "/chosefoot.webp" },
   { title: "كرات القدم", image: "/كرة القدم.avif" },
   { title: "معدات التدريب", image: "/معدات التدريب.jpg" },
   { title: "أطقم المنتخبات", image: "/اطقم المنتخب.webp" },
-  { title: "إكسسوارات", image: "/اكسسوارات.jpg" },
+  { title: "اكسسوارات", image: "/اكسسوارات.jpg" },
 ];
 
 const CategoriesSection = () => {
-    const {setSelectcategory}=useStore();
+  const { setSelectcategory } = useStore();
   return (
     <div>
-        <section className="px-12 py-6 relative">
-          <h2 className="text-2xl font-bold mb-6">الأقسام</h2>
+      <section className="px-12 py-6 relative">
+        <h2 className="text-2xl font-bold mb-6 dark:text-white text-[var(--color-gold-main)]">الأقسام</h2>
 
-          <div className="swiper-button-prev !text-[var(--color-gold-main)] !w-8 !h-8 !scale-75"></div>
-          <div className="swiper-button-next !text-[var(--color-gold-main)] !w-8 !h-8 !scale-75"></div>
+        <div className="swiper-button-prev !text-[var(--color-gold-main)] !w-8 !h-8 !scale-75"></div>
+        <div className="swiper-button-next !text-[var(--color-gold-main)] !w-8 !h-8 !scale-75"></div>
 
-          <Swiper
-            modules={[Autoplay, Navigation]}
-            navigation={{
-              nextEl: ".swiper-button-next",
-              prevEl: ".swiper-button-prev",
-            }}
-            spaceBetween={15}
-            loop={true}
-            autoplay={{ delay: 2000, disableOnInteraction: false }}
-            // التعديل هنا:
-            breakpoints={{
-              300: {slidesPerView: 1},
-              350: {slidesPerView: 2 },
-              640: {slidesPerView: 3},
-              1024: {slidesPerView: 5},}}>
-            {categories.map(({ title,image}) => (
-              <SwiperSlide key={title} className="py-4">
-                <div className="h-48 w-full flex items-center justify-center">
-                  <Link
-                    to="/products"
-                    onClick={() => setSelectcategory(title)} >
-                    <CategoryCard title={title} image={image} />
-                  </Link>
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </section>
+        <Swiper
+          modules={[Autoplay, Navigation]}
+          navigation={{
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+          }}
+          spaceBetween={15}
+          loop={true}
+          autoplay={{ delay: 2000, disableOnInteraction: false }}
+          breakpoints={{
+            300: { slidesPerView: 1 },
+            350: { slidesPerView: 2 },
+            640: { slidesPerView: 3 },
+            1024: { slidesPerView: 5 },
+          }}>
+          {categories.map(({ title, image }) => (
+            <SwiperSlide key={title} className="py-4">
+              <div className="h-48 w-full flex items-center justify-center">
+                <Link to="/products" onClick={() => setSelectcategory(title)}>
+                  <CategoryCard title={title} image={image} />
+                </Link>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </section>
     </div>
-  )
-}
+  );
+};
 
-export default CategoriesSection
+export default CategoriesSection;

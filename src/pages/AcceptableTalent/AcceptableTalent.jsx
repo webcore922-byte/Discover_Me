@@ -23,7 +23,7 @@ const AcceptableTalent = () => {
         headers: { "Content-Type": "application/json" },
       });
       const res = await req.json();
-      setPlayers((res.filter(p => p.status == "approved")));
+      setPlayers((res.filter(p => p.status == "final_accepted")));
       setLoadPlayers(false);
     } catch (e) {
       setErrorPlayers("حدث خطأ في تحميل البيانات، يرجى المحاولة لاحقاً");

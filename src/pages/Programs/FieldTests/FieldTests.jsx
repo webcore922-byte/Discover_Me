@@ -1,35 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
+import { useNavigate } from 'react-router-dom';
 import bgImg from '../../../../public/bg_Field_tests.jpeg'; 
 import coachImg from '../../../../public/coach.png';
+import actionImg from '../../../../public/action.jpg'; 
 import { useAuth } from '../../../contexts/AuthContext/AuthContext';
-
+import Swal from 'sweetalert2';
 const FieldTests = () => {
     const { user, updatePlayerState } = useAuth(); 
-    const [generalTest, setGeneralTest] = useState(null);
-    const [loading, setLoading] = useState(true);
     const [reSubmitting, setReSubmitting] = useState(false);
+    const navigate = useNavigate();
     const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
     
     const playerData = user?.player || null;
+    const role = user?.role; 
 
-    useEffect(() => {
-        const fetchGeneralData = async () => {
-            try {
-                const generalRes = await fetch(`${API_URL}/generalTest`);
-                if (generalRes.ok) {
-                    const generalData = await generalRes.json();
-                    setGeneralTest(generalData);
-                }
-            } catch (err) {
-                console.error("خطأ أثناء جلب بيانات الاختبار العام:", err);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchGeneralData();
-    }, [API_URL]);
-
-    const handleReSubmitTest = async () => {
+    const handleReSubmitTest = async (e) => {
+        e.preventDefault();
         if (!playerData || !user?.id) return;
         setReSubmitting(true);
 
@@ -39,21 +25,31 @@ const FieldTests = () => {
             time: "",
             coachName: "",
             isDone: false,
-            finalStatus: ""
+            finalStatus: "" 
         };
 
         try {
             const res = await fetch(`${API_URL}/players/${playerData.id}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ fieldTest: resetFieldTest })
+                body: JSON.stringify({ 
+                    status: 'approved', 
+                    fieldTest: resetFieldTest 
+                })
             });
 
             if (res.ok) {
                 const updatedPlayer = await res.json();
                 await updatePlayerState(updatedPlayer);
-                alert("تم إرسال طلب إعادة التقديم بنجاح! انتظر تحديد موعد جديد.");
-            }
+               Swal.fire({
+                title: 'تم إرسال طلبك بنجاح! 🎉',
+                text: 'سيتم مراجعة طلبك من قبل الإدارة، وسنقوم بتحديد موعد جديد لك للاختبارات الميدانية قريباً. يرجى متابعة حسابك بانتظام.',
+                icon: 'success',
+                background: '#121212',
+                color: '#fff',
+                confirmButtonColor: 'var(--color-gold-main)',
+                confirmButtonText: 'حسناً، سأتابع'
+            });       }
         } catch (err) {
             console.error("Error re-submitting test:", err);
         } finally {
@@ -61,40 +57,41 @@ const FieldTests = () => {
         }
     };
 
-    if (loading) {
-        return (
-            <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--color-bg-main)' }}>
-                <div className="text-xl animate-pulse font-black" style={{ color: 'var(--color-gold-main)' }}>جاري تحميل البيانات...</div>
-            </div>
-        );
-    }
+    const handleShowDetails = (e) => {
+        e.preventDefault();
+        Swal.fire({
+            title: 'قريباً',
+            text: 'سيتم عرض تفاصيل الاختبارات العامة قريباً جداً!',
+            icon: 'info',
+            confirmButtonText: 'مفهوم',
+            confirmButtonColor: '#a68946',
+            background: '#1A1D1E',
+            color: '#fff'
+        });
+  };
 
-    const shouldShowPlayerCard = user && playerData && playerData.status === 'approved' && playerData.fieldTest?.finalStatus !== 'accepted';
+const[setIsUpgrading] = useState(false);
+    const isAdmin = role === 'admin';
+    const isRejectedPlayer =  playerData && playerData.fieldTest?.finalStatus === 'rejected';
+    const isrejected =playerData?.status === 'rejected' ;
+    const isPendingPlayer = playerData?.status === 'pending';
+    const isApprovedPlayer =  playerData && playerData.status === 'approved' && playerData.fieldTest?.finalStatus !== 'rejected' && playerData.status !== 'pending';
+    const isStaticUserCard =!isRejectedPlayer&&!isAdmin&&playerData?.status !== 'pending' && playerData?.status !== 'rejected' &&playerData?.status!== 'final_accepted' && role === 'user';
 
     return (
         <div 
             className="min-h-screen font-['Tajawal',_sans-serif] relative overflow-hidden flex flex-col" 
-            dir="rtl"
             style={{ backgroundColor: 'var(--color-bg-main)', color: 'var(--color-text-white)' }}
         >
-            {/* الخلفية */}
             <div 
-                className="absolute inset-0 z-0 pointer-events-none"
-                style={{
-                    backgroundImage: `url(${bgImg})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
-                    filter: 'contrast(1.15) brightness(1.05) saturate(1.2)'
-                }}
+                className="absolute inset-0 z-0 pointer-events-none dark:bg-[url('/bg_Field_tests.jpeg')]
+                 bg-[url('/bg_Field_tests_Light.png')] bg-cover bg-center bg-no-repeat filter contrast-[1.15] brightness-[1.05] saturate-[1.2]"
+               
             ></div>
             <div className="absolute inset-0 bg-black/10 z-0 pointer-events-none"></div>
 
-            {/* الهيدر */}
             <header className="relative z-10 pt-8 px-12 flex flex-col items-center mb-8">
-                <div className="absolute top-8 right-12 text-2xl font-black tracking-wider drop-shadow-md">
-                    اكتشفني
-                </div>
+               
                 
                 <div className="text-center mt-6">
                     <div className="relative inline-flex items-center justify-center gap-6 mb-4">
@@ -114,42 +111,75 @@ const FieldTests = () => {
                             <path d="M25 30 C 30 27, 35 22, 40 18" stroke="var(--color-gold-main)" strokeWidth="2" strokeLinecap="round" opacity="0.4"/>
                         </svg>
                     </div>
-                    <p className="max-w-2xl mx-auto text-base leading-relaxed font-medium drop-shadow-md" style={{ color: 'var(--color-text-gray)' }}>
-                        تمنحك الاختبارات الميدانية فرصة لتطبيق مهاراتك... <br />
-                        يتم تقييم الأداء من قبل خبراء متخصصين...
-                    </p>
                 </div>
             </header>
 
-            {/* المحتوى الرئيسي */}
             <main className="relative z-10 flex-1 flex items-center max-w-[1500px] w-full mx-auto px-8 pb-12">
-                <div className="w-full lg:w-[420px] flex flex-col gap-6 ms-auto lg:ms-0 mt-8 lg:mt-0">
+                <div className="relative z-20 w-full lg:w-[420px] flex flex-col gap-6 ms-auto lg:ms-0 mt-8 lg:mt-0">
                     
-                    {/* كارت الاختبار العام */}
-                    {generalTest && (
-                        <div className="glass-card hover-gold-card card-shine rounded-[2rem] p-3 shadow-2xl">
+                    {isStaticUserCard && (
+                        <div className="glass-card hover-gold-card card-shine rounded-[2rem] p-4 shadow-2xl relative z-30">
                             <div className="rounded-[1.5rem] overflow-hidden mb-4 h-[180px]">
-                                <img src={generalTest.imageUrl || '../../../../public/action.jpg'} alt="Action" className="w-full h-full object-cover" />
+                                <img src={actionImg} alt="Action" className="w-full h-full object-cover" />
                             </div>
-                            <div className="px-3 pb-2 text-[15px] space-y-2.5">
-                                <p><span className="font-bold" style={{ color: 'var(--color-gold-main)' }}>المكان:</span> <span style={{ color: 'var(--color-text-white)' }}>{generalTest.location}</span></p>
-                                <p><span className="font-bold" style={{ color: 'var(--color-gold-main)' }}>المواعيد:</span> <span style={{ color: 'var(--color-text-white)' }}>{generalTest.date}</span></p>
-                                <div className="flex justify-between items-center">
-                                    <p><span className="font-bold" style={{ color: 'var(--color-gold-main)' }}>الشروط:</span> <span style={{ color: 'var(--color-text-white)' }}>{generalTest.conditions}</span></p>
+                            <div className="px-3 pb-2 text-[15px] space-y-3">
+                                <h3 className="font-black text-lg text-center" style={{ color: 'var(--color-gold-main)' }}>انضم إلى محاربي الملعب!</h3>
+                                <p className="text-xs text-center leading-relaxed mb-2" style={{ color: 'var(--color-text-gray)' }}>
+                                    لو عندك الشغف والمهارة وعايز تبدأ رحلتك وتكون لاعب كرة قدم محترف، قدم على طلب الانضمام الآن واشترك في الاختبارات الميدانية القادمة.
+                                </p>
+                                
+                                <div className="flex gap-2 pt-2">
+                                 
                                     <button 
-                                        className="text-[#1A1D1E] px-4 py-1.5 rounded-lg text-xs font-black shadow-lg hover:opacity-90 transition-opacity"
+                                        onClick={() => navigate('/profile' , { state: { openUpgradeForm: true } })}
+                                        
+                                        className="flex-1 text-[#1A1D1E] py-2.5 rounded-xl text-xs font-black shadow-lg hover:opacity-90 transition-opacity cursor-pointer relative z-40"
                                         style={{ background: 'var(--gold-gradient)' }}
                                     >
-                                        عرض التفاصيل
+                                        سجل الآن كلاعب ⚽
                                     </button>
                                 </div>
                             </div>
                         </div>
                     )}
-
-                    {/* كارت ركن اللاعب المقبول */}
-                    {shouldShowPlayerCard && (
-                        <div className="glass-card hover-gold-card card-shine rounded-[2rem] p-5 shadow-2xl relative">
+                    {isRejectedPlayer && (
+                        <div className="glass-card hover-gold-card card-shine rounded-[2rem] p-5 shadow-2xl text-center relative z-30">
+                            <h3 className="font-black mb-3 text-xl text-red-400">ركن إعادة الاختبار</h3>
+                            <p className="text-sm mb-5 leading-relaxed" style={{ color: 'var(--color-text-gray)' }}>
+                                للأسف لم تتخطى هذا الاختبار بنجاح، حاول مجدداً ولا تستسلم! اضغط على الزر بالأسفل لتقديم طلب إعادة الاختبار وتعديل حالتك إلى مقبول مجدداً لفتح فرصة جديدة.
+                            </p>
+                            <button
+                                onClick={handleReSubmitTest}
+                                disabled={reSubmitting}
+                                className="w-full text-black font-black py-3 rounded-xl text-sm hover:opacity-90 transition-opacity disabled:opacity-50 cursor-pointer relative z-40"
+                                style={{ background: 'var(--gold-gradient)' }}
+                            >
+                                {reSubmitting ? 'جاري معالجة الطلب...' : 'إعادة الاختبار 🔄'}
+                            </button>
+                        </div>
+                    )}
+                    {isrejected && (
+                        <div className="glass-card hover-gold-card card-shine rounded-[2rem] p-5 shadow-2xl text-center relative z-30">
+                          <div className="rounded-[1.5rem] overflow-hidden mb-4 h-[180px]">
+                                <img src={actionImg} alt="Action" className="w-full h-full object-cover" />
+                            </div>
+                            <div className="text-sm mb-5 leading-relaxed" style={{ color: 'var(--color-text-gray)' }}>
+                            <h3 className="font-black mb-3 text-xl text-red-400">​نشكرك على مشاركتنا موهبتك. في الوقت الحالي، لم نتمكن من قبول طلب انضمامك. ندعوك للعمل على تحسين مهاراتك وتحديث الفيديو التعريفي الخاص بك في ملفك الشخصي، وسنكون سعداء بمراجعة طلبك مجدداً.</h3>
+                        </div>
+                        </div>
+                    )}
+                    {isPendingPlayer && (
+                        <div className="glass-card  hover-gold-card card-shine rounded-[2rem] p-5 shadow-2xl text-center relative z-30">
+                          <div className="rounded-[1.5rem] overflow-hidden mb-4 h-[180px]">
+                                <img src={actionImg} alt="Action" className="w-full h-full object-cover" />
+                            </div>
+                            <div className="text-sm mb-5 leading-relaxed" style={{ color: 'var(--color-text-gray)' }}>
+                            <h3 className="font-black mb-3 text-xl text-yellow-400">​طلب الانضمام الخاص بك قيد المعالجة حالياً. يمكنك متابعة حالة طلبك من خلال الملف الشخصي الخاص بك</h3>
+                        </div>
+                        </div>
+                    )}
+                    {isApprovedPlayer && (
+                        <div className="glass-card hover-gold-card card-shine rounded-[2rem] p-5 shadow-2xl relative z-30">
                             <h3 className="font-black mb-4 text-xl" style={{ color: 'var(--color-gold-main)' }}>
                                 ركن اللاعب المقبول
                             </h3>
@@ -158,9 +188,7 @@ const FieldTests = () => {
                                 <div className="space-y-1">
                                     <h4 className="font-black text-white text-xl">{playerData.name}</h4>
                                     <p className="text-[13px] max-w-[200px] leading-tight" style={{ color: 'var(--color-text-gray)' }}>
-                                        {playerData.fieldTest?.finalStatus === 'rejected' 
-                                            ? 'للأسف لم تتخطى هذا الاختبار بنجاح، حاول مجدداً ولا تستسلم!' 
-                                            : playerData.fieldTest?.date 
+                                        {playerData.fieldTest?.date 
                                             ? 'تهانينا! لقد تم قبولك للاختبارات. هذا هو موعدك الخاص:' 
                                             : 'سوف يتم تحديد موعد اختبارك الميداني قريباً من قبل الإدارة.'}
                                     </p>
@@ -189,26 +217,12 @@ const FieldTests = () => {
                                             )}
                                         </div>
 
-                                        {playerData.fieldTest.finalStatus === 'rejected' ? (
-                                            <div className="mt-2 text-center space-y-2">
-                                                <p className="text-red-400 text-xs font-bold">حظاً أوفر المرة القادمة! يمكنك المحاولة والتقديم مرة أخرى الآن.</p>
-                                                <button
-                                                    onClick={handleReSubmitTest}
-                                                    disabled={reSubmitting}
-                                                    className="w-full text-black font-black py-2 rounded-xl text-xs hover:opacity-90 transition-opacity disabled:opacity-50"
-                                                    style={{ background: 'var(--gold-gradient)' }}
-                                                >
-                                                    {reSubmitting ? 'جاري التتقديم...' : 'تقديم طلب اختبار جديد 🔄'}
-                                                </button>
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-[11px]" style={{ color: 'var(--color-text-gray)' }}>الكشاف: <span className="text-white">{playerData.fieldTest.coachName || 'كابتن محمد سمير'}</span></span>
+                                            <div className="w-7 h-7 rounded-full overflow-hidden">
+                                                <img src={coachImg} alt="Scout" className="w-full h-full object-cover" />
                                             </div>
-                                        ) : (
-                                            <div className="flex justify-between items-center">
-                                                <span className="text-[11px]" style={{ color: 'var(--color-text-gray)' }}>الكشاف: <span className="text-white">{playerData.fieldTest.coachName || 'كابتن محمد سمير'}</span></span>
-                                                <div className="w-7 h-7 rounded-full overflow-hidden">
-                                                    <img src={coachImg} alt="Scout" className="w-full h-full object-cover" />
-                                                </div>
-                                            </div>
-                                        )}
+                                        </div>
                                     </div>
                                 </div>
                             ) : (
