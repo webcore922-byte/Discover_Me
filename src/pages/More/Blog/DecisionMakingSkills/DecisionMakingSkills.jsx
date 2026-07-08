@@ -1,20 +1,11 @@
-import React, { Suspense,lazy } from 'react';
-
+import React, { Suspense, lazy } from 'react';
 const DecisionMakingContent = () => {
-
-  return (
-    <div className="min-h-screen bg-[var(--color-bg-main)] text-[var(--color-text-white)] font-sans" dir="rtl">
+  return <div className="min-h-screen bg-[var(--color-bg-main)] text-[var(--color-text-white)] font-sans" dir="rtl">
       
       <div className="relative h-[450px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-[var(--color-overlay)]/60 z-10"></div>
 
-        <img 
-          src="/decision-making.jpeg" 
-          alt="Football Strategy" 
-          loading="eager"
-          decoding="async"
-          className="absolute inset-0 w-full h-full lg:h-fit object-cover"
-        />
+        <img src="/decision-making.jpeg" alt="Football Strategy" loading="eager" decoding="async" className="absolute inset-0 w-full h-full lg:h-fit object-cover" />
 
         <div className="relative z-20 text-center px-4">
           <h1 className="text-4xl md:text-6xl font-extrabold text-[var(--color-gold-main)] mb-4 drop-shadow-2xl">
@@ -52,12 +43,16 @@ const DecisionMakingContent = () => {
         </h2>
 
         <div className="grid md:grid-cols-3 gap-8 mb-20">
-          {[
-            { title: "المسح (Scanning)", desc: "قبل أن تصلك الكرة، يجب أن تكون قد نظرت حولك 3 مرات لمعرفة أماكن الزملاء والخصم." },
-            { title: "الإدراك (Perception)", desc: "فهم المساحات الخالية. أين هي الثغرة؟ ومن هو الزميل الذي في وضعية تسمح له بالتقدم؟" },
-            { title: "التنفيذ (Execution)", desc: "هنا يأتي دور المهارة الفنية، فما فائدة القرار العبقري إذا كنت لا تملك دقة التنفيذ?" }
-          ].map((item, index) => (
-            <div key={index} className="bg-[var(--color-bg-card)] p-8 rounded-xl border dark:border-[var(--color-border)]/20 border-[var(--color-gold-main)] text-center group">
+          {[{
+          title: "المسح (Scanning)",
+          desc: "قبل أن تصلك الكرة، يجب أن تكون قد نظرت حولك 3 مرات لمعرفة أماكن الزملاء والخصم."
+        }, {
+          title: "الإدراك (Perception)",
+          desc: "فهم المساحات الخالية. أين هي الثغرة؟ ومن هو الزميل الذي في وضعية تسمح له بالتقدم؟"
+        }, {
+          title: "التنفيذ (Execution)",
+          desc: "هنا يأتي دور المهارة الفنية، فما فائدة القرار العبقري إذا كنت لا تملك دقة التنفيذ?"
+        }].map((item, index) => <div key={index} className="bg-[var(--color-bg-card)] p-8 rounded-xl border dark:border-[var(--color-border)]/20 border-[var(--color-gold-main)] text-center group">
               <div className="dark:text-[var(--color-border)] text-[var(--color-gold-main)] text-4xl mb-4 font-black">
                 0{index + 1}
               </div>
@@ -67,8 +62,7 @@ const DecisionMakingContent = () => {
               <p className="dark:text-[var(--color-text-gray)] text-[var(--color-text-main)] text-sm leading-relaxed">
                 {item.desc}
               </p>
-            </div>
-          ))}
+            </div>)}
         </div>
 
         <div className="space-y-12 mb-20">
@@ -119,22 +113,13 @@ const DecisionMakingContent = () => {
         </div>
 
       </div>
-    </div>
-  );
+    </div>;
 };
-
 const DecisionMakingSkills = () => {
-  return (
-    <Suspense 
-      fallback={
-        <div className="min-h-screen bg-[var(--color-bg-main)] flex items-center justify-center">
+  return <Suspense fallback={<div className="min-h-screen bg-[var(--color-bg-main)] flex items-center justify-center">
           <div className="w-12 h-12 border-4 border-[var(--color-gold-main)] border-t-transparent rounded-full animate-spin"></div>
-        </div>
-      }
-    >
+        </div>}>
       <DecisionMakingContent />
-    </Suspense>
-  );
+    </Suspense>;
 };
-
 export default DecisionMakingSkills;

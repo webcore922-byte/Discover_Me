@@ -1,10 +1,6 @@
-import React from 'react'
-
-
+import React from 'react';
 const AboutThePlatform = () => {
-
-  return (
-     <main className="bg-[var(--color-bg-main)] text-[var(--color-text-white)] min-h-screen flex flex-col overflow-x-hidden">
+  return <main className="bg-[var(--color-bg-main)] text-[var(--color-text-white)] min-h-screen flex flex-col overflow-x-hidden">
       
       
       <section className="container mx-auto px-4 md:px-6 pt-[100px] pb-12 md:pb-16 flex flex-col items-center text-center">
@@ -48,8 +44,6 @@ const AboutThePlatform = () => {
         </p>
       </section>
       
-    </main>
-  )
-}
-
-export default AboutThePlatform
+    </main>;
+};
+export default AboutThePlatform;
