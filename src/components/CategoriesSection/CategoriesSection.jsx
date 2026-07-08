@@ -17,23 +17,24 @@ const CategoryCard = ({
   </div>;
 const categories = [{
   title: "أطقم الأندية",
-  image: "/اطقم الاندية.jpg"
+  image: "/dressclub.jpg"
 }, {
   title: "أحذية كرة القدم",
   image: "/chosefoot.webp"
 }, {
   title: "كرات القدم",
-  image: "/كرة القدم.avif"
+  image: "/footback.jpg"
 }, {
   title: "معدات التدريب",
-  image: "/معدات التدريب.jpg"
+  image: "/equipment.jpg"
 }, {
   title: "أطقم المنتخبات",
-  image: "/اطقم المنتخب.webp"
+  image: "/OIP.jpg"
 }, {
   title: "اكسسوارات",
-  image: "/اكسسوارات.jpg"
-}];
+  image: "/aecess.jpg" 
+    }
+];
 const CategoriesSection = () => {
   const {
     setSelectcategory
