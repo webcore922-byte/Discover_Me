@@ -6,7 +6,6 @@ import AccountInfoCard from './components/AccountInfoCard';
 import AdminPanel from './components/AdminPanel';
 import PlayerEditForm from './components/PlayerEditForm';
 import UpgradeToPlayerForm from './components/UpgradeToPlayerForm';
-
 const Profile = () => {
   const {
     user,
@@ -26,84 +25,33 @@ const Profile = () => {
     handleProfileImageChange,
     handleUpgradeSubmit,
     handleSave,
-    handleLogout,
+    handleLogout
   } = useProfileData();
-
   if (!user) return null;
-console.log('user.player:', user?.player);
-console.log('status:', status);
-console.log('isPlayer:', isPlayer);
-console.log('isPendingOrRejectedPlayer:', isPendingOrRejectedPlayer);
-console.log('editData:', editData);
-console.log('full status:', JSON.stringify(user?.player?.status))
-  return (
-    <div
-      className="min-h-screen bg-[var(--color-bg-main)] py-10 md:py-16 px-4 md:px-8 text-right font-sans"
-      dir="rtl"
-    >
+  return <div className="min-h-screen bg-[var(--color-bg-main)] py-10 md:py-16 px-4 md:px-8 text-right font-sans" dir="rtl">
       <div className="max-w-6xl mx-auto space-y-10">
 
         <div className="space-y-4">
-          <StatusBanner
-            user={user}
-            status={status}
-            showCongrats={showCongrats}
-            isPlayer={isPlayer}
-          />
+          <StatusBanner user={user} status={status} showCongrats={showCongrats} isPlayer={isPlayer} />
         </div>
 
-        <ProfileHeader
-          user={user}
-          isAdmin={isAdmin}
-          adminType={adminType}
-          editData={editData}
-          status={status}
-          handleLogout={handleLogout}
-          handleProfileImageChange={handleProfileImageChange}
-        />
+        <ProfileHeader user={user} isAdmin={isAdmin} adminType={adminType} editData={editData} status={status} handleLogout={handleLogout} handleProfileImageChange={handleProfileImageChange} />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div className="lg:col-span-4">
-            <AccountInfoCard
-              user={user}
-              isAdmin={isAdmin}
-              adminType={adminType}
-            />
+            <AccountInfoCard user={user} isAdmin={isAdmin} adminType={adminType} />
           </div>
 
           <div className="lg:col-span-8">
-            {isAdmin && (
-              <AdminPanel
-                adminType={adminType}
-                editData={editData}
-              />
-            )}
+            {isAdmin && <AdminPanel adminType={adminType} editData={editData} />}
 
-            {(isPlayer || isPendingOrRejectedPlayer) && (
-              <PlayerEditForm
-                user={user}
-                status={status}
-                editData={editData}
-                setEditData={setEditData}
-                handleSave={handleSave}
-              />
-            )}
+            {(isPlayer || isPendingOrRejectedPlayer) && <PlayerEditForm user={user} status={status} editData={editData} setEditData={setEditData} handleSave={handleSave} />}
 
-            {isUser && !user?.player && (
-              <UpgradeToPlayerForm
-                isUpgrading={isUpgrading}
-                setIsUpgrading={setIsUpgrading}
-                upgradeData={upgradeData}
-                setUpgradeData={setUpgradeData}
-                handleUpgradeSubmit={handleUpgradeSubmit}
-              />
-            )}
+            {isUser && !user?.player && <UpgradeToPlayerForm isUpgrading={isUpgrading} setIsUpgrading={setIsUpgrading} upgradeData={upgradeData} setUpgradeData={setUpgradeData} handleUpgradeSubmit={handleUpgradeSubmit} />}
           </div>
         </div>
 
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Profile;

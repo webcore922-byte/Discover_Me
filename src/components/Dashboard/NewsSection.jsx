@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import Swal from 'sweetalert2';
+import Swal from '../../utils/swalAlert';
+import { authHeader, authJsonHeader } from '../../utils/authHeader';
+import ImageUploadField from '../ImageUpload/ImageUploadField';
 import { Plus, Trash2, Edit3, Save, X, FileText, Image as ImageIcon, Link2 } from 'lucide-react';
-
 const NewsSection = () => {
-  // 1. الـ States الخاصة بالأخبار فقط (تم عزلها عن باقي الصفحة)
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingNewsId, setEditingNewsId] = useState(null);
-  
   const [newsForm, setNewsForm] = useState({
     tag: '',
     title: '',
@@ -15,19 +14,18 @@ const NewsSection = () => {
     image: '',
     author: 'الإدارة التقنية'
   });
-  
-  const [newsSections, setNewsSections] = useState([
-    { heading: '', content: '', sectionImage: '', hasImage: false }
-  ]);
-
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
-
-  // 2. جلب الداتا الخاصة بالأخبار فقط عند فتح هذا القسم
+  const [newsSections, setNewsSections] = useState([{
+    heading: '',
+    content: '',
+    sectionImage: '',
+    hasImage: false
+  }]);
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1';
   useEffect(() => {
     const fetchNewsData = async () => {
       try {
         setLoading(true);
-        const newsRes = await fetch(`${API_URL}/newsAndUpdates`);
+        const newsRes = await fetch(`${API_URL}/news`);
         if (newsRes.ok) {
           const newsData = await newsRes.json();
           setNews(Array.isArray(newsData) ? newsData : []);
@@ -38,23 +36,24 @@ const NewsSection = () => {
         setLoading(false);
       }
     };
-
     fetchNewsData();
   }, []);
-
-  // 3. الدوال الخاصة بإدارة الـ Form والسكاشن الديناميكية
-  const handleNewsInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewsForm(prev => ({ ...prev, [name]: value }));
+  const handleNewsInputChange = e => {
+    const {
+      name,
+      value
+    } = e.target;
+    setNewsForm(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
-
   const handleNewsSectionChange = (index, field, value) => {
     const updated = [...newsSections];
     updated[index][field] = value;
     setNewsSections(updated);
   };
-
-  const toggleNewsSectionImage = (index) => {
+  const toggleNewsSectionImage = index => {
     const updated = [...newsSections];
     updated[index].hasImage = !updated[index].hasImage;
     if (!updated[index].hasImage) {
@@ -62,81 +61,94 @@ const NewsSection = () => {
     }
     setNewsSections(updated);
   };
-
   const addNewsSection = () => {
-    setNewsSections([...newsSections, { heading: '', content: '', sectionImage: '', hasImage: false }]);
+    setNewsSections([...newsSections, {
+      heading: '',
+      content: '',
+      sectionImage: '',
+      hasImage: false
+    }]);
   };
-
-  const removeNewsSection = (index) => {
+  const removeNewsSection = index => {
     if (newsSections.length === 1) {
-      Swal.fire({ 
-        icon: 'warning', 
-        title: 'عذراً!', 
-        text: 'يجب أن يحتوي الخبر على سكشن واحد على الأقل.', 
-        confirmButtonColor: '#D4AF37', 
-        background: '#16191b', 
-        color: '#fff' 
+      Swal.fire({
+        icon: 'warning',
+        title: 'عذراً!',
+        text: 'يجب أن يحتوي الخبر على سكشن واحد على الأقل.',
+        confirmButtonColor: '#D4AF37'
       });
       return;
     }
     setNewsSections(newsSections.filter((_, i) => i !== index));
   };
-
-  // 4. دالة الحفظ (إضافة أو تعديل)
-  const handleSaveNews = async (e) => {
+  const handleSaveNews = async e => {
     e.preventDefault();
-
     const currentDate = new Date().toLocaleDateString('ar-EG', {
-      day: 'numeric', month: 'long', year: 'numeric'
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
     });
-
     const cleanedSections = newsSections.map(sec => {
-      const cleaned = { heading: sec.heading, content: sec.content };
+      const cleaned = {
+        heading: sec.heading,
+        content: sec.content
+      };
       if (sec.hasImage && sec.sectionImage.trim() !== '') {
         cleaned.sectionImage = sec.sectionImage.trim();
       }
       return cleaned;
     });
-
     const newsPayload = {
       ...newsForm,
       date: currentDate,
       sections: cleanedSections
     };
-
     try {
       if (editingNewsId) {
-        const res = await fetch(`${API_URL}/newsAndUpdates/${editingNewsId}`, {
+        const res = await fetch(`${API_URL}/news/${editingNewsId}`, {
           method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(newsPayload),
+          headers: authJsonHeader(),
+          body: JSON.stringify(newsPayload)
         });
         if (res.ok) {
           const updatedNews = await res.json();
           setNews(news.map(n => n.id === editingNewsId ? updatedNews : n));
-          Swal.fire({ title: 'تم تحديث الخبر بنجاح!', icon: 'success', background: '#1a1a1a', color: '#D4AF37' });
+          Swal.fire({
+            title: 'تم تحديث الخبر بنجاح!',
+            icon: 'success',
+            background: '#1a1a1a',
+            color: '#D4AF37'
+          });
           resetNewsForm();
         }
       } else {
-        const res = await fetch(`${API_URL}/newsAndUpdates`, {
+        const res = await fetch(`${API_URL}/news`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ...newsPayload, id: `news-${Date.now()}` }),
+          headers: authJsonHeader(),
+          body: JSON.stringify(newsPayload)
         });
         if (res.ok) {
           const newCreated = await res.json();
           setNews([newCreated, ...news]);
-          Swal.fire({ title: 'تم نشر الخبر بنجاح!', icon: 'success', background: '#1a1a1a', color: '#D4AF37' });
+          Swal.fire({
+            title: 'تم نشر الخبر بنجاح!',
+            icon: 'success',
+            background: '#1a1a1a',
+            color: '#D4AF37'
+          });
           resetNewsForm();
         }
       }
     } catch (err) {
       console.error(err);
-      Swal.fire({ title: 'حدث خطأ أثناء حفظ الخبر', icon: 'error', background: '#1a1a1a' });
+      Swal.fire({
+        title: 'حدث خطأ أثناء حفظ الخبر',
+        icon: 'error',
+        background: '#1a1a1a'
+      });
     }
   };
-
-  const handleEditNewsClick = (item) => {
+  const handleEditNewsClick = item => {
     setEditingNewsId(item.id);
     setNewsForm({
       tag: item.tag || '',
@@ -145,7 +157,6 @@ const NewsSection = () => {
       image: item.image || '',
       author: item.author || 'الإدارة التقنية'
     });
-    
     if (item.sections && item.sections.length > 0) {
       setNewsSections(item.sections.map(sec => ({
         heading: sec.heading || '',
@@ -154,11 +165,18 @@ const NewsSection = () => {
         hasImage: !!sec.sectionImage
       })));
     } else {
-      setNewsSections([{ heading: '', content: '', sectionImage: '', hasImage: false }]);
+      setNewsSections([{
+        heading: '',
+        content: '',
+        sectionImage: '',
+        hasImage: false
+      }]);
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   };
-
   const handleDeleteNews = async (newsId, newsTitle) => {
     const result = await Swal.fire({
       title: 'هل أنت متأكد؟',
@@ -167,33 +185,48 @@ const NewsSection = () => {
       showCancelButton: true,
       confirmButtonColor: '#ff4444',
       cancelButtonColor: '#444',
-      confirmButtonText: 'نعم، احذفه',
-      background: '#1a1a1a',
-      color: '#fff'
+      confirmButtonText: 'نعم، احذفه'
     });
     if (result.isConfirmed) {
       try {
-        const res = await fetch(`${API_URL}/newsAndUpdates/${newsId}`, { method: 'DELETE' });
+        const res = await fetch(`${API_URL}/news/${newsId}`, {
+          method: 'DELETE',
+          headers: authHeader()
+        });
         if (res.ok) {
           setNews(news.filter(n => n.id !== newsId));
-          Swal.fire({ title: 'تم حذف الخبر!', icon: 'success', background: '#1a1a1a', color: '#fff' });
+          Swal.fire({
+            title: 'تم حذف الخبر!',
+            icon: 'success',
+            background: '#1a1a1a',
+            color: '#fff'
+          });
         }
-      } catch (err) { console.error(err); }
+      } catch (err) {
+        console.error(err);
+      }
     }
   };
-
   const resetNewsForm = () => {
     setEditingNewsId(null);
-    setNewsForm({ tag: '', title: '', summary: '', image: '', author: 'الإدارة التقنية' });
-    setNewsSections([{ heading: '', content: '', sectionImage: '', hasImage: false }]);
+    setNewsForm({
+      tag: '',
+      title: '',
+      summary: '',
+      image: '',
+      author: 'الإدارة التقنية'
+    });
+    setNewsSections([{
+      heading: '',
+      content: '',
+      sectionImage: '',
+      hasImage: false
+    }]);
   };
-
   if (loading) return <div className="text-center py-20 text-purple-400 font-bold animate-pulse text-lg">جاري تحميل مستودع الأخبار الحصري...</div>;
-
-  return (
-    <div className="space-y-8 animate-fadeIn dark:text-white text-[var(--color-text-gray)]">
+  return <div className="space-y-8 animate-fadeIn dark:text-[var(--color-text-white)] text-[var(--color-text-gray)]">
       
-      {/* 📊 كارت الإحصائيات الخاص بالأخبار فقط (تطبيقاً لفكرتك) */}
+      {}
       <div className="flex justify-start ">
         <div className="dark:bg-white/5 bg-[var(--color-bg-card)] px-6 py-4 rounded-2xl border border-white/5 text-center min-w-[160px]">
           <p className="text-[10px] dark:text-gray-400 mb-1 font-bold">المقالات والأخبار المنشورة</p>
@@ -201,7 +234,7 @@ const NewsSection = () => {
         </div>
       </div>
 
-      {/* الـ Form الخاص بإضافة وتعديل الأخبار */}
+      {}
       <div className="dark:bg-white/5 bg-[var(--color-bg-card)] rounded-[2rem] border dark:border-white/10 border-[var(--color-border)] p-6 shadow-2xl relative overflow-hidden">
         <div className="absolute top-0 right-0 h-[4px] w-full bg-gradient-to-r from-purple-600 to-indigo-500" />
         
@@ -210,11 +243,9 @@ const NewsSection = () => {
             <FileText className="w-5 h-5" />
             {editingNewsId ? `تعديل بيانات الخبر (ID: ${editingNewsId})` : 'إضافة ونشر خبر جديد بالمنصة'}
           </h2>
-          {editingNewsId && (
-            <button onClick={resetNewsForm} className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 px-3 py-1.5 rounded-xl hover:bg-red-500 hover:text-white transition-all flex items-center gap-1">
-              <X className="w-3 h-3"/> إلغاء التعديل
-            </button>
-          )}
+          {editingNewsId && <button onClick={resetNewsForm} className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 px-3 py-1.5 rounded-xl hover:bg-red-500 hover:text-white transition-all flex items-center gap-1">
+              <X className="w-3 h-3" /> إلغاء التعديل
+            </button>}
         </div>
 
         <form onSubmit={handleSaveNews} className="space-y-6">
@@ -228,8 +259,10 @@ const NewsSection = () => {
               <input type="text" name="author" value={newsForm.author} onChange={handleNewsInputChange} className="w-full dark:bg-white/5 bg-[var(--color-bg-main)] border border-white/10 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-purple-500" required />
             </div>
             <div>
-              <label className="text-xs dark:text-gray-400 block mb-1">رابط صورة الغلاف الأساسية (URL)</label>
-              <input type="url" name="image" value={newsForm.image} onChange={handleNewsInputChange} className="w-full dark:bg-white/5 bg-[var(--color-bg-main)] border border-white/10 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-purple-500" placeholder="https://example.com/cover.jpg" required />
+              <ImageUploadField label="صورة الغلاف الأساسية" value={newsForm.image} onChange={url => setNewsForm(prev => ({
+              ...prev,
+              image: url
+            }))} folder="news" required={!editingNewsId} />
             </div>
           </div>
 
@@ -244,27 +277,26 @@ const NewsSection = () => {
             </div>
           </div>
 
-          {/* السكاشن والفقرات الديناميكية */}
+          {}
           <div className="border-t dark:border-white/5 border-var[--color-border] pt-4 space-y-4">
             <div className="flex justify-between items-center">
               <label className="text-xs font-bold text-purple-400 border-r-2 border-purple-500 pr-2">محتوى الخبر وفقراته بالتفصيل:</label>
               <button type="button" onClick={addNewsSection} className="px-4 py-2 bg-purple-600/20 text-purple-400 border border-purple-500/30 rounded-xl text-xs font-black flex items-center gap-1 hover:bg-purple-600 hover:text-white transition-all">
-                <Plus className="w-4 h-4"/> إضافة فقرة (سكشن) جديدة
+                <Plus className="w-4 h-4" /> إضافة فقرة (سكشن) جديدة
               </button>
             </div>
 
             <div className="space-y-4">
-              {newsSections.map((section, index) => (
-                <div key={index} className="bg-white/[0.02] border dark:border-white/5 border-var[--color-border] rounded-2xl p-4 space-y-3 relative">
+              {newsSections.map((section, index) => <div key={index} className="bg-white/[0.02] border dark:border-white/5 border-var[--color-border] rounded-2xl p-4 space-y-3 relative">
                   <div className="flex justify-between items-center border-b border-white/5 pb-2 flex-wrap gap-2">
                     <span className="text-xs dark:text-gray-400 font-bold dark:bg-white/5 bg-[var(--color-bg-main)] px-2 py-0.5 rounded">الفقرة #{index + 1}</span>
                     <div className="flex items-center gap-4">
                       <div className="flex items-center gap-1.5">
                         <input type="checkbox" id={`news-hasImage-${index}`} checked={section.hasImage} onChange={() => toggleNewsSectionImage(index)} className="w-3.5 h-3.5 accent-purple-500 cursor-pointer" />
-                        <label htmlFor={`news-hasImage-${index}`} className="text-xs dark:text-gray-400 cursor-pointer hover:text-white transition-colors font-bold">إضافة صورة لهذه الفقرة</label>
+                        <label htmlFor={`news-hasImage-${index}`} className="text-xs dark:text-gray-400 cursor-pointer hover:text-[var(--color-text-white)] transition-colors font-bold">إضافة صورة لهذه الفقرة</label>
                       </div>
                       <button type="button" onClick={() => removeNewsSection(index)} className="text-gray-500 hover:text-red-400 transition-all">
-                        <Trash2 className="w-4 h-4"/>
+                        <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
                   </div>
@@ -279,30 +311,21 @@ const NewsSection = () => {
                     <textarea rows="3" value={section.content} onChange={e => handleNewsSectionChange(index, 'content', e.target.value)} className="w-full dark:bg-white/5 bg-[var(--color-bg-main)] border border-white/10  rounded-xl px-3 py-2 text-xs outline-none focus:border-purple-500 leading-relaxed" placeholder="اكتب تفاصيل الفقرة الكروية هنا..." required />
                   </div>
 
-                  {section.hasImage && (
-                    <div className="dark:bg-black/40 bg-[var(--color-bg-main)] border border-white/5 p-3 rounded-xl space-y-1.5 animate-fadeIn">
-                      <label className="text-[11px] text-purple-400 flex items-center gap-1 font-bold">
-                        <ImageIcon className="w-3 h-3"/> رابط صورة الفقرة (URL)
-                      </label>
-                      <div className="relative">
-                        <input type="url" value={section.sectionImage} onChange={e => handleNewsSectionChange(index, 'sectionImage', e.target.value)} className="w-full dark:bg-white/5 bg-[var(--color-bg-card)] border border-white/10 rounded-lg pr-3 pl-8 py-2 text-xs text-white outline-none focus:border-purple-500" placeholder="https://example.com/section.jpg" required />
-                        <Link2 className="w-3.5 h-3.5 dark:text-gray-600 absolute left-2.5 top-2.5"/>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ))}
+                  {section.hasImage && <div className="dark:bg-black/40 bg-[var(--color-bg-main)] border border-white/5 p-3 rounded-xl space-y-1.5 animate-fadeIn">
+                      <ImageUploadField label="صورة الفقرة" value={section.sectionImage} onChange={url => handleNewsSectionChange(index, 'sectionImage', url)} folder="news" />
+                    </div>}
+                </div>)}
             </div>
           </div>
 
           <button type="submit" className="w-full py-3 bg-purple-600 text-white rounded-xl font-extrabold hover:bg-purple-500 shadow-lg flex items-center justify-center gap-2">
-            <Save className="w-4 h-4"/>
+            <Save className="w-4 h-4" />
             {editingNewsId ? 'تعديل وحفظ الخبر الحالي' : 'نشر وتعميم الخبر في المنصة فوراً'}
           </button>
         </form>
       </div>
 
-      {/* الجدول المعزول لعرض الأخبار */}
+      {}
       <div className="dark:bg-white/5 bg-[var(--color-bg-card)] rounded-[2rem] border dark:border-white/10 border-var[--color-border] overflow-hidden shadow-2xl">
         <div className="overflow-x-auto">
           <table className="w-full text-right">
@@ -316,13 +339,14 @@ const NewsSection = () => {
               </tr>
             </thead>
             <tbody className="divide-y dark:divide-white/5 divide-var[--color-border]">
-              {news.map(item => (
-                <tr key={item.id} className="hover:bg-white/5 transition-all">
+              {news.map(item => <tr key={item.id} className="hover:bg-white/5 transition-all">
                   <td className="p-6">
                     <div className="flex items-center gap-4">
-                      <img src={item.image} className="w-16 h-12 rounded-xl object-cover border dark:border-white/10 border-var[--color-border]" alt="" onError={(e)=>{e.target.src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=500"}} />
+                      <img src={item.image} className="w-16 h-12 rounded-xl object-cover border dark:border-white/10 border-var[--color-border]" alt="" onError={e => {
+                    e.target.src = "https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=500";
+                  }} />
                       <div>
-                        <p className="font-bold text-base dark:text-white">{item.title}</p>
+                        <p className="font-bold text-base dark:text-[var(--color-text-white)]">{item.title}</p>
                         <p className="text-[11px] text-purple-400">🏷️ {item.tag}</p>
                       </div>
                     </div>
@@ -336,15 +360,12 @@ const NewsSection = () => {
                       <button onClick={() => handleDeleteNews(item.id, item.title)} className="px-3 py-1.5 bg-red-900/20 text-red-400 border border-red-500/20 rounded-lg text-xs font-bold hover:bg-red-600 hover:text-white transition-all">حذف</button>
                     </div>
                   </td>
-                </tr>
-              ))}
+                </tr>)}
             </tbody>
           </table>
         </div>
       </div>
 
-    </div>
-  );
+    </div>;
 };
-
 export default NewsSection;

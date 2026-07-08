@@ -1,62 +1,34 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  Button,
-  Menu,
-  MenuHandler,
-  MenuList,
-  MenuItem,
-  Typography,
-} from "@material-tailwind/react";
-import { 
-  PowerIcon, 
-  UserIcon, 
-  RectangleGroupIcon 
-} from "@heroicons/react/24/outline";
-
-const IconProfile = ({ user, logout, isMobile = false, onClose }) => {
+import { Button, Menu, MenuHandler, MenuList, MenuItem, Typography } from "@material-tailwind/react";
+import { PowerIcon, UserIcon, RectangleGroupIcon } from "@heroicons/react/24/outline";
+const IconProfile = ({
+  user,
+  logout,
+  isMobile = false,
+  onClose
+}) => {
   const navigate = useNavigate();
-
   if (!user) {
-    return (
-      <Link to="/login" onClick={onClose} className={!isMobile ? "hidden xl:block" : "w-full"}>
-        <Button
-          fullWidth={isMobile}
-          variant="outlined"
-          className="text-lg p-2 border-[var(--color-border)] text-[var(--color-text-gray)]"
-        >
+    return <Link to="/login" onClick={onClose} className={!isMobile ? "hidden xl:block" : "w-full"}>
+        <Button fullWidth={isMobile} variant="outlined" className="text-lg p-2 border-[var(--color-border)] text-[var(--color-text-gray)]">
           تسجيل الدخول / إنشاء حساب
         </Button>
-      </Link>
-    );
+      </Link>;
   }
-
   const rawImage = user.image || user.avatar || user.profile_image;
   const placeholder = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.username || user.name)}&background=D4AF37&color=fff`;
-  
-  // تعديل الشرط ليشمل أي مستخدم ليس "مستخدم عادي" وليس "لاعب" (أي أدمن بمختلف مسمياتهم)
   const isAdmin = user.role !== "user" && user.role !== "player";
-
-  const handleError = (e) => {
+  const handleError = e => {
     if (e.target.src !== placeholder) {
       e.target.src = placeholder;
     }
   };
-
-  const ProfileImg = ({ className }) => (
-    <img 
-      key={rawImage} 
-      src={rawImage || placeholder} 
-      alt={user.name}
-      onError={handleError}
-      className={`rounded-full object-cover w-full h-full block ${className}`}
-    />
-  );
-
-  // 1. عرض القائمة داخل السايد بار (شاشات الجوال والشاشات الصغيرة)
+  const ProfileImg = ({
+    className
+  }) => <img key={rawImage} src={rawImage || placeholder} alt={user.name} onError={handleError} className={`rounded-full object-cover w-full h-full block ${className}`} />;
   if (isMobile) {
-    return (
-      <div className="flex flex-col gap-2 w-full px-2">
+    return <div className="flex flex-col gap-2 w-full px-2">
         <div className="flex items-center gap-3 py-4 border-b border-[var(--color-border)] mb-2">
           <div className="h-16 w-16">
              <ProfileImg className="border-2 border-[var(--color-gold-main)]" />
@@ -67,48 +39,35 @@ const IconProfile = ({ user, logout, isMobile = false, onClose }) => {
           </div>
         </div>
         
-        {isAdmin && (
-          <Link to="/dashboard" onClick={onClose} className="flex items-center gap-2 p-2 hover:bg-[var(--color-bg-main)] text-[var(--color-gold-main)] rounded-lg">
+        {isAdmin && <Link to="/dashboard" onClick={onClose} className="flex items-center gap-2 p-2 hover:bg-[var(--color-bg-main)] text-[var(--color-gold-main)] rounded-lg">
             <RectangleGroupIcon className="h-5 w-5" /> <span>لوحة التحكم</span>
-          </Link>
-        )}
+          </Link>}
 
         <Link to="/profile" onClick={onClose} className="flex items-center gap-2 p-2 hover:bg-[var(--color-bg-main)] text-[var(--color-text-gray)] rounded-lg">
           <UserIcon className="h-5 w-5" /> <span>الملف الشخصي</span>
         </Link>
 
-        <button onClick={() => { logout(); onClose(); }} className="flex items-center gap-2 p-2 text-red-500 hover:bg-red-500/10 rounded-lg mt-2">
+        <button onClick={() => {
+        logout();
+        onClose();
+      }} className="flex items-center gap-2 p-2 text-red-500 hover:bg-red-500/10 rounded-lg mt-2">
           <PowerIcon className="h-5 w-5" /> <span>تسجيل الخروج</span>
         </button>
-      </div>
-    );
+      </div>;
   }
-
-  // 2. عرض القائمة المنسدلة العادية في الهيدر (الشاشات الكبيرة)
-  return (
-    <Menu placement="bottom-end">
+  return <Menu placement="bottom-end">
       <MenuHandler>
-        <button 
-          className="rounded-full overflow-hidden h-12 w-12 outline-none p-0 flex items-center justify-center bg-transparent cursor-pointer"
-        >
+        <button className="rounded-full overflow-hidden h-12 w-12 outline-none p-0 flex items-center justify-center bg-transparent cursor-pointer">
           <ProfileImg />
         </button>
       </MenuHandler>
       <MenuList className="bg-[var(--color-bg-card)] border-[var(--color-border)] text-[var(--color-text-gray)] shadow-xl z-[200]">
         
-        {isAdmin && (
-          <MenuItem 
-            onClick={() => navigate("/dashboard")} 
-            className="flex items-center gap-2 text-[var(--color-gold-main)] font-bold cursor-pointer"
-          >
+        {isAdmin && <MenuItem onClick={() => navigate("/dashboard")} className="flex items-center gap-2 text-[var(--color-gold-main)] font-bold cursor-pointer">
             <RectangleGroupIcon className="h-4 w-4" /> لوحة التحكم 
-          </MenuItem>
-        )}
+          </MenuItem>}
 
-        <MenuItem 
-          onClick={() => navigate("/profile")} 
-          className="flex items-center gap-2 cursor-pointer"
-        >
+        <MenuItem onClick={() => navigate("/profile")} className="flex items-center gap-2 cursor-pointer">
           <UserIcon className="h-4 w-4" /> الملف الشخصي
         </MenuItem>
 
@@ -118,8 +77,6 @@ const IconProfile = ({ user, logout, isMobile = false, onClose }) => {
           <PowerIcon className="h-4 w-4" /> تسجيل الخروج
         </MenuItem>
       </MenuList>
-    </Menu>
-  );
+    </Menu>;
 };
-
 export default IconProfile;

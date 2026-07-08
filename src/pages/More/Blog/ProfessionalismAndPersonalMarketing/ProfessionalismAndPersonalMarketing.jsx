@@ -1,9 +1,6 @@
-
 import React, { Suspense, lazy } from 'react';
 const ProfessionalismContent = () => {
-
-  return (
-    <div className="min-h-screen bg-[var(--color-bg-main)] text-[var(--color-text-white)] font-sans" dir="rtl">
+  return <div className="min-h-screen bg-[var(--color-bg-main)] text-[var(--color-text-white)] font-sans" dir="rtl">
       
       <div className="relative py-24 px-6 border-b border-[var(--color-border)]/20 overflow-hidden">
         <div className="max-w-6xl mx-auto relative z-10">
@@ -15,7 +12,7 @@ const ProfessionalismContent = () => {
           </p>
         </div>
 
-        <div className="absolute top-10 left-[-5%] text-[15rem] font-black dark:text-white dark:opacity-10 text-black opacity-20 select-none pointer-events-none uppercase">
+        <div className="absolute top-10 left-[-5%] text-[15rem] font-black dark:text-[var(--color-text-white)] dark:opacity-10 text-black opacity-20 select-none pointer-events-none uppercase">
           Elite
         </div>
       </div>
@@ -80,39 +77,24 @@ const ProfessionalismContent = () => {
           </div>
 
           <div className="relative overflow-hidden rounded-2xl">
-            <img 
-              src="/professionalism.jpeg" 
-              alt="Professional Player Portrait" 
-              loading="lazy"
-              decoding="async"
-              className="w-full h-80 object-cover grayscale hover:grayscale-0 transition-all duration-700"
-            />
+            <img src="/professionalism.jpeg" alt="Professional Player Portrait" loading="lazy" decoding="async" className="w-full h-80 object-cover grayscale hover:grayscale-0 transition-all duration-700" />
             <div className="absolute inset-0 bg-[var(--color-gold-main)]/10"></div>
           </div>
 
         </div>
 
       </main>
-    </div>
-  );
+    </div>;
 };
-
 const ProfessionalismAndPersonalMarketing = () => {
-  return (
-    <Suspense 
-      fallback={
-        <div className="min-h-screen bg-[var(--color-bg-main)] flex items-center justify-center">
+  return <Suspense fallback={<div className="min-h-screen bg-[var(--color-bg-main)] flex items-center justify-center">
           <div className="flex gap-2">
             <div className="w-3 h-3 bg-[var(--color-gold-main)] rounded-full animate-bounce"></div>
             <div className="w-3 h-3 bg-[var(--color-gold-main)] rounded-full animate-bounce [animation-delay:-0.15s]"></div>
             <div className="w-3 h-3 bg-[var(--color-gold-main)] rounded-full animate-bounce [animation-delay:-0.3s]"></div>
           </div>
-        </div>
-      }
-    >
+        </div>}>
       <ProfessionalismContent />
-    </Suspense>
-  );
+    </Suspense>;
 };
-
 export default ProfessionalismAndPersonalMarketing;

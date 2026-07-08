@@ -1,113 +1,93 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { lazy,Suspense } from "react";
-import Home from "./pages/Home/Home.jsx";
+import { lazy, Suspense } from "react";
 import Header from "./components/Header/Header.jsx";
 import Footer from "./components/Footer/Footer.jsx";
-import AboutThePlatform from "./pages/About/AboutThePlatform/AboutThePlatform.jsx";
-import Coaches from "./pages/About/Coaches/Coaches.jsx";
-import Login from "./pages/Login/Login.jsx";
-import Register from "./pages/Register/Register.jsx"; 
-import Blog from "./pages/More/Blog/Blog.jsx";
-import DashboardMain from "./pages/More/Dashboard/DashboardMain.jsx";
-import PlayerDetails from "./pages/More/Dashboard/PlayerDetails/PlayerDetails.jsx";
-import NewsAndUpdates from "./pages/More/NewsAndUpdates/NewsAndUpdates.jsx";
-import Profile from "./pages/Profile/Profile.jsx";
-import FieldTests from "./pages/Programs/FieldTests/FieldTests.jsx";
-import PrizesAndCompetitions from "./pages/Programs/PrizesAndCompetitions/PrizesAndCompetitions.jsx";
-import TrainingCamps from "./pages/Programs/TrainingCamps/TrainingCamps.jsx";
-const Store = lazy(() => import("./pages/Store/Store.jsx"));
-import Products from "./pages/Store/Products.jsx";
-import ProductDetails from "./pages/Store/ProductDetails.jsx";
-import Cart from "./pages/Store/Cart.jsx";
-import Checkout from "./pages/Store/Checkout.jsx";
-
-import MyOrder from "./pages/Store/MyOrder.jsx";
-import SuccessStories from "./pages/SuccessStories/SuccessStories.jsx";
-import SuccessStoriesCr from "./pages/SuccessStories/SuccessStoriesCr/SuccessStoriesCr.jsx";
-import SuccessStoriesMo from "./pages/SuccessStories/SuccessStoriesMo/SuccessStoriesMo.jsx";
-import SuccessStoriesLeo from "./pages/SuccessStories/SuccessStoriesLeo/SuccessStoriesLeo.jsx";
-const AcceptableTalent = lazy(() => import("./pages/AcceptableTalent/AcceptableTalent.jsx"));
-import DecisionMakingSkills from "./pages/More/Blog/DecisionMakingSkills/DecisionMakingSkills.jsx";
-import Fitness from "./pages/More/Blog/Fitness/Fitness.jsx";
-import InjuryPrevention from "./pages/More/Blog/InjuryPrevention/InjuryPrevention.jsx";
-import ProfessionalismAndPersonalMarketing from "./pages/More/Blog/ProfessionalismAndPersonalMarketing/ProfessionalismAndPersonalMarketing.jsx";
-import ProperNutrition from "./pages/More/Blog/ProperNutrition/ProperNutrition.jsx";
-import SportsPsychology from "./pages/More/Blog/SportsPsychology/SportsPsychology.jsx";
-import NotFound from "./pages/NotFound/NotFound.jsx";
-import ContactUs from "./pages/ContactUs/ContactUs.jsx";
-import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy.jsx";
 import { ThemeProvider } from "./contexts/ThemeContext/ThemeContext.jsx";
 import { AuthProvider, useAuth } from "./contexts/AuthContext/AuthContext.jsx";
-import {StoreProvider} from "./contexts/StoreContext/StoreContext.jsx"
+import { StoreProvider } from "./contexts/StoreContext/StoreContext.jsx";
 import StoreLayout from "./components/StoreLayout/StoreLayout";
-
-import NewsDetails from "./pages/More/NewsAndUpdates/NewsDetails.jsx";
-import ProfilePrizes from "./pages/Programs/PrizesAndCompetitions/ProfilePrizes/ProfilePrizes.jsx";
-
-const StoreLoader = () => (
-  <div className="flex h-[60vh] w-full items-center justify-center">
+const Home = lazy(() => import("./pages/Home/Home.jsx"));
+const AboutThePlatform = lazy(() => import("./pages/About/AboutThePlatform/AboutThePlatform.jsx"));
+const Coaches = lazy(() => import("./pages/About/Coaches/Coaches.jsx"));
+const Login = lazy(() => import("./pages/Login/Login.jsx"));
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword/ForgotPassword.jsx"));
+const Register = lazy(() => import("./pages/Register/Register.jsx"));
+const Blog = lazy(() => import("./pages/More/Blog/Blog.jsx"));
+const DashboardMain = lazy(() => import("./pages/More/Dashboard/DashboardMain.jsx"));
+const PlayerDetails = lazy(() => import("./pages/More/Dashboard/PlayerDetails/PlayerDetails.jsx"));
+const NewsAndUpdates = lazy(() => import("./pages/More/NewsAndUpdates/NewsAndUpdates.jsx"));
+const Profile = lazy(() => import("./pages/Profile/Profile.jsx"));
+const FieldTests = lazy(() => import("./pages/Programs/FieldTests/FieldTests.jsx"));
+const PrizesAndCompetitions = lazy(() => import("./pages/Programs/PrizesAndCompetitions/PrizesAndCompetitions.jsx"));
+const TrainingCamps = lazy(() => import("./pages/Programs/TrainingCamps/TrainingCamps.jsx"));
+const Store = lazy(() => import("./pages/Store/Store.jsx"));
+const Products = lazy(() => import("./pages/Store/Products.jsx"));
+const ProductDetails = lazy(() => import("./pages/Store/ProductDetails.jsx"));
+const Cart = lazy(() => import("./pages/Store/Cart.jsx"));
+const Checkout = lazy(() => import("./pages/Store/Checkout.jsx"));
+const MyOrder = lazy(() => import("./pages/Store/MyOrder.jsx"));
+const SuccessStories = lazy(() => import("./pages/SuccessStories/SuccessStories.jsx"));
+const SuccessStoriesCr = lazy(() => import("./pages/SuccessStories/SuccessStoriesCr/SuccessStoriesCr.jsx"));
+const SuccessStoriesMo = lazy(() => import("./pages/SuccessStories/SuccessStoriesMo/SuccessStoriesMo.jsx"));
+const SuccessStoriesLeo = lazy(() => import("./pages/SuccessStories/SuccessStoriesLeo/SuccessStoriesLeo.jsx"));
+const AcceptableTalent = lazy(() => import("./pages/AcceptableTalent/AcceptableTalent.jsx"));
+const DecisionMakingSkills = lazy(() => import("./pages/More/Blog/DecisionMakingSkills/DecisionMakingSkills.jsx"));
+const Fitness = lazy(() => import("./pages/More/Blog/Fitness/Fitness.jsx"));
+const InjuryPrevention = lazy(() => import("./pages/More/Blog/InjuryPrevention/InjuryPrevention.jsx"));
+const ProfessionalismAndPersonalMarketing = lazy(() => import("./pages/More/Blog/ProfessionalismAndPersonalMarketing/ProfessionalismAndPersonalMarketing.jsx"));
+const ProperNutrition = lazy(() => import("./pages/More/Blog/ProperNutrition/ProperNutrition.jsx"));
+const SportsPsychology = lazy(() => import("./pages/More/Blog/SportsPsychology/SportsPsychology.jsx"));
+const NotFound = lazy(() => import("./pages/NotFound/NotFound.jsx"));
+const ContactUs = lazy(() => import("./pages/ContactUs/ContactUs.jsx"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy/PrivacyPolicy.jsx"));
+const NewsDetails = lazy(() => import("./pages/More/NewsAndUpdates/NewsDetails.jsx"));
+const ProfilePrizes = lazy(() => import("./pages/Programs/PrizesAndCompetitions/ProfilePrizes/ProfilePrizes.jsx"));
+const StoreLoader = () => <div className="flex h-[60vh] w-full items-center justify-center">
     <div className="h-12 w-12 animate-spin rounded-full border-4 border-[var(--color-gold-main)] border-t-transparent"></div>
-  </div>
-);
-
-
-const ProtectedAdminRoute = ({ children }) => {
-  const { currentUser, loading } = useAuth();
-
+  </div>;
+const ProtectedAdminRoute = ({
+  children
+}) => {
+  const {
+    currentUser,
+    loading
+  } = useAuth();
   if (loading) {
-    return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
+    return <div className="min-h-screen bg-[var(--color-bg-card)] flex items-center justify-center">
         <div className="text-[var(--color-gold-main)] font-black animate-pulse">VERIFYING...</div>
-      </div>
-    );
+      </div>;
   }
-
   const allowedRoles = ['super_admin', 'technical_coach', 'camps_manager', 'marketing_admin', 'admin'];
   const hasAccess = currentUser && allowedRoles.includes(currentUser.role);
-
   if (!hasAccess) {
     return <Navigate to="/" replace />;
   }
-
   return children;
 };
-
 const App = () => {
-  return (
-    <AuthProvider>
+  return <AuthProvider>
       <ThemeProvider>
         <StoreProvider>
       <div className="app-container">
         <Header />
-        <Suspense fallback={
-          <div className="min-h-screen bg-black flex items-center justify-center text-[var(--color-gold-main)] animate-pulse font-bold">
+        <Suspense fallback={<div className="min-h-screen bg-[var(--color-bg-card)] flex items-center justify-center text-[var(--color-gold-main)] animate-pulse font-bold">
             LOADING PAGE...
-          </div>
-        }>
+          </div>}>
           <Routes>
-            <Route path="/" element={ <Home /> } />
+            <Route path="/" element={<Home />} />
             <Route path="/about-the-platform" element={<AboutThePlatform />} />
             <Route path="/coaches" element={<Coaches />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/register" element={<Register />} />
             <Route path="/blog" element={<Blog />} />
-                        <Route 
-              path="/dashboard" 
-              element={
-                <ProtectedAdminRoute>
+                        <Route path="/dashboard" element={<ProtectedAdminRoute>
                   <DashboardMain />
-                </ProtectedAdminRoute>
-              } 
-            />
+                </ProtectedAdminRoute>} />
             
-            <Route 
-              path="/dashboard/player/:id" 
-              element={
-                <ProtectedAdminRoute>
+            <Route path="/dashboard/player/:id" element={<ProtectedAdminRoute>
                   <PlayerDetails />
-                </ProtectedAdminRoute>
-              } 
-            />
+                </ProtectedAdminRoute>} />
             
             <Route path="/news-and-updates" element={<NewsAndUpdates />} />
             <Route path="/news/:id" element={<NewsDetails />} />
@@ -118,11 +98,9 @@ const App = () => {
 
             <Route path="/dashboard/profile-prizes" element={<ProfilePrizes />} />
              <Route element={<StoreLayout />}>
-    <Route path="/store" element={
-      <Suspense fallback={<StoreLoader />}>
+    <Route path="/store" element={<Suspense fallback={<StoreLoader />}>
         <Store />
-      </Suspense>
-    } />
+      </Suspense>} />
      <Route path="/products" element={<Products />} />
      <Route path="/productDetails/:id" element={<ProductDetails />} />
      <Route path="/cart" element={<Cart />} />
@@ -152,9 +130,6 @@ const App = () => {
       </div>
       </StoreProvider>
       </ThemeProvider>
-    </AuthProvider>
-    
-  );
+    </AuthProvider>;
 };
-
 export default App;

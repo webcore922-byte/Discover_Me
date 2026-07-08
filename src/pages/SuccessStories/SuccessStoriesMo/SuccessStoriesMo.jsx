@@ -1,30 +1,20 @@
 import React, { Suspense, lazy } from "react";
 import { Card, Typography } from "@material-tailwind/react";
 import { FaTrophy, FaFutbol, FaStar, FaAward } from "react-icons/fa";
-
 import { useTheme } from "../../../contexts/ThemeContext/ThemeContext";
-
-
 const SuccessStoriesMoContent = () => {
-   const { theme } = useTheme();
-    const lightimage = "bg-[url('./bg_success_stories_light_3.jpeg')]";
-    const darkimage = "bg-[url('./bg_success_stories_3.jpeg')]";
-  return (
-    <div className="relative min-h-screen w-full overflow-x-hidden font-sans bg-[var(--color-bg-main)]">
+  const {
+    theme
+  } = useTheme();
+  const lightimage = "bg-[url('./bg_success_stories_light_3.jpeg')]";
+  const darkimage = "bg-[url('./bg_success_stories_3.jpeg')]";
+  return <div className="relative min-h-screen w-full overflow-x-hidden font-sans bg-[var(--color-bg-main)]">
    
-      <img
-        src={theme === "light" ? "./bg_success_stories_light_3.jpeg" : "./bg_success_stories_3.jpeg"}
-        className="w-full h-full object-cover object-bottom  fixed inset-0 z-0 max-w-full"
-        alt="Success Stories Background"
-        loading="lazy"
-      />
+      <img src={theme === "light" ? "./bg_success_stories_light_3.jpeg" : "./bg_success_stories_3.jpeg"} className="w-full h-full object-cover object-bottom  fixed inset-0 z-0 max-w-full" alt="Success Stories Background" loading="lazy" />
       <div className="relative z-10 min-h-screen flex flex-col px-3 sm:px-4 md:px-8 pb-10">
         
         <div className="flex-shrink-0 pt-4 mb-5">
-          <Typography
-            variant="h1"
-            className="text-gradient-gold text-2xl md:text-5xl font-bold text-center drop-shadow-lg py-2"
-          >
+          <Typography variant="h1" className="text-gradient-gold text-2xl md:text-5xl font-bold text-center drop-shadow-lg py-2">
             قصص النجاح
           </Typography>
         </div>
@@ -111,19 +101,14 @@ const SuccessStoriesMoContent = () => {
   </Card>
 
   <div className="rounded-xl border border-[var(--color-border)] overflow-hidden flex min-w-0">
-    <img 
-      src="./hero 1.jpeg" 
-      alt="Mohamed Salah" 
-      loading="lazy"
-      className="w-full h-full object-cover" 
-    />
+    <img src="./hero 1.jpeg" alt="Mohamed Salah" loading="lazy" className="w-full h-full object-cover" />
   </div>
 </div>
 
     <div className="grid grid-cols-1 md:grid-cols-[1fr_1.6fr] gap-4 items-stretch">
       
       <div className="rounded-xl border border-[var(--color-border)] overflow-hidden min-h-[120px] flex min-w-0 order-2 md:order-1">
-        <img src="./hero 2.jpeg" alt="" className="w-full h-full object-cover" loading="lazy"/>
+        <img src="./hero 2.jpeg" alt="" className="w-full h-full object-cover" loading="lazy" />
       </div>
 
       <Card className="border border-[var(--color-border)] bg-[var(--color-bg-card)] rounded-xl p-4 shadow-none flex flex-col h-fit min-w-0 order-1 md:order-2">
@@ -141,12 +126,7 @@ const SuccessStoriesMoContent = () => {
 <Card className="min-w-0 relative border border-[var(--color-border)] bg-[var(--color-bg-card)] rounded-2xl p-4 shadow-none flex flex-col h-[550px] overflow-hidden">
   
   <div className="relative w-full flex-grow flex items-center justify-center min-h-0 overflow-hidden">
-    <img
-      src="./Mo.jpeg"
-      alt="Mohamed Salah"
-      className="max-w-full max-h-full object-contain z-0" 
-      loading="lazy"
-    />
+    <img src="./Mo.jpeg" alt="Mohamed Salah" className="max-w-full max-h-full object-contain z-0" loading="lazy" />
   
     <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[var(--color-bg-card)] to-transparent z-10"></div>
   </div>
@@ -171,22 +151,13 @@ const SuccessStoriesMoContent = () => {
 </Card>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 const SuccessStoriesMo = () => {
-  return (
-    <Suspense 
-      fallback={
-        <div className="min-h-screen bg-[var(--color-bg-main)] flex items-center justify-center">
+  return <Suspense fallback={<div className="min-h-screen bg-[var(--color-bg-main)] flex items-center justify-center">
           <div className="w-12 h-12 border-4 border-[var(--color-gold-main)] border-t-transparent rounded-full animate-spin"></div>
-        </div>
-      }
-    >
+        </div>}>
       <SuccessStoriesMoContent />
-    </Suspense>
-  );
+    </Suspense>;
 };
-
 export default SuccessStoriesMo;

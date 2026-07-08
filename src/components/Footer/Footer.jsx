@@ -1,11 +1,8 @@
 import { Link } from "react-router-dom";
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaFeatherAlt } from "react-icons/fa";
-
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-
-  return (
-    <footer className="relative bg-[var(--color-bg-card)] text-white py-4 overflow-hidden">
+  return <footer className="relative bg-[var(--color-bg-card)] text-[var(--color-text-white)] py-4 overflow-hidden">
       
       <FaFeatherAlt className="absolute -bottom-6 -left-10 text-[var(--color-gold-main)] text-[150px] opacity-[0.03] -rotate-12 pointer-events-none" />
 
@@ -54,8 +51,6 @@ const Footer = () => {
 
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;

@@ -1,17 +1,7 @@
 import React from "react";
-import {
-  Typography,
-  Card,
-  CardBody,
-  List,
-  ListItem,
-  ListItemPrefix,
-} from "@material-tailwind/react";
-
+import { Typography, Card, CardBody, List, ListItem, ListItemPrefix } from "@material-tailwind/react";
 const SportsPsychology = () => {
-
-  return (
-    <div className="bg-[var(--color-bg-main)] min-h-screen p-6 lg:p-12 text-[var(--color-text-gray)] font-sans">
+  return <div className="bg-[var(--color-bg-main)] min-h-screen p-6 lg:p-12 text-[var(--color-text-gray)] font-sans">
       <div className="max-w-6xl mx-auto">
         
         <div className="mb-16 border-r-8 border-[var(--color-border)] pr-6 py-2">
@@ -89,19 +79,12 @@ const SportsPsychology = () => {
                 </div>
 
                 <List className="p-2">
-                  {[
-                    "التحدث الإيجابي مع النفس",
-                    "تمارين التنفس",
-                    "التحليل البصري",
-                    "إزالة المشتتات",
-                  ].map((item, i) => (
-                    <ListItem key={i} className="gap-3 hover:bg-[var(--color-bg-main)]">
+                  {["التحدث الإيجابي مع النفس", "تمارين التنفس", "التحليل البصري", "إزالة المشتتات"].map((item, i) => <ListItem key={i} className="gap-3 hover:bg-[var(--color-bg-main)]">
                       <ListItemPrefix>
                         <span className="w-2 h-2 rounded-full bg-[var(--color-gold-main)]"></span>
                       </ListItemPrefix>
                       {item}
-                    </ListItem>
-                  ))}
+                    </ListItem>)}
                 </List>
 
               </CardBody>
@@ -121,8 +104,6 @@ const SportsPsychology = () => {
         </div>
 
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default SportsPsychology;

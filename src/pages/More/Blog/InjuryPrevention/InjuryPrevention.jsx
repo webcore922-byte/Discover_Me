@@ -1,8 +1,6 @@
-import React, { Suspense ,lazy} from 'react';
+import React, { Suspense, lazy } from 'react';
 const InjuryPreventionContent = () => {
-
-  return (
-    <div className="min-h-screen bg-[var(--color-bg-main)] text-[var(--color-text-white)] font-sans selection:bg-[var(--color-gold-main)] selection:text-black">
+  return <div className="min-h-screen bg-[var(--color-bg-main)] text-[var(--color-text-white)] font-sans selection:bg-[var(--color-gold-main)] selection:text-black">
       
       <main className="max-w-6xl mx-auto px-6 py-12 lg:py-20">
         
@@ -35,13 +33,7 @@ const InjuryPreventionContent = () => {
             <div className="absolute -top-10 -right-10 w-64 h-64 bg-[var(--color-gold-main)] opacity-10 rounded-full blur-3xl"></div>
 
             <div className="relative z-10 rounded-[40px] overflow-hidden border-2 border-[var(--color-border)] rotate-3">
-              <img 
-                src="/injury-prevention.jpeg" 
-                alt="Injury Prevention" 
-                loading="eager"
-                decoding="async"
-                className="w-full h-[500px] object-cover scale-110"
-              />
+              <img src="/injury-prevention.jpeg" alt="Injury Prevention" loading="eager" decoding="async" className="w-full h-[500px] object-cover scale-110" />
             </div>
           </div>
 
@@ -87,9 +79,7 @@ const InjuryPreventionContent = () => {
           </div>
 
           <div className="absolute inset-0 opacity-10 pointer-events-none flex flex-wrap gap-2">
-            {[...Array(20)].map((_, i) => (
-              <div key={i} className="w-20 h-20 border border-black"></div>
-            ))}
+            {[...Array(20)].map((_, i) => <div key={i} className="w-20 h-20 border border-black"></div>)}
           </div>
         </div>
 
@@ -125,22 +115,13 @@ const InjuryPreventionContent = () => {
         </div>
 
       </main>
-    </div>
-  );
+    </div>;
 };
-
 const InjuryPrevention = () => {
-  return (
-    <Suspense 
-      fallback={
-        <div className="min-h-screen bg-[var(--color-bg-main)] flex items-center justify-center">
+  return <Suspense fallback={<div className="min-h-screen bg-[var(--color-bg-main)] flex items-center justify-center">
           <div className="w-16 h-1 bg-[var(--color-gold-main)] animate-pulse rounded"></div>
-        </div>
-      }
-    >
+        </div>}>
       <InjuryPreventionContent />
-    </Suspense>
-  );
+    </Suspense>;
 };
-
 export default InjuryPrevention;

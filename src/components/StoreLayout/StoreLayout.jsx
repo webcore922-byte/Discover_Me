@@ -1,15 +1,11 @@
 import { Outlet } from "react-router-dom";
-import NavStore from "../navStore/NavStore"; // تأكدي من مسار الاستيراد الصحيح
-
+import NavStore from "../navStore/NavStore";
 const StoreLayout = () => {
-  return (
-    <div className=" bg-[var(--color-bg-main)] min-h-screen"> 
+  return <div className=" bg-[var(--color-bg-main)] min-h-screen"> 
   
       <NavStore />
   
       <Outlet />
-    </div>
-  );
+    </div>;
 };
-
 export default StoreLayout;

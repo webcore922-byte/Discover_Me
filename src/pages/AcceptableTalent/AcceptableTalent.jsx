@@ -1,29 +1,31 @@
 import { GiDiamondTrophy } from "react-icons/gi";
-import { ChevronDownIcon } from '@heroicons/react/24/outline'
-
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import React, { useEffect, useState } from "react";
-import { HiOutlineRefresh } from "react-icons/hi"; 
-import { MdOutlineErrorOutline } from "react-icons/md"; 
-import {useTheme} from "../../contexts/ThemeContext/ThemeContext";
-
+import { HiOutlineRefresh } from "react-icons/hi";
+import { MdOutlineErrorOutline } from "react-icons/md";
+import { useTheme } from "../../contexts/ThemeContext/ThemeContext";
 const AcceptableTalent = () => {
   const [players, setPlayers] = useState([]);
   const [loadplayers, setLoadPlayers] = useState(true);
   const [errorplayers, setErrorPlayers] = useState(null);
   const [visibleCount, setVisibleCount] = useState(8);
   const [videoError, setVideoError] = useState(false);
-  const { theme } = useTheme();
+  const {
+    theme
+  } = useTheme();
   const lightBg = "bg-[url('../bg_Acceptable_talent_light.jpeg')]";
   const darkBg = "bg-[url('../bg_Acceptable_talent.jpeg')]";
   const getData = async () => {
     try {
-      const url = import.meta.env.VITE_API_URL;
+      const url = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1';
       const req = await fetch(`${url}/players`, {
         method: "GET",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json"
+        }
       });
       const res = await req.json();
-      setPlayers((res.filter(p => p.status == "final_accepted")));
+      setPlayers(res.filter(p => p.status == "final_accepted"));
       setLoadPlayers(false);
     } catch (e) {
       setErrorPlayers("حدث خطأ في تحميل البيانات، يرجى المحاولة لاحقاً");
@@ -33,16 +35,10 @@ const AcceptableTalent = () => {
   useEffect(() => {
     getData();
   }, []);
-
   const handleLoadMore = () => {
     setVisibleCount(prev => prev + 8);
   };
-
-return (
-    
-    <div 
-      className={`min-h-screen ${theme === 'light' ? lightBg : darkBg} bg-fixed bg-cover bg-center relative`} 
-    >
+  return <div className={`min-h-screen ${theme === 'light' ? lightBg : darkBg} bg-fixed bg-cover bg-center relative`}>
 
 
       <div className="relative z-10 py-8 px-6 lg:px-20 text-right">
@@ -66,8 +62,7 @@ return (
         </div>
       </div>
 
-{loadplayers && (
-  <div className="flex flex-col items-center justify-center min-h-[400px] w-full">
+{loadplayers && <div className="flex flex-col items-center justify-center min-h-[400px] w-full">
   
     <div className="relative">
       <div className="w-16 h-16 border-4 border-[#D4AF37]/20 border-t-[#D4AF37] rounded-full animate-spin"></div>
@@ -77,34 +72,38 @@ return (
     <p className="mt-4 text-[#D4AF37] font-medium animate-pulse">
       جاري التحميل...
     </p>
-  </div>
-)}
-      {errorplayers && (
-        <div className="relative max-w-[90%] sm:max-w-md mx-auto mt-10 px-2">
+  </div>}
+      {errorplayers && <div className="relative max-w-[90%] sm:max-w-md mx-auto mt-10 px-2">
           <div className="absolute inset-0 bg-[#D4AF37] opacity-[0.05] blur-[40px] sm:blur-[60px] rounded-full"></div>
           <div className="relative overflow-hidden bg-[#1a1d1e]/95 border border-[#D4AF37]/20 backdrop-blur-xl rounded-[1.25rem] sm:rounded-[1.5rem] p-5 sm:p-8 text-center shadow-2xl">
-            <h3 className="text-lg sm:text-xl font-bold text-white mb-2">عذراً، حدث خطأ ما</h3>
+            <h3 className="text-lg sm:text-xl font-bold text-[var(--color-text-white)] mb-2">عذراً، حدث خطأ ما</h3>
             <p className="text-gray-400 text-[12px] sm:text-[13px] mb-6">{errorplayers}</p>
-           <button
-  onClick={() => { setLoadPlayers(true); setErrorPlayers(null); getData(); }}
-  className="px-8 py-2.5 bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#aa771c] rounded-lg font-bold text-black flex items-center gap-2 mx-auto"
->
+           <button onClick={() => {
+          setLoadPlayers(true);
+          setErrorPlayers(null);
+          getData();
+        }} className="px-8 py-2.5 bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#aa771c] rounded-lg font-bold text-black flex items-center gap-2 mx-auto">
   <HiOutlineRefresh className="text-lg animate-spin-hover" /> 
   إعادة المحاولة
 </button>
           </div>
-        </div>
-      )}
+        </div>}
       
         <div className="max-w-7xl mx-auto px-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 pb-6">
-          {players.slice(0, visibleCount).map(({ id, name, position, location, rating, image, tags, age, videoUrl }) => (
-              <div
-                key={id}
-                className="bg-[var(--color-bg-card)] border border-[#D4AF37]/20 rounded-2xl p-5 shadow-2xl hover:border-[#D4AF37]/60 transition-all duration-300 group"
-              >
+          {players.slice(0, visibleCount).map(({
+        id,
+        name,
+        position,
+        location,
+        rating,
+        image,
+        tags,
+        age,
+        videoUrl
+      }) => <div key={id} className="bg-[var(--color-bg-card)] border border-[#D4AF37]/20 rounded-2xl p-5 shadow-2xl hover:border-[#D4AF37]/60 transition-all duration-300 group">
                 <div className="flex flex-row items-start justify-between gap-4 mb-6">
                   <div className="w-1/2 flex flex-col gap-1 text-right">
-                    <h3 className="text-white text-lg font-bold truncate leading-none">{name}</h3>
+                    <h3 className="text-[var(--color-text-white)] text-lg font-bold truncate leading-none">{name}</h3>
                     <p className="text-[#D4AF37] text-xs font-semibold mt-1">{position}</p>
                     <p className="text-gray-400 text-[13px]">{age} : سنة</p>
                     <div className="flex items-center gap-1 text-gray-500 text-[11px] mt-1">
@@ -120,61 +119,43 @@ return (
                   </div>
                   <div className="w-1/2">
                     <div className="aspect-[4/5] overflow-hidden rounded-xl border border-white/10">
-                      <img
-                      
-                        src={image}
-                        alt={name}
-                        loading="lazy"
-                        className="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-500"
-                      />
+                      <img src={image} alt={name} loading="lazy" className="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-500" />
                     </div>
                   </div>
                 </div>
 
                 <div className="flex flex-row flex-wrap gap-2 mb-6 justify-start">
-                  {tags?.map((tag, idx) => (
-                    <span key={idx} className="bg-black/40 text-[#D4AF37] border border-[#D4AF37]/30 px-2.5 py-1 rounded text-[10px] font-bold">
+                  {tags?.map((tag, idx) => <span key={idx} className="bg-black/40 text-[#D4AF37] border border-[#D4AF37]/30 px-2.5 py-1 rounded text-[10px] font-bold">
                       {tag}
-                    </span>
-                  ))}
+                    </span>)}
                 </div>
 
-               <button
-               onClick={() => {
-                 if (videoUrl) {
-                  window.open(videoUrl, "_blank");
-                  } else {
-                  setVideoError(true);
-                  setTimeout(() => setVideoError(false), 3000);
-                     }
-                     }}
-                         className="w-full py-3 rounded-xl font-bold text-[#1a1d1e] bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#aa771c] hover:scale-105 transition-all shadow-[0_0_15px_rgba(212,175,55,0.3)]"
-                               >
+               <button onClick={() => {
+          if (videoUrl) {
+            window.open(videoUrl, "_blank");
+          } else {
+            setVideoError(true);
+            setTimeout(() => setVideoError(false), 3000);
+          }
+        }} className="w-full py-3 rounded-xl font-bold text-[#1a1d1e] bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#aa771c] hover:scale-105 transition-all shadow-[0_0_15px_rgba(212,175,55,0.3)]">
                           شاهد الفيديو الخاص به           
                       </button>
-              </div>
-            ))}
+              </div>)}
         </div>
         
-        {players.length > visibleCount ? (
-  <div className="flex justify-center pb-12 mt-6 relative z-10"> 
-    <button
-      onClick={handleLoadMore}
-      className="group flex flex-col items-center gap-3 transition-all duration-500 bg-transparent" 
-    >
+        {players.length > visibleCount ? <div className="flex justify-center pb-12 mt-6 relative z-10"> 
+    <button onClick={handleLoadMore} className="group flex flex-col items-center gap-3 transition-all duration-500 bg-transparent">
       <span className="text-[#D4AF37] font-bold text-[10px] md:text-xs uppercase tracking-[0.3em] group-hover:tracking-[0.5em] transition-all duration-500">
         انقر لعرض المزيد
       </span>
 
       <div className="w-12 h-12 md:w-14 md:h-14 rounded-full border border-[#D4AF37]/30 flex items-center justify-center bg-transparent group-hover:border-[#D4AF37] transition-all duration-500 shadow-none group-hover:shadow-[0_0_20px_rgba(212,175,55,0.2)]">
-        <ChevronDownIcon 
-          className="w-5 h-5 md:w-6 md:h-6 text-[#D4AF37] animate-bounce" 
-          style={{ animationDuration: '2s' }} 
-        />
+        <ChevronDownIcon className="w-5 h-5 md:w-6 md:h-6 text-[#D4AF37] animate-bounce" style={{
+            animationDuration: '2s'
+          }} />
       </div>
     </button>
-  </div>
-) : null}
+  </div> : null}
 
       <div className={`fixed bottom-10 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 transform ${videoError ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0 pointer-events-none"}`}>
         <div className="bg-[#1a1d1e]/90 backdrop-blur-md border border-[#D4AF37]/50 px-6 py-3 rounded-full shadow-[0_10px_40px_rgba(0,0,0,0.7)] flex items-center gap-3">
@@ -182,11 +163,6 @@ return (
           <p className="text-[#D4AF37] text-sm font-bold">عذراً، الفيديو غير متاح حاليًا</p>
         </div>
       </div> 
-    </div>
-  );
+    </div>;
 };
-
-
-
-
 export default AcceptableTalent;

@@ -1,16 +1,8 @@
 import { GiSoccerBall } from "react-icons/gi";
-import {
-  FaBolt,
-  FaRunning,
-  FaUtensils,
-  FaExclamationTriangle,
-  FaLightbulb,
-} from "react-icons/fa";
+import { FaBolt, FaRunning, FaUtensils, FaExclamationTriangle, FaLightbulb } from "react-icons/fa";
 import { MdFitnessCenter } from "react-icons/md";
-
 const ProperNutrition = () => {
-  return (
-    <div className="min-h-screen px-4 md:px-10 py-16 font-sans bg-[var(--color-bg-main)] text-[var(--color-text-white)] selection:bg-[var(--color-gold-main)] selection:text-black">
+  return <div className="min-h-screen px-4 md:px-10 py-16 font-sans bg-[var(--color-bg-main)] text-[var(--color-text-white)] selection:bg-[var(--color-gold-main)] selection:text-black">
       
       <section className="text-center mb-20">
         <h1 className="text-5xl md:text-8xl font-black mb-8 text-[var(--color-gold-main)] tracking-tight leading-tight">
@@ -24,13 +16,7 @@ const ProperNutrition = () => {
       <section className="max-w-6xl mx-auto border border-[var(--color-border)] bg-[var(--color-bg-card)] rounded-[2.5rem] overflow-hidden flex flex-col lg:flex-row items-stretch mb-20 shadow-2xl transition-all duration-500 hover:border-[var(--color-gold-main)]">
         
         <div className="lg:w-1/2 overflow-hidden h-96 lg:h-auto">
-          <img
-            src="/public/food-img.jpg"
-            alt="Football Nutrition"
-            loading="lazy"
-            decoding="async"
-            className="w-full h-full object-cover scale-105 hover:scale-100 transition-transform duration-1000"
-          />
+          <img src="/public/food-img.jpg" alt="Football Nutrition" loading="lazy" decoding="async" className="w-full h-full object-cover scale-105 hover:scale-100 transition-transform duration-1000" />
         </div>
 
         <div className="lg:w-1/2 p-10 md:p-16 flex flex-col justify-center text-right" dir="rtl">
@@ -49,42 +35,31 @@ const ProperNutrition = () => {
 
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto mb-20" dir="rtl">
 
-        {[
-          {
-            icon: <GiSoccerBall />,
-            title: "أساسيات التغذية",
-            text: "التوازن بين الكربوهيدرات والبروتينات والدهون هو أساس الأداء الرياضي.",
-          },
-          {
-            icon: <FaBolt />,
-            title: "قبل المباراة",
-            text: "وجبة غنية بالكربوهيدرات قبل 3–4 ساعات لضمان طاقة ثابتة.",
-          },
-          {
-            icon: <FaRunning />,
-            title: "أثناء المباراة",
-            text: "تعويض السوائل والأملاح للحفاظ على الأداء والتركيز.",
-          },
-          {
-            icon: <MdFitnessCenter />,
-            title: "بعد المباراة",
-            text: "بروتين + كربوهيدرات لاستعادة العضلات بسرعة.",
-          },
-          {
-            icon: <FaUtensils />,
-            title: "النظام اليومي",
-            text: "وجبات متوازنة مع تقليل الأكل السريع والمشروبات الغازية.",
-          },
-          {
-            icon: <FaLightbulb />,
-            title: "نصيحة الخبراء",
-            text: "الأكل الطبيعي أفضل من أي مكملات لتحقيق أداء ثابت.",
-          },
-        ].map((item, index) => (
-          <div
-            key={index}
-            className="p-10 rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-bg-card)] flex flex-col items-center text-center shadow-xl"
-          >
+        {[{
+        icon: <GiSoccerBall />,
+        title: "أساسيات التغذية",
+        text: "التوازن بين الكربوهيدرات والبروتينات والدهون هو أساس الأداء الرياضي."
+      }, {
+        icon: <FaBolt />,
+        title: "قبل المباراة",
+        text: "وجبة غنية بالكربوهيدرات قبل 3–4 ساعات لضمان طاقة ثابتة."
+      }, {
+        icon: <FaRunning />,
+        title: "أثناء المباراة",
+        text: "تعويض السوائل والأملاح للحفاظ على الأداء والتركيز."
+      }, {
+        icon: <MdFitnessCenter />,
+        title: "بعد المباراة",
+        text: "بروتين + كربوهيدرات لاستعادة العضلات بسرعة."
+      }, {
+        icon: <FaUtensils />,
+        title: "النظام اليومي",
+        text: "وجبات متوازنة مع تقليل الأكل السريع والمشروبات الغازية."
+      }, {
+        icon: <FaLightbulb />,
+        title: "نصيحة الخبراء",
+        text: "الأكل الطبيعي أفضل من أي مكملات لتحقيق أداء ثابت."
+      }].map((item, index) => <div key={index} className="p-10 rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-bg-card)] flex flex-col items-center text-center shadow-xl">
             <div className="text-6xl mb-8 text-[var(--color-gold-main)]">
               {item.icon}
             </div>
@@ -96,8 +71,7 @@ const ProperNutrition = () => {
             <p className="text-lg leading-relaxed text-[var(--color-text-gray)]">
               {item.text}
             </p>
-          </div>
-        ))}
+          </div>)}
 
       </section>
 
@@ -113,17 +87,10 @@ const ProperNutrition = () => {
           </h2>
 
           <ul className="space-y-6 text-xl">
-            {[
-              "شرب الماء باستمرار",
-              "عدم إهمال الإفطار",
-              "تجنب الأكل الثقيل قبل المباراة",
-              "الاستشفاء بعد التمرين مباشرة",
-            ].map((li, i) => (
-              <li key={i} className="flex items-center gap-4">
+            {["شرب الماء باستمرار", "عدم إهمال الإفطار", "تجنب الأكل الثقيل قبل المباراة", "الاستشفاء بعد التمرين مباشرة"].map((li, i) => <li key={i} className="flex items-center gap-4">
                 <span className="w-3 h-3 rounded-full bg-[var(--color-gold-main)]"></span>
                 <span className="text-[var(--color-text-gray)]">{li}</span>
-              </li>
-            ))}
+              </li>)}
           </ul>
         </div>
 
@@ -138,16 +105,9 @@ const ProperNutrition = () => {
           </h2>
 
           <ul className="space-y-6 text-xl">
-            {[
-              "تأخير الأكل قبل المباراة",
-              "الاعتماد على المكملات فقط",
-              "إهمال شرب الماء",
-              "تجنب الكربوهيدرات",
-            ].map((li, i) => (
-              <li key={i} className="flex items-center gap-4">
+            {["تأخير الأكل قبل المباراة", "الاعتماد على المكملات فقط", "إهمال شرب الماء", "تجنب الكربوهيدرات"].map((li, i) => <li key={i} className="flex items-center gap-4">
                 <span className="text-[var(--color-text-gray)]">{li}</span>
-              </li>
-            ))}
+              </li>)}
           </ul>
         </div>
 
@@ -163,8 +123,6 @@ const ProperNutrition = () => {
         </p>
       </footer>
 
-    </div>
-  );
+    </div>;
 };
-
 export default ProperNutrition;
