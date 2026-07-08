@@ -25,4 +25,4 @@ dist-ssr
 
 # Local Environment & Data
 .env
-data.json
+
