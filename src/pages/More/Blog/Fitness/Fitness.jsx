@@ -101,11 +101,7 @@ const Fitness = () => {
                     <p className="dark:text-[var(--color-text-white)] text-[var(--color-text-main)] text-2xl leading-relaxed max-w-3xl mx-auto">
                         "الموهبة تمنحك الفرصة، لكن اللياقة البدنية هي التي تجعلك تستغلها حتى الدقيقة الأخيرة."
                     </p>
-                    <div className="pt-8">
-                        <button className="px-10 py-4 bg-[var(--color-gold-main)] text-black font-bold rounded-full shadow-lg transform transition hover:scale-105 active:scale-95">
-                            ابدأ التدريب الآن
-                        </button>
-                    </div>
+                   
                 </div>
             </section>
         </div>;
